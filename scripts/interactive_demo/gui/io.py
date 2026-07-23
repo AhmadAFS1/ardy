@@ -268,6 +268,16 @@ class GuiIOMixin:
 
             session = self.client_sessions[client_id]
 
+            # Viser exposes one keyboard callback per client. Pose Studio
+            # contributes only modifier chords through this central listener,
+            # preserving the existing playback/navigation key handling.
+            if event.event_type == "keydown":
+                pose_states = getattr(self, "_pose_studio_states", {})
+                pose_state = pose_states.get(client_id)
+                pose_handler = getattr(pose_state, "keyboard_handler", None)
+                if pose_handler is not None and pose_handler(event):
+                    return
+
             # Handle keyup events first
             if event.event_type == "keyup":
                 if event.key == " ":

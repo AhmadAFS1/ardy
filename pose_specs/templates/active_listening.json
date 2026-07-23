@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "behavior_id": "active_listening",
+  "description": "Calibration starter — slight attentive forward set with one tiny micro-nod and a controlled return.",
+  "behavior_type": "loop",
+  "speaking_mode": "listening",
+  "fps": 30,
+  "duration_seconds": 10.0,
+  "boundary_seconds": 2.0,
+  "base_pose": {
+    "mode": "authored_neutral",
+    "motion_path": null,
+    "frame": 0
+  },
+  "locks": [
+    "Hips",
+    "RightUpLeg",
+    "RightLeg",
+    "RightFoot",
+    "RightToeBase",
+    "LeftUpLeg",
+    "LeftLeg",
+    "LeftFoot",
+    "LeftToeBase",
+    "RightShoulder",
+    "LeftShoulder"
+  ],
+  "keyframes": [
+    {
+      "time_seconds": 3.1,
+      "label": "attentive posture settles forward",
+      "joints": {
+        "Spine1": {"rotation_degrees": [0.6, 0.0, 0.0]},
+        "Spine2": {"rotation_degrees": [0.9, 0.0, 0.0]},
+        "Spine3": {"rotation_degrees": [0.6, 0.0, 0.0]},
+        "Neck": {"rotation_degrees": [-0.5, 0.0, 0.0]},
+        "Head": {"rotation_degrees": [-0.7, 0.0, 0.0]}
+      }
+    },
+    {
+      "time_seconds": 4.55,
+      "label": "tiny acknowledging micro-nod",
+      "joints": {
+        "Spine1": {"rotation_degrees": [0.6, 0.0, 0.0]},
+        "Spine2": {"rotation_degrees": [0.9, 0.0, 0.0]},
+        "Spine3": {"rotation_degrees": [0.8, 0.0, 0.0]},
+        "Neck": {"rotation_degrees": [1.0, 0.0, 0.0]},
+        "Head": {"rotation_degrees": [3.2, 0.0, 0.0]}
+      }
+    },
+    {
+      "time_seconds": 4.95,
+      "label": "attentive baseline recovered",
+      "joints": {
+        "Spine1": {"rotation_degrees": [0.6, 0.0, 0.0]},
+        "Spine2": {"rotation_degrees": [0.9, 0.0, 0.0]},
+        "Spine3": {"rotation_degrees": [0.6, 0.0, 0.0]},
+        "Neck": {"rotation_degrees": [-0.5, 0.0, 0.0]},
+        "Head": {"rotation_degrees": [-0.7, 0.0, 0.0]}
+      }
+    },
+    {
+      "time_seconds": 7.35,
+      "label": "canonical neutral recovered",
+      "joints": {
+        "Spine1": {"rotation_degrees": [0.0, 0.0, 0.0]},
+        "Spine2": {"rotation_degrees": [0.0, 0.0, 0.0]},
+        "Spine3": {"rotation_degrees": [0.0, 0.0, 0.0]},
+        "Neck": {"rotation_degrees": [0.0, 0.0, 0.0]},
+        "Head": {"rotation_degrees": [0.0, 0.0, 0.0]}
+      }
+    }
+  ],
+  "ambient_motion": {
+    "enabled": true,
+    "breathing_cycles": 2.0,
+    "breathing_degrees": 0.5,
+    "sway_cycles": 1.0,
+    "sway_degrees": 0.2,
+    "head_sway_degrees": 0.08
+  },
+  "face_intent": {
+    "gaze": "steady_camera_attention_with_eyes_leading_micro_nod",
+    "expression": "soft_attentive_neutral",
+    "blink": "natural_sparse_avoid_nod_peak_and_boundaries",
+    "intensity": 0.18
+  },
+  "camera": {
+    "resolution": [1080, 1920],
+    "render_resolution": [540, 960],
+    "position": [0.0, 0.56, 2.3],
+    "look_at": [0.0, 0.54, 0.0],
+    "up": [0.0, 1.0, 0.0],
+    "vertical_fov_degrees": 25.0,
+    "background_rgb": [238, 241, 246],
+    "body_rgb": [76, 112, 176]
+  },
+  "source_reference": null
+}

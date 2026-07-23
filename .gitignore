@@ -149,7 +149,20 @@ wandb/
 out
 tmr_out
 .ruff_cache
-outputs
+# Generated pose artifacts stay ignored except for the certified MP4 masters
+# and their browser/Kling upload copies. These six videos are repository assets.
+/outputs/**
+!/outputs/pose_library/
+!/outputs/pose_library/look_away_reset/
+!/outputs/pose_library/look_away_reset/look_away_reset.mp4
+!/outputs/pose_library/neutral_resting/
+!/outputs/pose_library/neutral_resting/neutral_resting.mp4
+!/outputs/pose_library/nod_agree/
+!/outputs/pose_library/nod_agree/nod_agree.mp4
+!/outputs/pose_delivery/
+!/outputs/pose_delivery/look_away_reset.mp4
+!/outputs/pose_delivery/neutral_resting.mp4
+!/outputs/pose_delivery/nod_agree.mp4
 /debug
 /batch*.sh
 checkpoints

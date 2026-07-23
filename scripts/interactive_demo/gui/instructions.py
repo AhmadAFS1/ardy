@@ -20,7 +20,14 @@ KEYBOARD_SHORTCUTS_MD = (
     "| `Arrow keys` | Steer target velocity (when `t` is enabled) |\n"
     "| `p` | Toggle waypoint control mode |\n"
     "| `z` | Sample kinematic constraints from motion file |\n"
-    "| `h` | Show / hide this help |\n"
+    "| `Alt+A` | Pose Studio: add/update the selected joint target |\n"
+    "| `Alt+[` / `Alt+]` | Pose Studio: previous/next keyframe |\n"
+    "| `Alt+Delete` | Pose Studio: delete selected keyframe |\n"
+    "| `Ctrl/Cmd+S` | Pose Studio: save specification |\n"
+    "| `Ctrl/Cmd+Enter` | Pose Studio: compose deterministic motion |\n"
+    "| `Ctrl/Cmd+Shift+Enter` | Pose Studio: build, render, and validate |\n"
+    "| `h` | Show / hide this help |\n\n"
+    "Pose Studio shortcuts work when focus is outside text and number fields.\n"
 )
 
 # Shown once per browser in the welcome modal on connect (see client.py's
@@ -46,6 +53,10 @@ shows as a colored segment on the timeline.
 Click a constraint track in the timeline to pin the character's current pose at that
 frame; right-click a marker to remove it. The **Generate** tab can also sample
 constraints from a reference motion file.
+
+##### Pose Studio
+Use the **Pose Studio** tab to author exact local XYZ joint keyframes, preview them in
+real time, and create seam-certified motion-reference MP4s without screen recording.
 
 Press `h` anytime to see all keyboard shortcuts — and see the **Instructions** tab for
 the full manual.

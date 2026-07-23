@@ -1,6 +1,8 @@
 # SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
+from collections.abc import Mapping, Sequence
+from os import PathLike
 from typing import Optional
 
 import torch
@@ -27,6 +29,400 @@ def compute_global_heading(global_joints_positions: Tensor, skeleton: SkeletonBa
     root_heading_angle = compute_heading_angle(global_joints_positions, skeleton)
     global_root_heading = torch.stack([torch.cos(root_heading_angle), torch.sin(root_heading_angle)], dim=-1)
     return global_root_heading
+
+
+class PoseConstraintSet:
+    """Sparse, precision constraints for arbitrary joints in global space.
+
+    Positions and rotations are stored as independent ``(frame, joint)``
+    observations.  This is intentionally different from
+    :class:`FullBodyConstraintSet`: a pose constraint can lock only ``Head`` and
+    ``Neck`` rotations at one frame, for example, without constraining the rest
+    of the skeleton.
+
+    Global positions require the root position at every affected frame.  ARDY's
+    motion representation stores non-root positions relative to the root, so a
+    world-space position is otherwise underdetermined.  Root anchors are used to
+    populate the root x/z and y conditioning channels automatically.
+
+    The JSON representation is versioned and uses joint names rather than
+    skeleton-specific integer indices::
+
+        {
+          "type": "pose",
+          "schema_version": 1,
+          "coordinate_space": "global",
+          "keyframes": [
+            {
+              "frame": 12,
+              "joints": {
+                "Hips": {"global_position": [0.0, 1.0, 0.0]},
+                "Head": {"global_rotation": [[1, 0, 0], [0, 1, 0], [0, 0, 1]]}
+              }
+            }
+          ]
+        }
+
+    Args:
+        skeleton: Skeleton that defines valid joint names and indices.
+        position_frame_indices: One frame index per position observation.
+        position_joint_names: One joint name per position observation.
+        global_joints_positions: Sparse global xyz values, shape ``(P, 3)``.
+        rotation_frame_indices: One frame index per rotation observation.
+        rotation_joint_names: One joint name per rotation observation.
+        global_joints_rots: Sparse global rotation matrices, shape
+            ``(R, 3, 3)``.
+
+    Note:
+        Rotation matrices are validated as members of SO(3).  Duplicate
+        observations for the same ``(frame, joint)`` and channel are rejected so
+        conditioning never depends on implicit last-write-wins behavior.
+    """
+
+    name = "pose"
+    schema_version = 1
+    coordinate_space = "global"
+    _rotation_atol = 1e-4
+
+    def __init__(
+        self,
+        skeleton: SkeletonBase,
+        *,
+        position_frame_indices: Optional[Tensor | Sequence[int]] = None,
+        position_joint_names: Optional[Sequence[str]] = None,
+        global_joints_positions: Optional[Tensor | Sequence[Sequence[float]]] = None,
+        rotation_frame_indices: Optional[Tensor | Sequence[int]] = None,
+        rotation_joint_names: Optional[Sequence[str]] = None,
+        global_joints_rots: Optional[Tensor | Sequence[Sequence[Sequence[float]]]] = None,
+        _allow_empty: bool = False,
+    ) -> None:
+        self.skeleton = skeleton
+
+        (
+            self.position_frame_indices,
+            self.position_joint_names,
+            self.position_joint_indices,
+            self.global_joints_positions,
+        ) = self._validate_channel(
+            channel="position",
+            frame_indices=position_frame_indices,
+            joint_names=position_joint_names,
+            values=global_joints_positions,
+            value_shape=(3,),
+        )
+        (
+            self.rotation_frame_indices,
+            self.rotation_joint_names,
+            self.rotation_joint_indices,
+            self.global_joints_rots,
+        ) = self._validate_channel(
+            channel="rotation",
+            frame_indices=rotation_frame_indices,
+            joint_names=rotation_joint_names,
+            values=global_joints_rots,
+            value_shape=(3, 3),
+        )
+
+        if not _allow_empty and not (len(self.position_frame_indices) or len(self.rotation_frame_indices)):
+            raise ValueError("A pose constraint must contain at least one position or rotation observation.")
+
+        self._validate_rotation_matrices()
+        self._validate_position_root_anchors()
+
+        all_frames = torch.cat([self.position_frame_indices, self.rotation_frame_indices])
+        self.frame_indices = torch.unique(all_frames, sorted=True)
+
+    @property
+    def _value_device(self):
+        return self.skeleton.device
+
+    def _validate_channel(
+        self,
+        *,
+        channel: str,
+        frame_indices,
+        joint_names,
+        values,
+        value_shape: tuple[int, ...],
+    ):
+        provided = (frame_indices is not None, joint_names is not None, values is not None)
+        if any(provided) and not all(provided):
+            raise ValueError(
+                f"{channel} observations require frame indices, joint names, and values together."
+            )
+
+        if not any(provided):
+            empty_values = torch.empty((0, *value_shape), device=self._value_device)
+            return torch.empty(0, dtype=torch.long), tuple(), torch.empty(0, dtype=torch.long), empty_values
+
+        raw_frames = torch.as_tensor(frame_indices)
+        if raw_frames.ndim != 1:
+            raise ValueError(f"{channel}_frame_indices must be one-dimensional, got shape {tuple(raw_frames.shape)}.")
+        if raw_frames.dtype == torch.bool or raw_frames.is_floating_point() or raw_frames.is_complex():
+            raise TypeError(f"{channel}_frame_indices must contain integers.")
+        frames = raw_frames.to(device="cpu", dtype=torch.long).clone()
+        if (frames < 0).any():
+            raise ValueError(f"{channel}_frame_indices cannot contain negative frames.")
+
+        if isinstance(joint_names, (str, bytes)) or not isinstance(joint_names, Sequence):
+            raise TypeError(f"{channel}_joint_names must be a sequence of joint-name strings.")
+        names = tuple(joint_names)
+        if any(not isinstance(name, str) for name in names):
+            raise TypeError(f"{channel}_joint_names must contain only strings.")
+        unknown_names = sorted(set(names).difference(self.skeleton.bone_index))
+        if unknown_names:
+            raise ValueError(
+                f"Unknown {channel} joint name(s) for {self.skeleton.name}: {', '.join(unknown_names)}."
+            )
+
+        value_tensor = torch.as_tensor(values, device=self._value_device)
+        if not value_tensor.is_floating_point():
+            value_tensor = value_tensor.to(torch.get_default_dtype())
+        value_tensor = value_tensor.clone()
+        expected_shape = (len(frames), *value_shape)
+        if tuple(value_tensor.shape) != expected_shape:
+            raise ValueError(
+                f"global_joints_{'positions' if channel == 'position' else 'rots'} must have shape "
+                f"{expected_shape}, got {tuple(value_tensor.shape)}."
+            )
+        if len(names) != len(frames):
+            raise ValueError(
+                f"{channel}_joint_names must have {len(frames)} entries, got {len(names)}."
+            )
+        if not torch.isfinite(value_tensor).all():
+            raise ValueError(f"{channel} values must contain only finite numbers.")
+
+        joint_indices = torch.tensor([self.skeleton.bone_index[name] for name in names], dtype=torch.long)
+        observations = list(zip(frames.tolist(), joint_indices.tolist()))
+        if len(set(observations)) != len(observations):
+            raise ValueError(f"Duplicate {channel} observation for the same frame and joint.")
+
+        return frames, names, joint_indices, value_tensor
+
+    def _validate_rotation_matrices(self) -> None:
+        if not len(self.global_joints_rots):
+            return
+        rotations = self.global_joints_rots
+        # CPU linalg does not implement det for half/bfloat16.  Validation in
+        # float32 is still substantially tighter than the accepted tolerance.
+        if rotations.dtype in (torch.float16, torch.bfloat16):
+            rotations = rotations.float()
+        identity = torch.eye(3, dtype=rotations.dtype, device=rotations.device).expand_as(rotations)
+        gram = rotations.transpose(-1, -2) @ rotations
+        orthogonal = torch.isclose(gram, identity, atol=self._rotation_atol, rtol=self._rotation_atol).all(
+            dim=(-2, -1)
+        )
+        determinants = torch.linalg.det(rotations)
+        proper = torch.isclose(
+            determinants,
+            torch.ones_like(determinants),
+            atol=self._rotation_atol,
+            rtol=self._rotation_atol,
+        )
+        invalid = torch.where(~(orthogonal & proper))[0]
+        if len(invalid):
+            bad = int(invalid[0])
+            frame = int(self.rotation_frame_indices[bad])
+            joint = self.rotation_joint_names[bad]
+            raise ValueError(
+                f"Global rotation for joint {joint!r} at frame {frame} is not a valid rotation matrix."
+            )
+
+    def _validate_position_root_anchors(self) -> None:
+        if not len(self.position_frame_indices):
+            return
+        root_idx = self.skeleton.root_idx
+        position_frames = set(self.position_frame_indices.tolist())
+        root_frames = set(self.position_frame_indices[self.position_joint_indices == root_idx].tolist())
+        missing_root_frames = sorted(position_frames.difference(root_frames))
+        if missing_root_frames:
+            root_name = self.skeleton.bone_order_names[root_idx]
+            frames = ", ".join(str(frame) for frame in missing_root_frames)
+            raise ValueError(
+                "Global joint positions require a root-position anchor at every affected frame; "
+                f"add {root_name!r} at frame(s): {frames}."
+            )
+
+    def update_constraints(self, data_dict: dict, index_dict: dict) -> None:
+        if len(self.position_frame_indices):
+            position_indices = torch.stack(
+                [self.position_frame_indices, self.position_joint_indices], dim=-1
+            )
+            data_dict["global_joints_positions"].append(self.global_joints_positions)
+            index_dict["global_joints_positions"].append(position_indices)
+
+            root_mask = self.position_joint_indices == self.skeleton.root_idx
+            root_frames = self.position_frame_indices[root_mask]
+            root_positions = self.global_joints_positions[root_mask.to(self.global_joints_positions.device)]
+            data_dict["root_2d"].append(root_positions[:, [0, 2]])
+            index_dict["root_2d"].append(root_frames)
+            data_dict["root_y_pos"].append(root_positions[:, 1])
+            index_dict["root_y_pos"].append(root_frames)
+
+        if len(self.rotation_frame_indices):
+            rotation_indices = torch.stack(
+                [self.rotation_frame_indices, self.rotation_joint_indices], dim=-1
+            )
+            data_dict["global_joints_rots"].append(self.global_joints_rots)
+            index_dict["global_joints_rots"].append(rotation_indices)
+
+            # Root heading is a duplicated channel in ArdyMotionRep.  Keep it
+            # consistent whenever the sparse pose explicitly locks root rotation.
+            root_mask = self.rotation_joint_indices == self.skeleton.root_idx
+            if root_mask.any():
+                root_frames = self.rotation_frame_indices[root_mask]
+                root_rotations = self.global_joints_rots[root_mask.to(self.global_joints_rots.device)]
+                neutral = self.skeleton.neutral_joints.to(
+                    device=root_rotations.device, dtype=root_rotations.dtype
+                )
+                right_hip, left_hip = self.skeleton.hip_joint_idx
+                neutral_hip_vector = neutral[right_hip] - neutral[left_hip]
+                rotated_hip_vector = torch.einsum("nij,j->ni", root_rotations, neutral_hip_vector)
+                heading_angle = torch.atan2(rotated_hip_vector[:, 2], -rotated_hip_vector[:, 0])
+                heading = torch.stack([torch.cos(heading_angle), torch.sin(heading_angle)], dim=-1)
+                data_dict["global_root_heading"].append(heading)
+                index_dict["global_root_heading"].append(root_frames)
+
+    def crop_move(self, start: int, end: int):
+        """Crop observations to ``[start, end)`` and move them to frame zero."""
+        if not isinstance(start, int) or not isinstance(end, int):
+            raise TypeError("Crop bounds must be integers.")
+        if start < 0 or end < start:
+            raise ValueError(f"Invalid crop range [{start}, {end}).")
+
+        position_mask = (self.position_frame_indices >= start) & (self.position_frame_indices < end)
+        rotation_mask = (self.rotation_frame_indices >= start) & (self.rotation_frame_indices < end)
+        position_names = [
+            name for name, keep in zip(self.position_joint_names, position_mask.tolist()) if keep
+        ]
+        rotation_names = [
+            name for name, keep in zip(self.rotation_joint_names, rotation_mask.tolist()) if keep
+        ]
+        position_value_mask = position_mask.to(self.global_joints_positions.device)
+        rotation_value_mask = rotation_mask.to(self.global_joints_rots.device)
+        return PoseConstraintSet(
+            self.skeleton,
+            position_frame_indices=self.position_frame_indices[position_mask] - start,
+            position_joint_names=position_names,
+            global_joints_positions=self.global_joints_positions[position_value_mask],
+            rotation_frame_indices=self.rotation_frame_indices[rotation_mask] - start,
+            rotation_joint_names=rotation_names,
+            global_joints_rots=self.global_joints_rots[rotation_value_mask],
+            _allow_empty=True,
+        )
+
+    def get_save_info(self) -> dict:
+        """Return the canonical, versioned JSON-ready pose schema."""
+        keyframes: dict[int, dict[str, dict[str, Tensor]]] = {}
+
+        for frame, joint_name, position in zip(
+            self.position_frame_indices.tolist(),
+            self.position_joint_names,
+            self.global_joints_positions,
+        ):
+            joint_targets = keyframes.setdefault(frame, {}).setdefault(joint_name, {})
+            joint_targets["global_position"] = position
+
+        for frame, joint_name, rotation in zip(
+            self.rotation_frame_indices.tolist(),
+            self.rotation_joint_names,
+            self.global_joints_rots,
+        ):
+            joint_targets = keyframes.setdefault(frame, {}).setdefault(joint_name, {})
+            joint_targets["global_rotation"] = rotation
+
+        ordered_keyframes = []
+        for frame in sorted(keyframes):
+            joints = keyframes[frame]
+            ordered_joints = {
+                name: joints[name]
+                for name in self.skeleton.bone_order_names
+                if name in joints
+            }
+            ordered_keyframes.append({"frame": frame, "joints": ordered_joints})
+
+        return {
+            "type": self.name,
+            "schema_version": self.schema_version,
+            "coordinate_space": self.coordinate_space,
+            "keyframes": ordered_keyframes,
+        }
+
+    @classmethod
+    def from_dict(cls, skeleton: SkeletonBase, dico: Mapping):
+        """Build a sparse pose constraint from its versioned JSON schema."""
+        if not isinstance(dico, Mapping):
+            raise TypeError("A pose constraint must be loaded from a JSON object.")
+        version = dico.get("schema_version")
+        if version != cls.schema_version:
+            raise ValueError(
+                f"Unsupported pose schema_version {version!r}; expected {cls.schema_version}."
+            )
+        coordinate_space = dico.get("coordinate_space")
+        if coordinate_space != cls.coordinate_space:
+            raise ValueError(
+                f"Unsupported pose coordinate_space {coordinate_space!r}; expected {cls.coordinate_space!r}."
+            )
+
+        keyframes = dico.get("keyframes")
+        if not isinstance(keyframes, list) or not keyframes:
+            raise ValueError("Pose keyframes must be a non-empty list.")
+
+        position_frames = []
+        position_names = []
+        positions = []
+        rotation_frames = []
+        rotation_names = []
+        rotations = []
+        seen_frames = set()
+
+        for keyframe in keyframes:
+            if not isinstance(keyframe, Mapping):
+                raise TypeError("Each pose keyframe must be a JSON object.")
+            frame = keyframe.get("frame")
+            if isinstance(frame, bool) or not isinstance(frame, int):
+                raise TypeError("Each pose keyframe frame must be an integer.")
+            if frame < 0:
+                raise ValueError("Pose keyframe frames cannot be negative.")
+            if frame in seen_frames:
+                raise ValueError(f"Pose schema contains more than one keyframe object for frame {frame}.")
+            seen_frames.add(frame)
+
+            joints = keyframe.get("joints")
+            if not isinstance(joints, Mapping) or not joints:
+                raise ValueError(f"Pose keyframe at frame {frame} must contain a non-empty joints object.")
+
+            for joint_name, targets in joints.items():
+                if not isinstance(joint_name, str):
+                    raise TypeError("Pose joint names must be strings.")
+                if not isinstance(targets, Mapping) or not targets:
+                    raise ValueError(
+                        f"Pose target for joint {joint_name!r} at frame {frame} must be a non-empty object."
+                    )
+                unknown_targets = set(targets).difference({"global_position", "global_rotation"})
+                if unknown_targets:
+                    fields = ", ".join(sorted(unknown_targets))
+                    raise ValueError(
+                        f"Unknown target field(s) for joint {joint_name!r} at frame {frame}: {fields}."
+                    )
+                if "global_position" in targets:
+                    position_frames.append(frame)
+                    position_names.append(joint_name)
+                    positions.append(targets["global_position"])
+                if "global_rotation" in targets:
+                    rotation_frames.append(frame)
+                    rotation_names.append(joint_name)
+                    rotations.append(targets["global_rotation"])
+
+        return cls(
+            skeleton,
+            position_frame_indices=position_frames or None,
+            position_joint_names=position_names or None,
+            global_joints_positions=positions or None,
+            rotation_frame_indices=rotation_frames or None,
+            rotation_joint_names=rotation_names or None,
+            global_joints_rots=rotations or None,
+        )
 
 
 class Root2DConstraintSet:
@@ -412,6 +808,7 @@ class RightFootConstraintSet(EndEffectorConstraintSet):
 
 
 TYPE_TO_CLASS = {
+    "pose": PoseConstraintSet,
     "root2d": Root2DConstraintSet,
     "fullbody": FullBodyConstraintSet,
     "left-hand": LeftHandConstraintSet,
@@ -422,22 +819,30 @@ TYPE_TO_CLASS = {
 }
 
 
-def load_constraints_lst(path_or_data: str | list, skeleton: SkeletonBase):
+def load_constraints_lst(path_or_data: str | PathLike | list, skeleton: SkeletonBase):
     from ardy.tools import load_json
 
-    if isinstance(path_or_data, str):
+    if isinstance(path_or_data, (str, PathLike)):
         saved = load_json(path_or_data)
     else:
         saved = path_or_data
 
+    if not isinstance(saved, list):
+        raise TypeError("A constraints file must contain a JSON list.")
+
     constraints_lst = []
     for el in saved:
-        cls = TYPE_TO_CLASS[el["type"]]
+        if not isinstance(el, Mapping):
+            raise TypeError("Each saved constraint must be a JSON object.")
+        constraint_type = el.get("type")
+        if constraint_type not in TYPE_TO_CLASS:
+            raise ValueError(f"Unknown constraint type: {constraint_type!r}.")
+        cls = TYPE_TO_CLASS[constraint_type]
         constraints_lst.append(cls.from_dict(skeleton, el))
     return constraints_lst
 
 
-def save_constraints_lst(path: str, constraints_lst):
+def save_constraints_lst(path: str | PathLike, constraints_lst):
     from ardy.tools import save_json
 
     if not constraints_lst:

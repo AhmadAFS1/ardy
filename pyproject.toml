@@ -54,6 +54,13 @@ demo = [
   "pandas>=2.0",
   "pillow>=9.0",
 ]
+# Deterministic offline Core-skin rendering.  pyrender is used through its EGL
+# offscreen backend, so rendering never depends on a browser or display server.
+# ffmpeg itself is a system executable and is checked at runtime.
+video = [
+  "pyrender>=0.1.45,<0.2",
+  "trimesh>=4.0",
+]
 # TensorRT acceleration (engine export at load time needs onnx).
 # NOTE: pinned exactly — TRT engine caches (engines/*.trt next to checkpoints)
 # only deserialize with the exact TensorRT version that built them.
@@ -62,7 +69,7 @@ trt = [
   "onnx>=1.16",
 ]
 all = [
-  "ardy[demo,trt]",
+  "ardy[demo,trt,video]",
 ]
 
 [tool.setuptools]

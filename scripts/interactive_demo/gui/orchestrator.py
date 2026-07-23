@@ -7,6 +7,7 @@ from types import SimpleNamespace
 
 from ..common import *  # noqa: F401,F403
 from .instructions import INSTRUCTIONS_TAB_MD
+from .pose_studio import build_pose_studio_tab
 
 
 class GuiMixin:
@@ -126,6 +127,7 @@ class GuiMixin:
         self._build_visualize_tab(client, client_id, tab_group, g, timeline, default_prompt)
         self._build_model_tab(client, client_id, tab_group, g, timeline, default_prompt)
         self._build_io_tab(client, client_id, tab_group, g, timeline, default_prompt)
+        build_pose_studio_tab(self, client, client_id, tab_group)
 
         #
         # Instructions tab

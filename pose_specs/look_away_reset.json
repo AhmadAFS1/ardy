@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "behavior_id": "look_away_reset",
+  "description": "Brief attentive look away with a small torso follow, then an exact return.",
+  "behavior_type": "one_shot",
+  "speaking_mode": "either",
+  "fps": 30,
+  "duration_seconds": 10.0,
+  "boundary_seconds": 2.0,
+  "base_pose": {
+    "mode": "authored_neutral",
+    "motion_path": null,
+    "frame": 0
+  },
+  "locks": [
+    "Hips",
+    "RightUpLeg",
+    "RightLeg",
+    "RightFoot",
+    "RightToeBase",
+    "LeftUpLeg",
+    "LeftLeg",
+    "LeftFoot",
+    "LeftToeBase",
+    "RightShoulder",
+    "LeftShoulder"
+  ],
+  "keyframes": [
+    {
+      "time_seconds": 3.35,
+      "label": "turn begins",
+      "joints": {
+        "Spine3": {"rotation_degrees": [0.0, -1.0, 0.0]},
+        "Neck": {"rotation_degrees": [0.0, -5.0, 0.0]},
+        "Head": {"rotation_degrees": [-1.0, -12.0, 0.0]}
+      }
+    },
+    {
+      "time_seconds": 4.25,
+      "label": "look-away peak",
+      "joints": {
+        "Spine2": {"rotation_degrees": [0.0, -2.5, 0.0]},
+        "Spine3": {"rotation_degrees": [0.0, -5.0, 0.0]},
+        "Neck": {"rotation_degrees": [-1.0, -14.0, 0.5]},
+        "Head": {"rotation_degrees": [-2.0, -34.0, 1.0]}
+      }
+    },
+    {
+      "time_seconds": 6.55,
+      "label": "look-away hold",
+      "joints": {
+        "Spine2": {"rotation_degrees": [0.0, -2.2, 0.0]},
+        "Spine3": {"rotation_degrees": [0.0, -4.5, 0.0]},
+        "Neck": {"rotation_degrees": [-1.0, -13.0, 0.5]},
+        "Head": {"rotation_degrees": [-2.0, -32.0, 1.0]}
+      }
+    },
+    {
+      "time_seconds": 7.63,
+      "label": "returned neutral",
+      "joints": {
+        "Spine2": {"rotation_degrees": [0.0, 0.0, 0.0]},
+        "Spine3": {"rotation_degrees": [0.0, 0.0, 0.0]},
+        "Neck": {"rotation_degrees": [0.0, 0.0, 0.0]},
+        "Head": {"rotation_degrees": [0.0, 0.0, 0.0]}
+      }
+    }
+  ],
+  "ambient_motion": {
+    "enabled": true,
+    "breathing_cycles": 2.0,
+    "breathing_degrees": 0.45,
+    "sway_cycles": 1.0,
+    "sway_degrees": 0.2,
+    "head_sway_degrees": 0.08
+  },
+  "face_intent": {
+    "gaze": "away_left_then_camera",
+    "expression": "neutral_reset",
+    "blink": "natural",
+    "intensity": 0.35
+  },
+  "camera": {
+    "resolution": [1080, 1920],
+    "render_resolution": [540, 960],
+    "position": [0.0, 0.56, 2.3],
+    "look_at": [0.0, 0.54, 0.0],
+    "up": [0.0, 1.0, 0.0],
+    "vertical_fov_degrees": 25.0,
+    "background_rgb": [238, 241, 246],
+    "body_rgb": [76, 112, 176]
+  },
+  "source_reference": "../some_videos/look_away_with_idle_boundaries.mp4"
+}

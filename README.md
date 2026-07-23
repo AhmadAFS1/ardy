@@ -32,6 +32,7 @@ pip install -e ".[all]"
 - **Partial installs:** the optional dependency groups can also be installed individually:
   - `pip install -e .` — core model inference only
   - `pip install -e ".[demo]"` — adds the interactive demo (viser, gradio)
+  - `pip install -e ".[video]"` — adds headless EGL pose-video rendering
   - `pip install -e ".[trt]"` — adds TensorRT acceleration
 - **TensorRT requirements:** the `[trt]` extra requires an NVIDIA driver >= 525 (CUDA 12-capable — the CUDA runtime itself is bundled via pip) and access to `pypi.nvidia.com` during install. On setups that don't meet these requirements, install `.[demo]` instead and select a non-TensorRT acceleration mode in the demo.
 
@@ -204,6 +205,38 @@ More detailed information about the interactive demo is available in the [GUI Re
 - **Capture Viewport Image** - Capture the current viewport image and save it to a file.
 
 </details>
+
+### Pose Studio: seamless avatar motion-reference videos
+
+The browser demo now includes a **Pose Studio** tab for exact local XYZ joint
+keyframes, joint locks, deterministic breathing/sway, a separate 3D preview,
+and one-click NPZ/MP4 composition and seam validation. Unlike prompt-only
+generation, the authored rotations and transition blocks are reproducible.
+
+The checked-in starter library contains `neutral_resting`, `nod_agree`, and
+`look_away_reset`. Build all three as fixed-camera, all-intra H.264 portrait
+assets and certify their decoded pixels with:
+
+```bash
+python -m ardy.pose_video build pose_specs \
+  --output-dir outputs/pose_library \
+  --force
+```
+
+Analyze rough recordings before authoring precise rotations:
+
+```bash
+python -m ardy.pose_video analyze some_videos/*.mp4 \
+  --output outputs/reference_analysis.json
+```
+
+Every certified asset has the same exact 60-frame opening and ending motion
+block. Runtime switching must still play through the outgoing final block and
+enter the next asset at frame zero; arbitrary mid-action cuts are not safe.
+Pose Studio can also certify the complete active library and derive separate
+H.264 High@4.0 upload/browser proxies while retaining the lossless masters.
+See the [pose-video workflow](docs/pose_video_workflow.md) for calibration,
+Kling handoff, post-generation validation, and WebRTC scheduling.
 
 ### Model Integration in Demo
 

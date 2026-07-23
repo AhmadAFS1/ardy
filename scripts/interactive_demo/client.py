@@ -437,6 +437,13 @@ class ClientMixin:
         print(f"Client {client.client_id} disconnected")
         client_id = client.client_id
 
+        # Pose Studio owns a separate preview avatar/thread rather than
+        # borrowing the streaming-generation session. Tear those resources
+        # down before removing the ordinary client state.
+        from .gui.pose_studio import cleanup_pose_studio
+
+        cleanup_pose_studio(self, client_id)
+
         if client_id in self.client_sessions:
             session = self.client_sessions[client_id]
             # Signal playback thread to stop
