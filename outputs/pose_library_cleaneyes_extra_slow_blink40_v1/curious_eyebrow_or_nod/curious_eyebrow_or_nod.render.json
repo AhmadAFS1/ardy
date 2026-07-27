@@ -34,11 +34,11 @@
   "input_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/curious_eyebrow_or_nod/curious_eyebrow_or_nod.motion.npz",
   "input_sha256": "17fbc2f6687909e19fcb00bc02e3e1d9156a5a03440269e15035ccc5ff9c7550",
   "manifest_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/curious_eyebrow_or_nod/curious_eyebrow_or_nod.render.json",
-  "mp4_sha256": "470ace3204981afb977a0d6a3fea90c19cd98c160358346c141ffd19cf2a5638",
+  "mp4_sha256": "97bc7367ee10fae39d6b3d52849a62a57940b7a4c75db00141f696f70892dbc8",
   "output_fps": 30.0,
   "output_frames": 108,
   "output_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/curious_eyebrow_or_nod/curious_eyebrow_or_nod.mp4",
-  "raw_rgb_sha256": "b4cf36282374eebabbda56ca62bfe520555c3af7b782141f9c7a1d042cf20b72",
+  "raw_rgb_sha256": "f12e8954060d4a8a4b52a2a1419935a4efebb0982e8c7ce07d7fdcb82f3a12d6",
   "render_style": {
     "ambient_light": 0.32,
     "background_rgba": [

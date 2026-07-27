@@ -34,11 +34,11 @@
   "input_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/empathetic_head_tilt/empathetic_head_tilt.motion.npz",
   "input_sha256": "8e5951db76e3ed99b079fc11f56642faaca43071f0aaab73160a925701d67ff9",
   "manifest_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/empathetic_head_tilt/empathetic_head_tilt.render.json",
-  "mp4_sha256": "aff96e17d7f1246bcc182096963092e7e0ba2779479d30448196ada71bdf2f98",
+  "mp4_sha256": "e5bac05d4fad01987ed9c21bd9def499db0a03c262227756c2f17afdc27e3b61",
   "output_fps": 30.0,
   "output_frames": 144,
   "output_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/empathetic_head_tilt/empathetic_head_tilt.mp4",
-  "raw_rgb_sha256": "db6708ee85ce832ee110f6462c4fe10dde8012ee75b23692aaf18b5f744d0ad7",
+  "raw_rgb_sha256": "8f30047b33ae911d0d1debd6578f756c0dabd04e7109b0b6d4c696a343c31a91",
   "render_style": {
     "ambient_light": 0.32,
     "background_rgba": [

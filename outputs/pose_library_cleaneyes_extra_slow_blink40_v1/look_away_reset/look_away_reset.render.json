@@ -34,11 +34,11 @@
   "input_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/look_away_reset/look_away_reset.motion.npz",
   "input_sha256": "a05b9e8085ff26dc079f4a62ebb497bafbbabf8371c776f06007fe31578eedd9",
   "manifest_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/look_away_reset/look_away_reset.render.json",
-  "mp4_sha256": "403eecc8b0526ef34a13011f341ff3b08d05022c56ab2b57d73376955b505612",
+  "mp4_sha256": "935f2a9db945854337ae040bc5432cdc1910d9633fe4ad50bc376e4e2e203306",
   "output_fps": 30.0,
   "output_frames": 144,
   "output_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/look_away_reset/look_away_reset.mp4",
-  "raw_rgb_sha256": "227b1a2fe84747e07749c89074f432433f764b6401ec9e7f300bc7259f2d149e",
+  "raw_rgb_sha256": "e125efb93abffa0930e358ecbe141d93be1f912e3d521892de55f45ea918374c",
   "render_style": {
     "ambient_light": 0.32,
     "background_rgba": [

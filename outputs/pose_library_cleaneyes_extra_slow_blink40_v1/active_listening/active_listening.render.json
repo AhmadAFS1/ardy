@@ -34,11 +34,11 @@
   "input_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/active_listening/active_listening.motion.npz",
   "input_sha256": "ff1b67a0275f9faca03c68f00e8fd3ca64cabc7ab317f398923c00871ac49ebe",
   "manifest_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/active_listening/active_listening.render.json",
-  "mp4_sha256": "86718b95281103a424b4cc4bf5854da1072fb494978e62aa1dc1da6df3db966b",
+  "mp4_sha256": "15702500db93640a75d708aeef19671b9bb04b6645818a9c3d6f6ff969bbe0b7",
   "output_fps": 30.0,
   "output_frames": 240,
   "output_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/active_listening/active_listening.mp4",
-  "raw_rgb_sha256": "9d82516548acd5ab994434af3088361fa0ec26fd6f1c0116bb6cbc7eaa096327",
+  "raw_rgb_sha256": "fa1f3146a3f7ea5dfb015a17f753e421509de46f947a9d9ba4e90c565e30c11e",
   "render_style": {
     "ambient_light": 0.32,
     "background_rgba": [

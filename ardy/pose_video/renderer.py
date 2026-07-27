@@ -49,7 +49,8 @@ BLINK_MINIMUM_SCALE = 0.40
 # approved partial-blink profile only for neutral_resting.
 NEUTRAL_RESTING_BLINK_MINIMUM_SCALE = BLINK_MINIMUM_SCALE
 FACIAL_EXPRESSION_BOUNDARY_SECONDS = 0.5
-SMILE_CORNER_LIFT_METERS = 0.004
+SMILE_CORNER_LIFT_METERS = 0.006
+SMILE_CORNER_WIDEN_METERS = 0.002
 BROW_RAISE_METERS = 0.003
 GAZE_HORIZONTAL_METERS = 0.0025
 GAZE_VERTICAL_METERS = 0.0012
@@ -176,7 +177,13 @@ def facial_cue_for_frame(
     }
     behavior_id = behavior_id.lower()
     if behavior_id == "light_smile":
-        cue["smile"] = 0.75 * envelope
+        # A readable closed-mouth smile: ease up from neutral, hold naturally,
+        # then release before the canonical closing boundary.
+        rise = float(np.clip((phase - 0.05) / 0.25, 0.0, 1.0))
+        release = float(np.clip((0.95 - phase) / 0.25, 0.0, 1.0))
+        rise = rise * rise * (3.0 - 2.0 * rise)
+        release = release * release * (3.0 - 2.0 * release)
+        cue["smile"] = min(rise, release)
     elif behavior_id == "amused_laugh":
         chuckle = 0.88 + 0.12 * float(np.sin(2.0 * np.pi * phase) ** 2)
         cue["smile"] = envelope * chuckle
@@ -259,6 +266,10 @@ class CoreMeshRenderer:
             0.0,
             1.0,
         ) ** 1.5
+        self.mouth_corner_directions = (
+            np.sign(bind_vertices[:, 0]).astype(np.float32)
+            * self.mouth_corner_weights
+        )
         self.left_brow_weights = (brow & (bind_vertices[:, 0] < 0.0)).astype(np.float32)
         self.right_brow_weights = (brow & (bind_vertices[:, 0] > 0.0)).astype(np.float32)
         self.gaze_weights = gaze.astype(np.float32)
@@ -408,9 +419,14 @@ class CoreMeshRenderer:
                 )
                 expression_right = np.stack(
                     [
-                        cue["gaze_horizontal"]
-                        * GAZE_HORIZONTAL_METERS
-                        * self.gaze_weights
+                        (
+                            cue["gaze_horizontal"]
+                            * GAZE_HORIZONTAL_METERS
+                            * self.gaze_weights
+                            + cue["smile"]
+                            * SMILE_CORNER_WIDEN_METERS
+                            * self.mouth_corner_directions
+                        )
                         for cue in facial_cues
                     ],
                     axis=0,

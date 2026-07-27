@@ -34,11 +34,11 @@
   "input_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/amused_laugh/amused_laugh.motion.npz",
   "input_sha256": "4ac4d7eebdc1aa09c7223e89e3c18e9a639732af515520306aa1c08c85f23e87",
   "manifest_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/amused_laugh/amused_laugh.render.json",
-  "mp4_sha256": "ba164bf93cb47c2d9f6faf114ce29bfda80a34dfd615b9097e5e2bcf689eb302",
+  "mp4_sha256": "03bfd4388c762c58a3ca5b597127cfcf75cd2a8d6838d7b0f8e0033fad2f9ca8",
   "output_fps": 30.0,
   "output_frames": 126,
   "output_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/amused_laugh/amused_laugh.mp4",
-  "raw_rgb_sha256": "0d2780b8b429a4c5abaa137a8d8c4674ed47db7ea1a6777de7fa565cee378528",
+  "raw_rgb_sha256": "8966ba1d8361d9ba71e34777b8b36775bf7c39022e73adf19c8e5efddc59e4ab",
   "render_style": {
     "ambient_light": 0.32,
     "background_rgba": [

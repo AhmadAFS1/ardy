@@ -34,11 +34,11 @@
   "input_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/nod_agree/nod_agree.motion.npz",
   "input_sha256": "4880825a739b338c7f71c67480e000a298d702f4a0c5dec45a5cb88d847c30ca",
   "manifest_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/nod_agree/nod_agree.render.json",
-  "mp4_sha256": "7943cd19a33e168639abca3750f77150a6f56223d65d7c4fead7748fde3a4fd9",
+  "mp4_sha256": "05a364e77b1d5c3959d97db2ad79151a8f269b175f567f8015bbf37fa5beb7ea",
   "output_fps": 30.0,
   "output_frames": 84,
   "output_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/nod_agree/nod_agree.mp4",
-  "raw_rgb_sha256": "d4135428555c18619c0a26c4588c18f7c1ce33248c27807c72efd643060f56d6",
+  "raw_rgb_sha256": "2ffe62d6909279c27870cccb7f962fad8116ae360d32a4363b5b60f65cd945b1",
   "render_style": {
     "ambient_light": 0.32,
     "background_rgba": [

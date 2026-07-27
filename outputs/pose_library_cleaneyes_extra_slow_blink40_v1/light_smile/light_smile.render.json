@@ -34,11 +34,11 @@
   "input_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/light_smile/light_smile.motion.npz",
   "input_sha256": "d834829a8785bfa809093410e67ab3988275a3f38673169b42faeb5e6ffd2871",
   "manifest_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/light_smile/light_smile.render.json",
-  "mp4_sha256": "ffa22da2754321e6bfb684dd655116208f3067c3058dfbc2535eab8993ab6c82",
+  "mp4_sha256": "82f85332293214be7ccc020372b92d69e2bb520ffa0307acea33261c71045455",
   "output_fps": 30.0,
   "output_frames": 120,
   "output_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/light_smile/light_smile.mp4",
-  "raw_rgb_sha256": "ddfd3305bb014e214f64b18f43be10ef830a95764985ca38ce5066e9ea1da3b4",
+  "raw_rgb_sha256": "18f24179a6851992eaa13f7d7c60949d4ffedf47cb3a0930bd28ddfcd366ae5e",
   "render_style": {
     "ambient_light": 0.32,
     "background_rgba": [

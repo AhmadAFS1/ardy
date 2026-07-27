@@ -34,11 +34,11 @@
   "input_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/neutral_resting/neutral_resting.motion.npz",
   "input_sha256": "5601ea4f9d2bb2e0833a306a293d4101a1b74fa1507a77850e56abce715fc1c4",
   "manifest_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/neutral_resting/neutral_resting.render.json",
-  "mp4_sha256": "683ee24ac5f10ef6ee4174a8befc300aa4effb1fb876551551f1cfe9cc5d7424",
+  "mp4_sha256": "e2c5a17e9991d5d832141c9c92c216a8dbfdc4c5e978828599de9d5d92543cc9",
   "output_fps": 30.0,
   "output_frames": 300,
   "output_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/neutral_resting/neutral_resting.mp4",
-  "raw_rgb_sha256": "d2eb158838713594ae2b329dc7151771d1eb92a208e4195344584f3879af5a0a",
+  "raw_rgb_sha256": "11da11eb47b87a7680d56e7b16282ff062f9a999892fcbba355d250949ba42c9",
   "render_style": {
     "ambient_light": 0.32,
     "background_rgba": [
