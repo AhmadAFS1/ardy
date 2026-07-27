@@ -1,0 +1,254 @@
+{
+  "artifact_sha256": {
+    "contract": "26536c0a5b5bbe23591403f5ba010facab1c74fcc9086aee5901bac150e7dbe0",
+    "delivery_validation": "a0bb784f638cc54129a4ad5b7063432d55736e31939e9402516dd28ba954d508",
+    "ordered_sources": "e161230fadd4a12c6027ba0dade151f4e22eb4dc2f2e9499dddaece3310277f7",
+    "source_manifest": "00a44593fe89b98fe5eb75ffd2ac6a7b62b6d54285d34162572831d4e2efc7e4",
+    "source_validation": "d4fa58ca835893a7c0bb35e5f98ecfe499c59de6a8e3297497613b21ca4ad4f3"
+  },
+  "assets": [
+    {
+      "output_bytes": 16490588,
+      "output_path": "/workspace/ardy/outputs/pose_delivery_cleaneyes_extra_slow_blink40_v1/active_listening.mp4",
+      "output_sha256": "af53edbdd1b938b554a91e51448609117747e5776f453fb16060b8589fc191f2",
+      "source_bytes": 25504294,
+      "source_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/active_listening/active_listening.mp4",
+      "source_sha256": "86718b95281103a424b4cc4bf5854da1072fb494978e62aa1dc1da6df3db966b",
+      "source_timing": {
+        "behavior_id": "active_listening",
+        "duration_seconds": 8.0,
+        "frame_count": 240,
+        "source_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/active_listening/active_listening.mp4"
+      }
+    },
+    {
+      "output_bytes": 8658791,
+      "output_path": "/workspace/ardy/outputs/pose_delivery_cleaneyes_extra_slow_blink40_v1/amused_laugh.mp4",
+      "output_sha256": "313f61c6626dae4919c9b883a11e6c67af6f8371e2a2b1cb4de721a81eded37b",
+      "source_bytes": 13382037,
+      "source_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/amused_laugh/amused_laugh.mp4",
+      "source_sha256": "ba164bf93cb47c2d9f6faf114ce29bfda80a34dfd615b9097e5e2bcf689eb302",
+      "source_timing": {
+        "behavior_id": "amused_laugh",
+        "duration_seconds": 4.2,
+        "frame_count": 126,
+        "source_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/amused_laugh/amused_laugh.mp4"
+      }
+    },
+    {
+      "output_bytes": 7424325,
+      "output_path": "/workspace/ardy/outputs/pose_delivery_cleaneyes_extra_slow_blink40_v1/curious_eyebrow_or_nod.mp4",
+      "output_sha256": "c9bb619d6d77878ba6907a8c7c0fa67fe28228c8eda5df479e05b3255e0262bb",
+      "source_bytes": 11459258,
+      "source_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/curious_eyebrow_or_nod/curious_eyebrow_or_nod.mp4",
+      "source_sha256": "470ace3204981afb977a0d6a3fea90c19cd98c160358346c141ffd19cf2a5638",
+      "source_timing": {
+        "behavior_id": "curious_eyebrow_or_nod",
+        "duration_seconds": 3.6,
+        "frame_count": 108,
+        "source_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/curious_eyebrow_or_nod/curious_eyebrow_or_nod.mp4"
+      }
+    },
+    {
+      "output_bytes": 9965675,
+      "output_path": "/workspace/ardy/outputs/pose_delivery_cleaneyes_extra_slow_blink40_v1/empathetic_head_tilt.mp4",
+      "output_sha256": "27c45f573f21b2c8221f6807d1c89480b36c7e0a6e3503cd8638a7f929d4ed8c",
+      "source_bytes": 15361349,
+      "source_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/empathetic_head_tilt/empathetic_head_tilt.mp4",
+      "source_sha256": "aff96e17d7f1246bcc182096963092e7e0ba2779479d30448196ada71bdf2f98",
+      "source_timing": {
+        "behavior_id": "empathetic_head_tilt",
+        "duration_seconds": 4.8,
+        "frame_count": 144,
+        "source_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/empathetic_head_tilt/empathetic_head_tilt.mp4"
+      }
+    },
+    {
+      "output_bytes": 8227975,
+      "output_path": "/workspace/ardy/outputs/pose_delivery_cleaneyes_extra_slow_blink40_v1/light_smile.mp4",
+      "output_sha256": "02f5ad5f3ce049cfafcfbe909f449aefc7fb2069ab43ed43645dfe3c252900d8",
+      "source_bytes": 12724892,
+      "source_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/light_smile/light_smile.mp4",
+      "source_sha256": "ffa22da2754321e6bfb684dd655116208f3067c3058dfbc2535eab8993ab6c82",
+      "source_timing": {
+        "behavior_id": "light_smile",
+        "duration_seconds": 4.0,
+        "frame_count": 120,
+        "source_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/light_smile/light_smile.mp4"
+      }
+    },
+    {
+      "output_bytes": 9870385,
+      "output_path": "/workspace/ardy/outputs/pose_delivery_cleaneyes_extra_slow_blink40_v1/look_away_reset.mp4",
+      "output_sha256": "a8a150bd3ab466b11dfe20fe927cf37fe508f723702ab5aedc10cbcd262e4524",
+      "source_bytes": 15246904,
+      "source_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/look_away_reset/look_away_reset.mp4",
+      "source_sha256": "403eecc8b0526ef34a13011f341ff3b08d05022c56ab2b57d73376955b505612",
+      "source_timing": {
+        "behavior_id": "look_away_reset",
+        "duration_seconds": 4.8,
+        "frame_count": 144,
+        "source_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/look_away_reset/look_away_reset.mp4"
+      }
+    },
+    {
+      "output_bytes": 20584137,
+      "output_path": "/workspace/ardy/outputs/pose_delivery_cleaneyes_extra_slow_blink40_v1/neutral_resting.mp4",
+      "output_sha256": "e8ac523cd5ca4f9857d958e5bc75da08ed1df8990a79bb893dadebfc8da452dc",
+      "source_bytes": 31801076,
+      "source_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/neutral_resting/neutral_resting.mp4",
+      "source_sha256": "683ee24ac5f10ef6ee4174a8befc300aa4effb1fb876551551f1cfe9cc5d7424",
+      "source_timing": {
+        "behavior_id": "neutral_resting",
+        "duration_seconds": 10.0,
+        "frame_count": 300,
+        "source_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/neutral_resting/neutral_resting.mp4"
+      }
+    },
+    {
+      "output_bytes": 5768212,
+      "output_path": "/workspace/ardy/outputs/pose_delivery_cleaneyes_extra_slow_blink40_v1/nod_agree.mp4",
+      "output_sha256": "62347ba7da47202b588bd00a9cc3c5aa7162ce54c43101e640a8bc1ecfc8c864",
+      "source_bytes": 8912003,
+      "source_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/nod_agree/nod_agree.mp4",
+      "source_sha256": "7943cd19a33e168639abca3750f77150a6f56223d65d7c4fead7748fde3a4fd9",
+      "source_timing": {
+        "behavior_id": "nod_agree",
+        "duration_seconds": 2.8,
+        "frame_count": 84,
+        "source_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/nod_agree/nod_agree.mp4"
+      }
+    },
+    {
+      "output_bytes": 20589300,
+      "output_path": "/workspace/ardy/outputs/pose_delivery_cleaneyes_extra_slow_blink40_v1/speaking_direct.mp4",
+      "output_sha256": "9eb9ee7f6f9f64b2855dbe11f824c26826e796a067eae6a585f7a6b457badd63",
+      "source_bytes": 31816655,
+      "source_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/speaking_direct/speaking_direct.mp4",
+      "source_sha256": "f645cc196b595908398a6cf0e1f7f0e453216f8ea7e7853facd20f721f9b1e19",
+      "source_timing": {
+        "behavior_id": "speaking_direct",
+        "duration_seconds": 10.0,
+        "frame_count": 300,
+        "source_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/speaking_direct/speaking_direct.mp4"
+      }
+    },
+    {
+      "output_bytes": 8655437,
+      "output_path": "/workspace/ardy/outputs/pose_delivery_cleaneyes_extra_slow_blink40_v1/thinking_glance.mp4",
+      "output_sha256": "9bb9c99996e4c1536fc6a5ec7cfba8a523484bc5443455bc057aeb3e4a1894a9",
+      "source_bytes": 13383766,
+      "source_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/thinking_glance/thinking_glance.mp4",
+      "source_sha256": "e1c806ae3eca0dd2527aecd5bb548e3b0933797d3714ef03a7c36b842e1a9b09",
+      "source_timing": {
+        "behavior_id": "thinking_glance",
+        "duration_seconds": 4.2,
+        "frame_count": 126,
+        "source_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/thinking_glance/thinking_glance.mp4"
+      }
+    }
+  ],
+  "contract": {
+    "all_intra": true,
+    "audio_streams": 0,
+    "b_frames": 0,
+    "boundary_frames": 15,
+    "codec": "H.264/libx264",
+    "codec_tag": "avc1",
+    "color_primaries": "bt709",
+    "color_range": "tv",
+    "color_space": "bt709",
+    "color_transfer": "bt709",
+    "container": "MP4",
+    "frame_rate_policy": "passthrough_from_certified_source",
+    "level": "4.0",
+    "pixel_format": "yuv420p",
+    "preset": "medium",
+    "profile": "High",
+    "qp": 12,
+    "rate_control": "constant_qp",
+    "source_contract": {
+      "fps": 30.0,
+      "height": 1920,
+      "per_asset_timing": [
+        {
+          "behavior_id": "active_listening",
+          "duration_seconds": 8.0,
+          "frame_count": 240,
+          "source_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/active_listening/active_listening.mp4"
+        },
+        {
+          "behavior_id": "amused_laugh",
+          "duration_seconds": 4.2,
+          "frame_count": 126,
+          "source_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/amused_laugh/amused_laugh.mp4"
+        },
+        {
+          "behavior_id": "curious_eyebrow_or_nod",
+          "duration_seconds": 3.6,
+          "frame_count": 108,
+          "source_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/curious_eyebrow_or_nod/curious_eyebrow_or_nod.mp4"
+        },
+        {
+          "behavior_id": "empathetic_head_tilt",
+          "duration_seconds": 4.8,
+          "frame_count": 144,
+          "source_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/empathetic_head_tilt/empathetic_head_tilt.mp4"
+        },
+        {
+          "behavior_id": "light_smile",
+          "duration_seconds": 4.0,
+          "frame_count": 120,
+          "source_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/light_smile/light_smile.mp4"
+        },
+        {
+          "behavior_id": "look_away_reset",
+          "duration_seconds": 4.8,
+          "frame_count": 144,
+          "source_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/look_away_reset/look_away_reset.mp4"
+        },
+        {
+          "behavior_id": "neutral_resting",
+          "duration_seconds": 10.0,
+          "frame_count": 300,
+          "source_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/neutral_resting/neutral_resting.mp4"
+        },
+        {
+          "behavior_id": "nod_agree",
+          "duration_seconds": 2.8,
+          "frame_count": 84,
+          "source_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/nod_agree/nod_agree.mp4"
+        },
+        {
+          "behavior_id": "speaking_direct",
+          "duration_seconds": 10.0,
+          "frame_count": 300,
+          "source_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/speaking_direct/speaking_direct.mp4"
+        },
+        {
+          "behavior_id": "thinking_glance",
+          "duration_seconds": 4.2,
+          "frame_count": 126,
+          "source_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/thinking_glance/thinking_glance.mp4"
+        }
+      ],
+      "timing_policy": "per_asset_from_source_manifest",
+      "width": 1080
+    },
+    "video_track_timescale": 30000
+  },
+  "created_at_utc": "2026-07-27T00:13:23.330986+00:00",
+  "delivery_validation_path": "/workspace/ardy/outputs/pose_delivery_cleaneyes_extra_slow_blink40_v1/delivery.library.validation.json",
+  "ffmpeg_binary": "/usr/bin/ffmpeg",
+  "kind": "ardy_pose_video_delivery_library",
+  "passed": true,
+  "schema_version": 1,
+  "source_manifest_kind": "ardy_pose_video_library",
+  "source_manifest_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/library.manifest.json",
+  "source_validation_path": "/workspace/ardy/outputs/pose_delivery_cleaneyes_extra_slow_blink40_v1/source.library.validation.json",
+  "usage": {
+    "archive": "retain the lossless source masters and their original certification",
+    "upload_or_browser": "use these High Profile delivery proxies",
+    "webrtc": "decode to frames, then let the persistent WebRTC track negotiate its RTP codec"
+  }
+}

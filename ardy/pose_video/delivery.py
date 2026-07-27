@@ -26,7 +26,7 @@ from pathlib import Path
 import shutil
 import subprocess
 import tempfile
-from typing import Iterable
+from typing import Iterable, Sequence
 
 from .validation import VideoValidationExpectations, validate_library
 
@@ -155,6 +155,24 @@ class DeliveryProxyBuildResult:
             ),
             "assets": [asset.to_dict() for asset in self.assets],
             "passed": self.passed,
+        }
+
+
+@dataclass(frozen=True)
+class _ManifestAssetTiming:
+    """Per-source timing recovered from a certified pose-library manifest."""
+
+    behavior_id: str
+    source_path: Path
+    frame_count: int
+    duration_seconds: float
+
+    def to_dict(self) -> dict:
+        return {
+            "behavior_id": self.behavior_id,
+            "source_path": str(self.source_path),
+            "frame_count": self.frame_count,
+            "duration_seconds": self.duration_seconds,
         }
 
 
@@ -313,23 +331,45 @@ def transcode_delivery_proxy(
     return destination
 
 
-def _master_expectations(spec: DeliveryProxySpec) -> VideoValidationExpectations:
+def _master_expectations(
+    spec: DeliveryProxySpec,
+    *,
+    frame_count: int | None = None,
+    duration_seconds: float | None = None,
+) -> VideoValidationExpectations:
     return VideoValidationExpectations.master_reference(
         spec.source_fps,
         width=spec.source_width,
         height=spec.source_height,
-        frame_count=spec.source_frame_count,
-        duration_seconds=spec.source_duration_seconds,
+        frame_count=(
+            spec.source_frame_count if frame_count is None else frame_count
+        ),
+        duration_seconds=(
+            spec.source_duration_seconds
+            if duration_seconds is None
+            else duration_seconds
+        ),
     )
 
 
-def _delivery_expectations(spec: DeliveryProxySpec) -> VideoValidationExpectations:
+def _delivery_expectations(
+    spec: DeliveryProxySpec,
+    *,
+    frame_count: int | None = None,
+    duration_seconds: float | None = None,
+) -> VideoValidationExpectations:
     return VideoValidationExpectations(
         fps=spec.source_fps,
         width=spec.source_width,
         height=spec.source_height,
-        frame_count=spec.source_frame_count,
-        duration_seconds=spec.source_duration_seconds,
+        frame_count=(
+            spec.source_frame_count if frame_count is None else frame_count
+        ),
+        duration_seconds=(
+            spec.source_duration_seconds
+            if duration_seconds is None
+            else duration_seconds
+        ),
         codec_name="h264",
         pixel_format="yuv420p",
         color_space="bt709",
@@ -406,6 +446,245 @@ def _validate_source_manifest(path: Path, sources: tuple[Path, ...]) -> dict:
         raise ValueError("source masters must exactly match the videos in the source manifest")
     if payload.get("passed") is not True:
         raise ValueError("source manifest is not marked as passed")
+    return payload
+
+
+def _positive_manifest_number(value: object, label: str) -> float:
+    if (
+        isinstance(value, bool)
+        or not isinstance(value, (int, float))
+        or not math.isfinite(float(value))
+        or float(value) <= 0
+    ):
+        raise ValueError(f"{label} must be a finite positive number")
+    return float(value)
+
+
+def _positive_manifest_integer(value: object, label: str) -> int:
+    if (
+        isinstance(value, bool)
+        or not isinstance(value, int)
+        or value <= 0
+    ):
+        raise ValueError(f"{label} must be a positive integer")
+    return value
+
+
+def _manifest_asset_timings(
+    payload: dict,
+    manifest_path: Path,
+    sources: tuple[Path, ...],
+    spec: DeliveryProxySpec,
+) -> tuple[_ManifestAssetTiming, ...] | None:
+    """Return manifest timing in source input order and verify its provenance.
+
+    New manifests expose the same timing twice: the complete behavior
+    ``spec_snapshot`` and the compact shared-contract ``behavior_timing`` map.
+    Checking both prevents a stale or hand-edited manifest from silently
+    certifying a video against the wrong duration. Older manifests that only
+    contain the spec snapshot remain supported.
+    """
+
+    behaviors = payload["behaviors"]
+    contract_payload = payload.get("contract")
+    contract_payload = contract_payload if isinstance(contract_payload, dict) else {}
+    compact_timings = contract_payload.get("behavior_timing")
+    if compact_timings is not None and not isinstance(compact_timings, dict):
+        raise ValueError("source manifest contract.behavior_timing must be an object")
+    if compact_timings is None and all(
+        not isinstance(behavior.get("spec_snapshot"), dict)
+        for behavior in behaviors
+    ):
+        # Legacy source manifests did not promise per-behavior timing. Retain
+        # the caller-supplied uniform DeliveryProxySpec contract for them.
+        return None
+
+    by_source: dict[Path, _ManifestAssetTiming] = {}
+    behavior_ids: set[str] = set()
+    for index, behavior in enumerate(behaviors):
+        assert isinstance(behavior, dict)
+        source_path = Path(behavior["video_path"])
+        if not source_path.is_absolute():
+            source_path = manifest_path.parent / source_path
+        source_path = source_path.resolve()
+
+        behavior_id = behavior.get("behavior_id")
+        if not isinstance(behavior_id, str) or not behavior_id:
+            raise ValueError(
+                f"source manifest behavior {index} must identify a behavior_id"
+            )
+        if behavior_id in behavior_ids:
+            raise ValueError("source manifest contains duplicate behavior ids")
+        behavior_ids.add(behavior_id)
+
+        snapshot = behavior.get("spec_snapshot")
+        compact = (
+            compact_timings.get(behavior_id)
+            if compact_timings is not None
+            else None
+        )
+        if not isinstance(snapshot, dict) and not isinstance(compact, dict):
+            raise ValueError(
+                f"source manifest behavior {behavior_id} has no timing metadata"
+            )
+        if isinstance(snapshot, dict):
+            snapshot_id = snapshot.get("behavior_id")
+            if snapshot_id is not None and snapshot_id != behavior_id:
+                raise ValueError(
+                    f"source manifest behavior {behavior_id} has a mismatched "
+                    "spec_snapshot"
+                )
+            fps = _positive_manifest_number(
+                snapshot.get("fps"),
+                f"source manifest behavior {behavior_id} fps",
+            )
+            if not math.isclose(
+                fps,
+                spec.source_fps,
+                rel_tol=0.0,
+                abs_tol=1e-9,
+            ):
+                raise ValueError(
+                    f"source manifest behavior {behavior_id} fps does not "
+                    "match the delivery source contract"
+                )
+            duration_seconds = _positive_manifest_number(
+                snapshot.get("duration_seconds"),
+                f"source manifest behavior {behavior_id} duration_seconds",
+            )
+            frame_count = int(round(duration_seconds * fps))
+
+            snapshot_boundary = snapshot.get("boundary_seconds")
+            if snapshot_boundary is not None:
+                boundary_seconds = _positive_manifest_number(
+                    snapshot_boundary,
+                    f"source manifest behavior {behavior_id} boundary_seconds",
+                )
+                if int(round(boundary_seconds * fps)) != spec.boundary_frames:
+                    raise ValueError(
+                        f"source manifest behavior {behavior_id} boundary does "
+                        "not match the delivery source contract"
+                    )
+            camera = snapshot.get("camera")
+            if isinstance(camera, dict) and camera.get("resolution") is not None:
+                resolution = camera["resolution"]
+                if (
+                    not isinstance(resolution, (list, tuple))
+                    or len(resolution) != 2
+                    or tuple(resolution)
+                    != (spec.source_width, spec.source_height)
+                ):
+                    raise ValueError(
+                        f"source manifest behavior {behavior_id} resolution does "
+                        "not match the delivery source contract"
+                    )
+        else:
+            fps = spec.source_fps
+            assert isinstance(compact, dict)
+            duration_seconds = _positive_manifest_number(
+                compact.get("duration_seconds"),
+                f"source manifest behavior_timing {behavior_id} duration_seconds",
+            )
+            frame_count = _positive_manifest_integer(
+                compact.get("frames"),
+                f"source manifest behavior_timing {behavior_id} frames",
+            )
+
+        if compact_timings is not None:
+            if not isinstance(compact, dict):
+                raise ValueError(
+                    f"source manifest behavior_timing is missing {behavior_id}"
+                )
+            compact_frames = _positive_manifest_integer(
+                compact.get("frames"),
+                f"source manifest behavior_timing {behavior_id} frames",
+            )
+            compact_duration = _positive_manifest_number(
+                compact.get("duration_seconds"),
+                f"source manifest behavior_timing {behavior_id} duration_seconds",
+            )
+            if compact_frames != frame_count or not math.isclose(
+                compact_duration,
+                duration_seconds,
+                rel_tol=0.0,
+                abs_tol=1e-9,
+            ):
+                raise ValueError(
+                    f"source manifest timing disagrees for behavior {behavior_id}"
+                )
+            frame_count = compact_frames
+            duration_seconds = compact_duration
+
+        if frame_count != int(round(duration_seconds * fps)):
+            raise ValueError(
+                f"source manifest timing disagrees for behavior {behavior_id}"
+            )
+        if 2 * spec.boundary_frames >= frame_count:
+            raise ValueError(
+                f"source manifest behavior {behavior_id} is too short for two "
+                "canonical boundary blocks"
+            )
+        by_source[source_path] = _ManifestAssetTiming(
+            behavior_id=behavior_id,
+            source_path=source_path,
+            frame_count=frame_count,
+            duration_seconds=duration_seconds,
+        )
+
+    if compact_timings is not None and set(compact_timings) != behavior_ids:
+        raise ValueError(
+            "source manifest behavior_timing keys must exactly match its behaviors"
+        )
+    return tuple(by_source[source] for source in sources)
+
+
+def _expectations_for_timings(
+    spec: DeliveryProxySpec,
+    timings: tuple[_ManifestAssetTiming, ...] | None,
+    *,
+    delivery: bool,
+) -> (
+    VideoValidationExpectations
+    | Sequence[VideoValidationExpectations]
+):
+    factory = _delivery_expectations if delivery else _master_expectations
+    if timings is None:
+        return factory(spec)
+    expectations = tuple(
+        factory(
+            spec,
+            frame_count=timing.frame_count,
+            duration_seconds=timing.duration_seconds,
+        )
+        for timing in timings
+    )
+    if len(
+        {
+            (expectation.frame_count, expectation.duration_seconds)
+            for expectation in expectations
+        }
+    ) == 1:
+        # Keep the historical validation-report shape for homogeneous batches.
+        return expectations[0]
+    return expectations
+
+
+def _delivery_contract_payload(
+    spec: DeliveryProxySpec,
+    timings: tuple[_ManifestAssetTiming, ...] | None,
+) -> dict:
+    payload = spec.to_dict()
+    if timings is None or len(
+        {(timing.frame_count, timing.duration_seconds) for timing in timings}
+    ) == 1:
+        return payload
+    source_contract = payload["source_contract"]
+    source_contract.pop("frame_count")
+    source_contract.pop("duration_seconds")
+    source_contract["timing_policy"] = "per_asset_from_source_manifest"
+    source_contract["per_asset_timing"] = [
+        timing.to_dict() for timing in timings
+    ]
     return payload
 
 
@@ -502,12 +781,45 @@ def build_delivery_proxy_library(
         else None
     )
     source_manifest_payload = None
+    manifest_timings: tuple[_ManifestAssetTiming, ...] | None = None
     if resolved_source_manifest is not None:
         if not resolved_source_manifest.is_file():
             raise FileNotFoundError(f"source manifest does not exist: {resolved_source_manifest}")
         if resolved_source_manifest in {path.resolve() for path in planned}:
             raise ValueError("source manifest must not collide with a delivery output")
         source_manifest_payload = _validate_source_manifest(resolved_source_manifest, sources)
+        manifest_timings = _manifest_asset_timings(
+            source_manifest_payload,
+            resolved_source_manifest,
+            sources,
+            contract,
+        )
+        timing_values = (
+            {
+                (timing.frame_count, timing.duration_seconds)
+                for timing in manifest_timings
+            }
+            if manifest_timings is not None
+            else set()
+        )
+        if len(timing_values) == 1:
+            only_frame_count, only_duration = next(iter(timing_values))
+            if (
+                only_frame_count != contract.source_frame_count
+                or not math.isclose(
+                    only_duration,
+                    contract.source_duration_seconds,
+                    rel_tol=0.0,
+                    abs_tol=1e-9,
+                )
+            ):
+                raise ValueError(
+                    "homogeneous source-manifest timing must match the "
+                    "DeliveryProxySpec source timing"
+                )
+            # Preserve the established scalar expectations and manifest shape
+            # for a fixed-duration delivery batch.
+            manifest_timings = None
     source_set = set(sources)
     collisions = sorted(source_set.intersection(path.resolve() for path in planned))
     if collisions:
@@ -525,7 +837,11 @@ def build_delivery_proxy_library(
     source_report = validate_library(
         list(sources),
         contract.boundary_frames,
-        expectations=_master_expectations(contract),
+        expectations=_expectations_for_timings(
+            contract,
+            manifest_timings,
+            delivery=False,
+        ),
     )
     if not source_report["passed"]:
         raise RuntimeError(
@@ -566,7 +882,11 @@ def build_delivery_proxy_library(
         delivery_report = validate_library(
             list(staged_targets),
             contract.boundary_frames,
-            expectations=_delivery_expectations(contract),
+            expectations=_expectations_for_timings(
+                contract,
+                manifest_timings,
+                delivery=True,
+            ),
         )
         _strengthen_delivery_report(delivery_report, source_report)
         for asset_report, final_target in zip(
@@ -581,7 +901,7 @@ def build_delivery_proxy_library(
 
         _write_json_atomic(staged_source_validation, source_report)
         _write_json_atomic(staged_delivery_validation, delivery_report)
-        contract_payload = contract.to_dict()
+        contract_payload = _delivery_contract_payload(contract, manifest_timings)
         artifact_hashes = {
             "source_validation": _sha256_file(staged_source_validation),
             "delivery_validation": _sha256_file(staged_delivery_validation),
@@ -599,6 +919,15 @@ def build_delivery_proxy_library(
         if resolved_source_manifest is not None:
             artifact_hashes["source_manifest"] = _sha256_file(resolved_source_manifest)
 
+        manifest_assets = [asset.to_dict() for asset in assets]
+        if manifest_timings is not None:
+            for asset_payload, timing in zip(
+                manifest_assets,
+                manifest_timings,
+                strict=True,
+            ):
+                asset_payload["source_timing"] = timing.to_dict()
+
         manifest = {
             "schema_version": 1,
             "kind": "ardy_pose_video_delivery_library",
@@ -615,7 +944,7 @@ def build_delivery_proxy_library(
             "source_validation_path": str(source_validation_path),
             "delivery_validation_path": str(delivery_validation_path),
             "artifact_sha256": artifact_hashes,
-            "assets": [asset.to_dict() for asset in assets],
+            "assets": manifest_assets,
             "usage": {
                 "archive": "retain the lossless source masters and their original certification",
                 "upload_or_browser": "use these High Profile delivery proxies",

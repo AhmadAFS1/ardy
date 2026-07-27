@@ -27,13 +27,26 @@ def _solid(value: tuple[int, int, int]) -> np.ndarray:
     return np.full((32, 32, 3), value, dtype=np.uint8)
 
 
-def _write_master(path: Path, interior: tuple[int, int, int]) -> None:
+def _write_master(
+    path: Path,
+    interior: tuple[int, int, int],
+    *,
+    frame_count: int = 8,
+) -> None:
+    if frame_count < 5:
+        raise ValueError("test master needs room for two boundary blocks")
     anchor_a = _solid((40, 80, 120))
     # The canonical block is exact and its own first/last frames match, just as
     # the production breathing lobe starts and ends at the same neutral pose.
     anchor_b = anchor_a
     action = _solid(interior)
-    frames = (anchor_a, anchor_b, action, action, action, action, anchor_a, anchor_b)
+    frames = (
+        anchor_a,
+        anchor_b,
+        *((action,) * (frame_count - 4)),
+        anchor_a,
+        anchor_b,
+    )
     encoder = FFmpegH264Encoder(
         path,
         width=32,
@@ -62,6 +75,44 @@ def _tiny_spec(**updates) -> DeliveryProxySpec:
     }
     values.update(updates)
     return DeliveryProxySpec(**values)
+
+
+def _write_source_manifest(
+    path: Path,
+    behaviors: list[tuple[str, Path, int]],
+) -> None:
+    timing = {
+        behavior_id: {
+            "frames": frame_count,
+            "duration_seconds": frame_count / 10.0,
+        }
+        for behavior_id, _, frame_count in behaviors
+    }
+    payload = {
+        "schema_version": 1,
+        "kind": "ardy_pose_video_library",
+        "passed": True,
+        "contract": {
+            "fps": 10,
+            "boundary_frames": 2,
+            "behavior_timing": timing,
+        },
+        "behaviors": [
+            {
+                "behavior_id": behavior_id,
+                "video_path": str(video_path),
+                "spec_snapshot": {
+                    "behavior_id": behavior_id,
+                    "fps": 10,
+                    "duration_seconds": frame_count / 10.0,
+                    "boundary_seconds": 0.2,
+                    "camera": {"resolution": [32, 32]},
+                },
+            }
+            for behavior_id, video_path, frame_count in behaviors
+        ],
+    }
+    path.write_text(json.dumps(payload), encoding="utf-8")
 
 
 @unittest.skipUnless(shutil.which("ffmpeg") and shutil.which("ffprobe"), "ffmpeg/ffprobe unavailable")
@@ -111,6 +162,103 @@ class DeliveryProxyIntegrationTests(unittest.TestCase):
             self.assertEqual(manifest["contract"]["level"], "4.0")
             self.assertEqual(len(manifest["assets"]), 2)
             self.assertFalse(list((directory / "delivery").glob("*.partial.mp4")))
+
+    def test_manifest_aligns_variable_timing_to_each_input_and_proxy(self) -> None:
+        with tempfile.TemporaryDirectory() as directory_name:
+            directory = Path(directory_name)
+            source_dir = directory / "masters"
+            source_dir.mkdir()
+            short = source_dir / "short.mp4"
+            longer = source_dir / "longer.mp4"
+            _write_master(short, (180, 50, 30), frame_count=8)
+            _write_master(longer, (30, 170, 70), frame_count=12)
+            source_manifest = source_dir / "library.manifest.json"
+            # Deliberately order the manifest differently from the proxy input
+            # list. Timing must be joined by resolved video path, not position.
+            _write_source_manifest(
+                source_manifest,
+                [
+                    ("short", short, 8),
+                    ("longer", longer, 12),
+                ],
+            )
+
+            result = build_delivery_proxy_library(
+                [longer, short],
+                directory / "delivery",
+                spec=_tiny_spec(),
+                source_manifest_path=source_manifest,
+            )
+
+            self.assertTrue(result.passed)
+            source_report = json.loads(result.source_validation_path.read_text())
+            delivery_report = json.loads(result.delivery_validation_path.read_text())
+            self.assertEqual(
+                [item["expectations"]["frame_count"] for item in source_report["assets"]],
+                [12, 8],
+            )
+            self.assertEqual(
+                [
+                    item["expectations"]["duration_seconds"]
+                    for item in delivery_report["assets"]
+                ],
+                [1.2, 0.8],
+            )
+            self.assertTrue(delivery_report["checks"]["shared_opening_block"])
+            self.assertTrue(delivery_report["checks"]["shared_ending_block"])
+            self.assertTrue(delivery_report["checks"]["opening_equals_ending"])
+
+            manifest = json.loads(result.manifest_path.read_text())
+            source_contract = manifest["contract"]["source_contract"]
+            self.assertNotIn("frame_count", source_contract)
+            self.assertNotIn("duration_seconds", source_contract)
+            self.assertEqual(
+                source_contract["timing_policy"],
+                "per_asset_from_source_manifest",
+            )
+            self.assertEqual(
+                [item["frame_count"] for item in source_contract["per_asset_timing"]],
+                [12, 8],
+            )
+            self.assertEqual(
+                [item["source_timing"]["behavior_id"] for item in manifest["assets"]],
+                ["longer", "short"],
+            )
+            self.assertEqual(
+                [item["source_timing"]["frame_count"] for item in manifest["assets"]],
+                [12, 8],
+            )
+
+    def test_homogeneous_manifest_keeps_the_uniform_contract_shape(self) -> None:
+        with tempfile.TemporaryDirectory() as directory_name:
+            directory = Path(directory_name)
+            source = directory / "master.mp4"
+            _write_master(source, (180, 50, 30))
+            source_manifest = directory / "library.manifest.json"
+            _write_source_manifest(
+                source_manifest,
+                [("neutral_resting", source, 8)],
+            )
+
+            result = build_delivery_proxy_library(
+                [source],
+                directory / "delivery",
+                spec=_tiny_spec(),
+                source_manifest_path=source_manifest,
+            )
+
+            source_report = json.loads(result.source_validation_path.read_text())
+            manifest = json.loads(result.manifest_path.read_text())
+            self.assertIsInstance(source_report["expectations"], dict)
+            self.assertEqual(
+                manifest["contract"]["source_contract"]["frame_count"],
+                8,
+            )
+            self.assertEqual(
+                manifest["contract"]["source_contract"]["duration_seconds"],
+                0.8,
+            )
+            self.assertNotIn("source_timing", manifest["assets"][0])
 
     def test_existing_output_requires_overwrite_and_force_is_reproducible(self) -> None:
         with tempfile.TemporaryDirectory() as directory_name:
@@ -294,6 +442,30 @@ class DeliveryProxySafetyTests(unittest.TestCase):
             second.write_bytes(b"two")
             with self.assertRaisesRegex(ValueError, "unique"):
                 build_delivery_proxy_library([first, second], directory / "delivery")
+
+    def test_manifest_rejects_disagreeing_timing_before_creating_outputs(self) -> None:
+        with tempfile.TemporaryDirectory() as directory_name:
+            directory = Path(directory_name)
+            source = directory / "master.mp4"
+            source.write_bytes(b"not decoded because manifest preflight fails")
+            source_manifest = directory / "library.manifest.json"
+            _write_source_manifest(
+                source_manifest,
+                [("neutral_resting", source, 8)],
+            )
+            payload = json.loads(source_manifest.read_text())
+            payload["contract"]["behavior_timing"]["neutral_resting"]["frames"] = 9
+            source_manifest.write_text(json.dumps(payload), encoding="utf-8")
+            output = directory / "delivery"
+
+            with self.assertRaisesRegex(ValueError, "timing disagrees"):
+                build_delivery_proxy_library(
+                    [source],
+                    output,
+                    spec=_tiny_spec(),
+                    source_manifest_path=source_manifest,
+                )
+            self.assertFalse(output.exists())
 
 
 if __name__ == "__main__":

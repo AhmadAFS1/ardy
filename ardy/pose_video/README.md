@@ -2,9 +2,10 @@
 
 This package turns versioned local-joint keyframes into deterministic ARDY Core
 motion, renders fixed-camera motion-reference MP4s, and certifies exact decoded
-transition blocks across a complete behavior library. It also extracts coarse
-timing from rough reference recordings without claiming to recover anatomical
-joint angles.
+transition blocks across a complete behavior library. Pose durations may differ
+as long as FPS, camera, encoder, base pose, and canonical boundary timing match.
+It also extracts coarse timing from rough reference recordings without claiming
+to recover anatomical joint angles.
 
 Build the active library:
 
@@ -29,6 +30,10 @@ python -m ardy.pose_video proxy \
   --source-manifest outputs/pose_library/library.manifest.json \
   --output-dir outputs/pose_delivery
 ```
+
+For a variable-duration batch, the proxy command reads each asset's frame count
+and duration from the certified source manifest while retaining one strict
+shared media and boundary contract.
 
 Analyze one reference:
 

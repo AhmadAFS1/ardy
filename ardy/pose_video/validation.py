@@ -10,6 +10,7 @@ import json
 import math
 import subprocess
 from pathlib import Path
+from typing import Sequence
 
 import numpy as np
 import torch
@@ -516,23 +517,52 @@ def validate_library(
     video_paths: list[str | Path],
     boundary_frames: int,
     *,
-    expectations: VideoValidationExpectations | None = None,
+    expectations: (
+        VideoValidationExpectations
+        | Sequence[VideoValidationExpectations]
+        | None
+    ) = None,
 ) -> dict:
     if not video_paths:
         raise ValueError("video_paths must contain at least one asset")
+    if expectations is None or isinstance(expectations, VideoValidationExpectations):
+        asset_expectations = [expectations] * len(video_paths)
+        serialized_expectations: dict | list[dict] | None = (
+            expectations.to_dict() if expectations is not None else None
+        )
+    else:
+        asset_expectations = list(expectations)
+        if len(asset_expectations) != len(video_paths):
+            raise ValueError(
+                "per-asset expectations must have the same length as video_paths"
+            )
+        if not all(
+            isinstance(item, VideoValidationExpectations)
+            for item in asset_expectations
+        ):
+            raise TypeError(
+                "per-asset expectations must contain VideoValidationExpectations"
+            )
+        serialized_expectations = [
+            item.to_dict() for item in asset_expectations
+        ]
     reports = [
-        validate_video(path, boundary_frames, expectations=expectations)
-        for path in video_paths
+        validate_video(path, boundary_frames, expectations=expected)
+        for path, expected in zip(video_paths, asset_expectations)
     ]
     first_blocks = {report["metrics"]["first_block_sha256"] for report in reports}
     last_blocks = {report["metrics"]["last_block_sha256"] for report in reports}
+    all_ordered_pairs_match = all(
+        outgoing["metrics"]["last_block_sha256"]
+        == incoming["metrics"]["first_block_sha256"]
+        for outgoing in reports
+        for incoming in reports
+    )
     formats = {
         (
             report["metrics"]["width"],
             report["metrics"]["height"],
             report["metrics"]["fps"],
-            report["metrics"]["frame_count"],
-            report["metrics"]["duration_seconds"],
             report["metrics"]["codec_name"],
             report["metrics"]["profile"],
             report["metrics"]["level"],
@@ -549,7 +579,7 @@ def validate_library(
             ),
             report["metrics"]["has_b_frames"],
             report["metrics"]["all_intra"],
-            tuple(sorted(report["metrics"]["picture_types"].items())),
+            tuple(sorted(report["metrics"]["picture_types"])),
         )
         for report in reports
     }
@@ -558,6 +588,7 @@ def validate_library(
         "shared_opening_block": len(first_blocks) == 1,
         "shared_ending_block": len(last_blocks) == 1,
         "opening_equals_ending": first_blocks == last_blocks,
+        "all_ordered_pairs_switch_compatible": all_ordered_pairs_match,
         "matching_video_formats": len(formats) == 1,
     }
     return {
@@ -565,7 +596,7 @@ def validate_library(
         "passed": all(checks.values()),
         "checks": checks,
         "assets": reports,
-        "expectations": expectations.to_dict() if expectations is not None else None,
+        "expectations": serialized_expectations,
     }
 
 

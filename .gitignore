@@ -163,6 +163,123 @@ tmr_out
 !/outputs/pose_delivery/look_away_reset.mp4
 !/outputs/pose_delivery/neutral_resting.mp4
 !/outputs/pose_delivery/nod_agree.mp4
+
+# Three-blink colored-face candidate. Keep this separate from the tracked
+# two-blink baseline above so both generations can be reviewed and committed.
+!/outputs/pose_library_blink3/
+!/outputs/pose_library_blink3/look_away_reset/
+!/outputs/pose_library_blink3/look_away_reset/look_away_reset.mp4
+!/outputs/pose_library_blink3/neutral_resting/
+!/outputs/pose_library_blink3/neutral_resting/neutral_resting.mp4
+!/outputs/pose_library_blink3/nod_agree/
+!/outputs/pose_library_blink3/nod_agree/nod_agree.mp4
+!/outputs/pose_delivery_blink3/
+!/outputs/pose_delivery_blink3/look_away_reset.mp4
+!/outputs/pose_delivery_blink3/neutral_resting.mp4
+!/outputs/pose_delivery_blink3/nod_agree.mp4
+
+# Softer three-blink neutral-resting candidate.
+!/outputs/pose_library_blink3_light/
+!/outputs/pose_library_blink3_light/neutral_resting/
+!/outputs/pose_library_blink3_light/neutral_resting/neutral_resting.mp4
+!/outputs/pose_delivery_blink3_light/
+!/outputs/pose_delivery_blink3_light/neutral_resting.mp4
+
+# Light-blink neutral candidate with realistic eye proportions.
+!/outputs/pose_library_blink3_light_realistic_eyes/
+!/outputs/pose_library_blink3_light_realistic_eyes/neutral_resting/
+!/outputs/pose_library_blink3_light_realistic_eyes/neutral_resting/neutral_resting.mp4
+!/outputs/pose_delivery_blink3_light_realistic_eyes/
+!/outputs/pose_delivery_blink3_light_realistic_eyes/neutral_resting.mp4
+
+# Final light-blink neutral candidate with the molded Core eyes covered.
+!/outputs/pose_library_blink3_light_realistic_eyes_clean/
+!/outputs/pose_library_blink3_light_realistic_eyes_clean/neutral_resting/
+!/outputs/pose_library_blink3_light_realistic_eyes_clean/neutral_resting/neutral_resting.mp4
+!/outputs/pose_delivery_blink3_light_realistic_eyes_clean/
+!/outputs/pose_delivery_blink3_light_realistic_eyes_clean/neutral_resting.mp4
+
+# Clean-eye neutral candidate with 50%-longer blink animation.
+!/outputs/pose_library_blink3_light_realistic_eyes_clean_slow_blink/
+!/outputs/pose_library_blink3_light_realistic_eyes_clean_slow_blink/neutral_resting/
+!/outputs/pose_library_blink3_light_realistic_eyes_clean_slow_blink/neutral_resting/neutral_resting.mp4
+!/outputs/pose_delivery_blink3_light_realistic_eyes_clean_slow_blink/
+!/outputs/pose_delivery_blink3_light_realistic_eyes_clean_slow_blink/neutral_resting.mp4
+
+# Slower clean-eye neutral candidate whose blink remains half open.
+!/outputs/pose_library_blink3_light_realistic_eyes_clean_slow_blink_half_open/
+!/outputs/pose_library_blink3_light_realistic_eyes_clean_slow_blink_half_open/neutral_resting/
+!/outputs/pose_library_blink3_light_realistic_eyes_clean_slow_blink_half_open/neutral_resting/neutral_resting.mp4
+!/outputs/pose_delivery_blink3_light_realistic_eyes_clean_slow_blink_half_open/
+!/outputs/pose_delivery_blink3_light_realistic_eyes_clean_slow_blink_half_open/neutral_resting.mp4
+
+# Half-open clean-eye neutral with another 50% duration increase.
+!/outputs/pose_library_blink3_light_realistic_eyes_clean_extra_slow_half_open/
+!/outputs/pose_library_blink3_light_realistic_eyes_clean_extra_slow_half_open/neutral_resting/
+!/outputs/pose_library_blink3_light_realistic_eyes_clean_extra_slow_half_open/neutral_resting/neutral_resting.mp4
+!/outputs/pose_delivery_blink3_light_realistic_eyes_clean_extra_slow_half_open/
+!/outputs/pose_delivery_blink3_light_realistic_eyes_clean_extra_slow_half_open/neutral_resting.mp4
+
+# Experimental extra-slow clean-eye neutral returning to 30% eye height.
+!/outputs/pose_library_blink3_light_realistic_eyes_clean_extra_slow_30pct_open/
+!/outputs/pose_library_blink3_light_realistic_eyes_clean_extra_slow_30pct_open/neutral_resting/
+!/outputs/pose_library_blink3_light_realistic_eyes_clean_extra_slow_30pct_open/neutral_resting/neutral_resting.mp4
+!/outputs/pose_delivery_blink3_light_realistic_eyes_clean_extra_slow_30pct_open/
+!/outputs/pose_delivery_blink3_light_realistic_eyes_clean_extra_slow_30pct_open/neutral_resting.mp4
+
+# Extra-slow clean-eye neutral with a 40%-open blink peak.
+!/outputs/pose_library_blink3_light_realistic_eyes_clean_extra_slow_40pct_open/
+!/outputs/pose_library_blink3_light_realistic_eyes_clean_extra_slow_40pct_open/neutral_resting/
+!/outputs/pose_library_blink3_light_realistic_eyes_clean_extra_slow_40pct_open/neutral_resting/neutral_resting.mp4
+!/outputs/pose_delivery_blink3_light_realistic_eyes_clean_extra_slow_40pct_open/
+!/outputs/pose_delivery_blink3_light_realistic_eyes_clean_extra_slow_40pct_open/neutral_resting.mp4
+
+# Switch-safe variable-duration ten-pose release. Keep the exact animation
+# archives, lossless masters, and delivery MP4s committable; generated reports,
+# manifests, and the stress-test compilation remain ignored.
+!/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/
+!/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/active_listening/
+!/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/active_listening/active_listening.motion.npz
+!/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/active_listening/active_listening.mp4
+!/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/amused_laugh/
+!/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/amused_laugh/amused_laugh.motion.npz
+!/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/amused_laugh/amused_laugh.mp4
+!/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/curious_eyebrow_or_nod/
+!/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/curious_eyebrow_or_nod/curious_eyebrow_or_nod.motion.npz
+!/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/curious_eyebrow_or_nod/curious_eyebrow_or_nod.mp4
+!/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/empathetic_head_tilt/
+!/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/empathetic_head_tilt/empathetic_head_tilt.motion.npz
+!/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/empathetic_head_tilt/empathetic_head_tilt.mp4
+!/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/light_smile/
+!/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/light_smile/light_smile.motion.npz
+!/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/light_smile/light_smile.mp4
+!/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/look_away_reset/
+!/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/look_away_reset/look_away_reset.motion.npz
+!/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/look_away_reset/look_away_reset.mp4
+!/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/neutral_resting/
+!/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/neutral_resting/neutral_resting.motion.npz
+!/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/neutral_resting/neutral_resting.mp4
+!/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/nod_agree/
+!/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/nod_agree/nod_agree.motion.npz
+!/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/nod_agree/nod_agree.mp4
+!/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/speaking_direct/
+!/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/speaking_direct/speaking_direct.motion.npz
+!/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/speaking_direct/speaking_direct.mp4
+!/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/thinking_glance/
+!/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/thinking_glance/thinking_glance.motion.npz
+!/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/thinking_glance/thinking_glance.mp4
+
+!/outputs/pose_delivery_cleaneyes_extra_slow_blink40_v1/
+!/outputs/pose_delivery_cleaneyes_extra_slow_blink40_v1/active_listening.mp4
+!/outputs/pose_delivery_cleaneyes_extra_slow_blink40_v1/amused_laugh.mp4
+!/outputs/pose_delivery_cleaneyes_extra_slow_blink40_v1/curious_eyebrow_or_nod.mp4
+!/outputs/pose_delivery_cleaneyes_extra_slow_blink40_v1/empathetic_head_tilt.mp4
+!/outputs/pose_delivery_cleaneyes_extra_slow_blink40_v1/light_smile.mp4
+!/outputs/pose_delivery_cleaneyes_extra_slow_blink40_v1/look_away_reset.mp4
+!/outputs/pose_delivery_cleaneyes_extra_slow_blink40_v1/neutral_resting.mp4
+!/outputs/pose_delivery_cleaneyes_extra_slow_blink40_v1/nod_agree.mp4
+!/outputs/pose_delivery_cleaneyes_extra_slow_blink40_v1/speaking_direct.mp4
+!/outputs/pose_delivery_cleaneyes_extra_slow_blink40_v1/thinking_glance.mp4
 /debug
 /batch*.sh
 checkpoints

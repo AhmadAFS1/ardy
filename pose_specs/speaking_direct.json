@@ -1,0 +1,145 @@
+{
+  "schema_version": 1,
+  "behavior_id": "speaking_direct",
+  "description": "Front-facing speaking loop with continuous natural conversational head motion, restrained emphasis beats, and a neutral mouth reserved for MuseTalk lip-sync.",
+  "behavior_type": "loop",
+  "speaking_mode": "speaking",
+  "fps": 30,
+  "duration_seconds": 10.0,
+  "boundary_seconds": 0.5,
+  "base_pose": {
+    "mode": "authored_neutral",
+    "motion_path": null,
+    "frame": 0
+  },
+  "locks": [
+    "Hips",
+    "RightUpLeg",
+    "RightLeg",
+    "RightFoot",
+    "RightToeBase",
+    "LeftUpLeg",
+    "LeftLeg",
+    "LeftFoot",
+    "LeftToeBase",
+    "RightShoulder",
+    "LeftShoulder"
+  ],
+  "keyframes": [
+    {
+      "time_seconds": 1.15,
+      "label": "small opening emphasis",
+      "joints": {
+        "Spine2": {"rotation_degrees": [0.25, 0.0, 0.08]},
+        "Spine3": {"rotation_degrees": [0.35, 0.0, 0.10]},
+        "Neck": {"rotation_degrees": [0.45, -0.35, 0.10]},
+        "Head": {"rotation_degrees": [1.45, -0.65, 0.20]}
+      }
+    },
+    {
+      "time_seconds": 2.05,
+      "label": "conversational release",
+      "joints": {
+        "Spine2": {"rotation_degrees": [-0.10, 0.0, -0.05]},
+        "Spine3": {"rotation_degrees": [-0.15, 0.0, -0.08]},
+        "Neck": {"rotation_degrees": [-0.30, 0.45, -0.08]},
+        "Head": {"rotation_degrees": [-0.80, 0.90, -0.15]}
+      }
+    },
+    {
+      "time_seconds": 3.05,
+      "label": "affirming micro nod",
+      "joints": {
+        "Spine2": {"rotation_degrees": [0.30, 0.0, 0.04]},
+        "Spine3": {"rotation_degrees": [0.42, 0.0, 0.06]},
+        "Neck": {"rotation_degrees": [0.55, 0.20, 0.04]},
+        "Head": {"rotation_degrees": [1.85, 0.35, 0.08]}
+      }
+    },
+    {
+      "time_seconds": 4.10,
+      "label": "light left-side thought beat",
+      "joints": {
+        "Spine2": {"rotation_degrees": [0.05, 0.0, -0.10]},
+        "Spine3": {"rotation_degrees": [0.10, 0.0, -0.15]},
+        "Neck": {"rotation_degrees": [-0.15, -0.70, -0.15]},
+        "Head": {"rotation_degrees": [-0.45, -1.35, -0.35]}
+      }
+    },
+    {
+      "time_seconds": 5.15,
+      "label": "centered phrase emphasis",
+      "joints": {
+        "Spine2": {"rotation_degrees": [0.35, 0.0, 0.0]},
+        "Spine3": {"rotation_degrees": [0.48, 0.0, 0.0]},
+        "Neck": {"rotation_degrees": [0.60, 0.10, 0.0]},
+        "Head": {"rotation_degrees": [2.10, 0.15, 0.0]}
+      }
+    },
+    {
+      "time_seconds": 6.20,
+      "label": "right-side conversational variation",
+      "joints": {
+        "Spine2": {"rotation_degrees": [-0.08, 0.0, 0.10]},
+        "Spine3": {"rotation_degrees": [-0.12, 0.0, 0.14]},
+        "Neck": {"rotation_degrees": [-0.25, 0.75, 0.14]},
+        "Head": {"rotation_degrees": [-0.65, 1.45, 0.32]}
+      }
+    },
+    {
+      "time_seconds": 7.25,
+      "label": "second affirming beat",
+      "joints": {
+        "Spine2": {"rotation_degrees": [0.28, 0.0, -0.04]},
+        "Spine3": {"rotation_degrees": [0.40, 0.0, -0.06]},
+        "Neck": {"rotation_degrees": [0.50, -0.25, -0.04]},
+        "Head": {"rotation_degrees": [1.70, -0.45, -0.10]}
+      }
+    },
+    {
+      "time_seconds": 8.20,
+      "label": "soft phrase release",
+      "joints": {
+        "Spine2": {"rotation_degrees": [-0.12, 0.0, 0.04]},
+        "Spine3": {"rotation_degrees": [-0.18, 0.0, 0.06]},
+        "Neck": {"rotation_degrees": [-0.35, 0.35, 0.06]},
+        "Head": {"rotation_degrees": [-0.90, 0.70, 0.14]}
+      }
+    },
+    {
+      "time_seconds": 9.15,
+      "label": "natural return toward speaking baseline",
+      "joints": {
+        "Spine2": {"rotation_degrees": [0.12, 0.0, 0.0]},
+        "Spine3": {"rotation_degrees": [0.18, 0.0, 0.0]},
+        "Neck": {"rotation_degrees": [0.20, -0.10, 0.0]},
+        "Head": {"rotation_degrees": [0.65, -0.20, 0.0]}
+      }
+    }
+  ],
+  "ambient_motion": {
+    "enabled": true,
+    "breathing_cycles": 2.4,
+    "breathing_degrees": 0.55,
+    "sway_cycles": 1.25,
+    "sway_degrees": 0.25,
+    "head_sway_degrees": 0.35
+  },
+  "face_intent": {
+    "gaze": "camera_with_natural_eye_micro_motion",
+    "expression": "neutral_speaking_mouth_reserved_for_downstream_lip_sync",
+    "blink": "natural_sparse_avoid_boundary_frames",
+    "intensity": 0.1
+  },
+  "camera": {
+    "resolution": [1080, 1920],
+    "render_resolution": [540, 960],
+    "position": [0.0, 0.56, 2.3],
+    "look_at": [0.0, 0.54, 0.0],
+    "up": [0.0, 1.0, 0.0],
+    "vertical_fov_degrees": 25.0,
+    "background_rgb": [238, 241, 246],
+    "body_rgb": [76, 112, 176]
+  },
+  "source_reference": null
+}

@@ -1,0 +1,65 @@
+{
+  "camera": {
+    "eye": [
+      0.0,
+      0.56,
+      2.3
+    ],
+    "far": 100.0,
+    "height": 1920,
+    "near": 0.05,
+    "target": [
+      0.0,
+      0.54,
+      0.0
+    ],
+    "up": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "vertical_fov_degrees": 25.0,
+    "width": 1080
+  },
+  "codec": {
+    "all_intra": true,
+    "color_space": "bt709",
+    "crf": 0,
+    "pixel_format": "yuv420p",
+    "preset": "medium",
+    "verified_boundary_frames": 15,
+    "video": "H.264/libx264"
+  },
+  "duration_seconds": 2.8,
+  "input_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/nod_agree/nod_agree.motion.npz",
+  "input_sha256": "4880825a739b338c7f71c67480e000a298d702f4a0c5dec45a5cb88d847c30ca",
+  "manifest_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/nod_agree/nod_agree.render.json",
+  "mp4_sha256": "7943cd19a33e168639abca3750f77150a6f56223d65d7c4fead7748fde3a4fd9",
+  "output_fps": 30.0,
+  "output_frames": 84,
+  "output_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/nod_agree/nod_agree.mp4",
+  "raw_rgb_sha256": "d4135428555c18619c0a26c4588c18f7c1ce33248c27807c72efd643060f56d6",
+  "render_style": {
+    "ambient_light": 0.32,
+    "background_rgba": [
+      0.9333333333333333,
+      0.9450980392156862,
+      0.9647058823529412,
+      1.0
+    ],
+    "body_rgba": [
+      0.2980392156862745,
+      0.4392156862745098,
+      0.6901960784313725,
+      1.0
+    ],
+    "fill_light_intensity": 0.75,
+    "key_light_intensity": 3.0,
+    "metallic": 0.0,
+    "roughness": 0.72,
+    "smooth_shading": true
+  },
+  "source_fps": 30.0,
+  "source_frames": 84,
+  "verified_boundary_frames": 15
+}

@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "behavior_id": "empathetic_head_tilt",
+  "description": "Supportive gentle head tilt with restrained neck and upper-torso follow, then a complete neutral return.",
+  "behavior_type": "one_shot",
+  "speaking_mode": "listening",
+  "fps": 30,
+  "duration_seconds": 4.8,
+  "boundary_seconds": 0.5,
+  "base_pose": {
+    "mode": "authored_neutral",
+    "motion_path": null,
+    "frame": 0
+  },
+  "locks": [
+    "Hips",
+    "RightUpLeg",
+    "RightLeg",
+    "RightFoot",
+    "RightToeBase",
+    "LeftUpLeg",
+    "LeftLeg",
+    "LeftFoot",
+    "LeftToeBase",
+    "RightShoulder",
+    "LeftShoulder"
+  ],
+  "keyframes": [
+    {
+      "time_seconds": 0.95,
+      "label": "empathetic tilt begins",
+      "joints": {
+        "Spine3": {"rotation_degrees": [0.0, 0.0, 0.25]},
+        "Neck": {"rotation_degrees": [0.0, 0.0, 1.0]},
+        "Head": {"rotation_degrees": [0.0, 0.0, 2.0]}
+      }
+    },
+    {
+      "time_seconds": 1.65,
+      "label": "soft attention peak",
+      "joints": {
+        "Spine3": {"rotation_degrees": [0.0, 0.0, 0.55]},
+        "Neck": {"rotation_degrees": [0.0, 0.0, 2.0]},
+        "Head": {"rotation_degrees": [0.2, 0.0, 5.3]}
+      }
+    },
+    {
+      "time_seconds": 2.80,
+      "label": "brief empathetic hold",
+      "joints": {
+        "Spine3": {"rotation_degrees": [0.0, 0.0, 0.5]},
+        "Neck": {"rotation_degrees": [0.0, 0.0, 1.9]},
+        "Head": {"rotation_degrees": [0.2, 0.0, 5.0]}
+      }
+    },
+    {
+      "time_seconds": 3.80,
+      "label": "neutral attention restored",
+      "joints": {
+        "Spine3": {"rotation_degrees": [0.0, 0.0, 0.0]},
+        "Neck": {"rotation_degrees": [0.0, 0.0, 0.0]},
+        "Head": {"rotation_degrees": [0.0, 0.0, 0.0]}
+      }
+    }
+  ],
+  "ambient_motion": {
+    "enabled": true,
+    "breathing_cycles": 1.1,
+    "breathing_degrees": 0.42,
+    "sway_cycles": 1.0,
+    "sway_degrees": 0.16,
+    "head_sway_degrees": 0.05
+  },
+  "face_intent": {
+    "gaze": "soft_direct_camera_attention",
+    "expression": "softened_empathetic_attention_then_neutral",
+    "blink": "optional_slow_blink_during_hold_not_at_boundaries",
+    "intensity": 0.25
+  },
+  "camera": {
+    "resolution": [1080, 1920],
+    "render_resolution": [540, 960],
+    "position": [0.0, 0.56, 2.3],
+    "look_at": [0.0, 0.54, 0.0],
+    "up": [0.0, 1.0, 0.0],
+    "vertical_fov_degrees": 25.0,
+    "background_rgb": [238, 241, 246],
+    "body_rgb": [76, 112, 176]
+  },
+  "source_reference": null
+}

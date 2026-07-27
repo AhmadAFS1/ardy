@@ -57,28 +57,51 @@ def _load_npz_payload(path: Path) -> dict[str, np.ndarray]:
 
 class BehaviorSpecTests(unittest.TestCase):
     def test_checked_in_specs_load_and_have_the_expected_contract(self) -> None:
-        self.assertEqual(len(SPEC_PATHS), 3)
+        self.assertEqual(len(SPEC_PATHS), 10)
         specs = [load_behavior_spec(path) for path in SPEC_PATHS]
         self.assertEqual(
             {spec.behavior_id for spec in specs},
-            {"neutral_resting", "nod_agree", "look_away_reset"},
+            {
+                "neutral_resting",
+                "nod_agree",
+                "look_away_reset",
+                "active_listening",
+                "speaking_direct",
+                "thinking_glance",
+                "light_smile",
+                "empathetic_head_tilt",
+                "curious_eyebrow_or_nod",
+                "amused_laugh",
+            },
         )
         for spec in specs:
             self.assertEqual(spec.schema_version, 1)
             self.assertEqual(spec.fps, 30)
-            self.assertEqual(spec.num_frames, 300)
-            self.assertEqual(spec.boundary_frames, 60)
-            self.assertTrue(Path(spec.source_reference or "").is_absolute())
+            self.assertEqual(spec.boundary_frames, 15)
+            if spec.source_reference is not None:
+                self.assertTrue(Path(spec.source_reference).is_absolute())
 
-    def test_active_and_template_specs_share_the_full_render_contract(self) -> None:
+    def test_active_specs_share_the_switch_contract_and_variable_timing(self) -> None:
         self.assertEqual(len(ALL_SPEC_PATHS), 10)
+        expected_durations = {
+            "neutral_resting": 10.0,
+            "nod_agree": 2.8,
+            "look_away_reset": 4.8,
+            "active_listening": 8.0,
+            "speaking_direct": 10.0,
+            "thinking_glance": 4.2,
+            "light_smile": 4.0,
+            "empathetic_head_tilt": 4.8,
+            "curious_eyebrow_or_nod": 3.6,
+            "amused_laugh": 4.2,
+        }
         expected_camera = CameraSpec()
         for path in ALL_SPEC_PATHS:
             with self.subTest(path=path.relative_to(REPOSITORY_ROOT).as_posix()):
                 spec = load_behavior_spec(path)
                 self.assertEqual(spec.fps, 30)
-                self.assertEqual(spec.duration_seconds, 10.0)
-                self.assertEqual(spec.boundary_seconds, 2.0)
+                self.assertEqual(spec.duration_seconds, expected_durations[spec.behavior_id])
+                self.assertEqual(spec.boundary_seconds, 0.5)
                 self.assertEqual(spec.base_pose.mode, "authored_neutral")
                 self.assertEqual(spec.camera, expected_camera)
 
@@ -248,7 +271,7 @@ class DeterministicCompositionTests(unittest.TestCase):
                 np.degrees(Rotation.from_matrix(relative).magnitude()).max()
             )
         self.assertLess(excursions["neutral_resting"], 3.0)
-        self.assertGreater(excursions["nod_agree"], 15.0)
+        self.assertGreater(excursions["nod_agree"], 8.0)
         self.assertGreater(excursions["look_away_reset"], 30.0)
 
     def test_unknown_and_locked_authored_joints_fail_loudly(self) -> None:
@@ -300,8 +323,8 @@ class MotionValidationTests(unittest.TestCase):
             report = validate_motion_npz(motion_path)
             self.assertTrue(report["passed"])
             self.assertTrue(all(report["checks"].values()))
-            self.assertEqual(report["metrics"]["frames"], 300)
-            self.assertEqual(report["metrics"]["boundary_frames"], 60)
+            self.assertEqual(report["metrics"]["frames"], self.spec.num_frames)
+            self.assertEqual(report["metrics"]["boundary_frames"], self.spec.boundary_frames)
             self.assertEqual(report["metrics"]["boundary_rotation_abs_error"], 0.0)
             self.assertEqual(report["metrics"]["fk_rotation_abs_error"], 0.0)
             self.assertEqual(report["metrics"]["fk_joint_error_cm"], 0.0)
@@ -330,7 +353,8 @@ class MotionValidationTests(unittest.TestCase):
             self.motion.save_npz(path)
             payload = _load_npz_payload(path)
             payload["global_rot_mats"] = payload["global_rot_mats"].copy()
-            payload["global_rot_mats"][100, 26] = Rotation.from_euler(
+            interior_frame = self.spec.boundary_frames + 1
+            payload["global_rot_mats"][interior_frame, 26] = Rotation.from_euler(
                 "y", 4.0, degrees=True
             ).as_matrix()
             np.savez(path, **payload)

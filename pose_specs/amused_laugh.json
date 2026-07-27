@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "behavior_id": "amused_laugh",
+  "description": "Restrained amused smile with two subtle head-and-upper-torso chuckle beats and a full reset.",
+  "behavior_type": "one_shot",
+  "speaking_mode": "either",
+  "fps": 30,
+  "duration_seconds": 4.2,
+  "boundary_seconds": 0.5,
+  "base_pose": {
+    "mode": "authored_neutral",
+    "motion_path": null,
+    "frame": 0
+  },
+  "locks": [
+    "Hips",
+    "RightUpLeg",
+    "RightLeg",
+    "RightFoot",
+    "RightToeBase",
+    "LeftUpLeg",
+    "LeftLeg",
+    "LeftFoot",
+    "LeftToeBase",
+    "RightShoulder",
+    "LeftShoulder"
+  ],
+  "keyframes": [
+    {
+      "time_seconds": 0.85,
+      "label": "amusement onset",
+      "joints": {
+        "Spine3": {"rotation_degrees": [0.2, 0.0, 0.0]},
+        "Neck": {"rotation_degrees": [0.2, 0.0, 0.0]},
+        "Head": {"rotation_degrees": [-0.4, 0.0, 0.0]}
+      }
+    },
+    {
+      "time_seconds": 1.30,
+      "label": "restrained chuckle compression",
+      "joints": {
+        "Spine2": {"rotation_degrees": [0.5, 0.0, 0.0]},
+        "Spine3": {"rotation_degrees": [0.7, 0.0, -0.2]},
+        "Neck": {"rotation_degrees": [0.9, 0.0, -0.15]},
+        "Head": {"rotation_degrees": [3.0, 0.0, -0.5]}
+      }
+    },
+    {
+      "time_seconds": 1.60,
+      "label": "small chuckle rebound",
+      "joints": {
+        "Spine2": {"rotation_degrees": [0.2, 0.0, 0.0]},
+        "Spine3": {"rotation_degrees": [-0.25, 0.0, 0.1]},
+        "Neck": {"rotation_degrees": [-0.5, 0.0, 0.1]},
+        "Head": {"rotation_degrees": [-1.2, 0.0, 0.3]}
+      }
+    },
+    {
+      "time_seconds": 1.95,
+      "label": "tiny second chuckle beat",
+      "joints": {
+        "Spine2": {"rotation_degrees": [0.4, 0.0, 0.0]},
+        "Spine3": {"rotation_degrees": [0.55, 0.0, -0.15]},
+        "Neck": {"rotation_degrees": [0.7, 0.0, -0.1]},
+        "Head": {"rotation_degrees": [1.9, 0.0, -0.35]}
+      }
+    },
+    {
+      "time_seconds": 3.10,
+      "label": "amusement released to neutral",
+      "joints": {
+        "Spine2": {"rotation_degrees": [0.0, 0.0, 0.0]},
+        "Spine3": {"rotation_degrees": [0.0, 0.0, 0.0]},
+        "Neck": {"rotation_degrees": [0.0, 0.0, 0.0]},
+        "Head": {"rotation_degrees": [0.0, 0.0, 0.0]}
+      }
+    }
+  ],
+  "ambient_motion": {
+    "enabled": true,
+    "breathing_cycles": 1.0,
+    "breathing_degrees": 0.45,
+    "sway_cycles": 1.0,
+    "sway_degrees": 0.18,
+    "head_sway_degrees": 0.05
+  },
+  "face_intent": {
+    "gaze": "camera_attention_softens_during_reaction_then_returns",
+    "expression": "restrained_closed_mouth_smile_or_quiet_chuckle_then_full_release",
+    "blink": "optional_natural_blink_on_rebound_not_at_boundaries",
+    "intensity": 0.32
+  },
+  "camera": {
+    "resolution": [1080, 1920],
+    "render_resolution": [540, 960],
+    "position": [0.0, 0.56, 2.3],
+    "look_at": [0.0, 0.54, 0.0],
+    "up": [0.0, 1.0, 0.0],
+    "vertical_fov_degrees": 25.0,
+    "background_rgb": [238, 241, 246],
+    "body_rgb": [76, 112, 176]
+  },
+  "source_reference": null
+}

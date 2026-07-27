@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "behavior_id": "neutral_resting",
-  "description": "Seated video-call idle with restrained breathing and posture sway.",
+  "description": "Canonical video-call idle with restrained breathing and posture sway.",
   "behavior_type": "loop",
   "speaking_mode": "either",
   "fps": 30,
   "duration_seconds": 10.0,
-  "boundary_seconds": 2.0,
+  "boundary_seconds": 0.5,
   "base_pose": {
     "mode": "authored_neutral",
     "motion_path": null,
@@ -26,7 +26,7 @@
   "keyframes": [],
   "ambient_motion": {
     "enabled": true,
-    "breathing_cycles": 2.0,
+    "breathing_cycles": 2.5,
     "breathing_degrees": 0.75,
     "sway_cycles": 1.0,
     "sway_degrees": 0.55,

@@ -1,0 +1,65 @@
+{
+  "camera": {
+    "eye": [
+      0.0,
+      0.56,
+      2.3
+    ],
+    "far": 100.0,
+    "height": 1920,
+    "near": 0.05,
+    "target": [
+      0.0,
+      0.54,
+      0.0
+    ],
+    "up": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "vertical_fov_degrees": 25.0,
+    "width": 1080
+  },
+  "codec": {
+    "all_intra": true,
+    "color_space": "bt709",
+    "crf": 0,
+    "pixel_format": "yuv420p",
+    "preset": "medium",
+    "verified_boundary_frames": 15,
+    "video": "H.264/libx264"
+  },
+  "duration_seconds": 10.0,
+  "input_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/speaking_direct/speaking_direct.motion.npz",
+  "input_sha256": "b48ab53ab2f71a37438013e21b4626e949b4dba89c489c5858e161914c3c137b",
+  "manifest_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/speaking_direct/speaking_direct.render.json",
+  "mp4_sha256": "f645cc196b595908398a6cf0e1f7f0e453216f8ea7e7853facd20f721f9b1e19",
+  "output_fps": 30.0,
+  "output_frames": 300,
+  "output_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/speaking_direct/speaking_direct.mp4",
+  "raw_rgb_sha256": "b488ffec0057ad972037f2590d0e1b1bf17da4623e497950d6b66ffa9e275164",
+  "render_style": {
+    "ambient_light": 0.32,
+    "background_rgba": [
+      0.9333333333333333,
+      0.9450980392156862,
+      0.9647058823529412,
+      1.0
+    ],
+    "body_rgba": [
+      0.2980392156862745,
+      0.4392156862745098,
+      0.6901960784313725,
+      1.0
+    ],
+    "fill_light_intensity": 0.75,
+    "key_light_intensity": 3.0,
+    "metallic": 0.0,
+    "roughness": 0.72,
+    "smooth_shading": true
+  },
+  "source_fps": 30.0,
+  "source_frames": 300,
+  "verified_boundary_frames": 15
+}

@@ -5,8 +5,8 @@
   "behavior_type": "one_shot",
   "speaking_mode": "either",
   "fps": 30,
-  "duration_seconds": 10.0,
-  "boundary_seconds": 2.0,
+  "duration_seconds": 2.8,
+  "boundary_seconds": 0.5,
   "base_pose": {
     "mode": "authored_neutral",
     "motion_path": null,
@@ -27,33 +27,33 @@
   ],
   "keyframes": [
     {
-      "time_seconds": 4.30,
+      "time_seconds": 0.75,
       "label": "small anticipation",
       "joints": {
-        "Neck": {"rotation_degrees": [-2.0, 0.0, 0.0]},
-        "Head": {"rotation_degrees": [-3.0, 0.0, 0.0]}
+        "Neck": {"rotation_degrees": [-0.8, 0.0, 0.0]},
+        "Head": {"rotation_degrees": [-1.5, 0.0, 0.0]}
       }
     },
     {
-      "time_seconds": 5.00,
+      "time_seconds": 1.08,
       "label": "nod peak",
       "joints": {
-        "Spine3": {"rotation_degrees": [1.5, 0.0, 0.0]},
-        "Neck": {"rotation_degrees": [7.0, 0.0, 0.0]},
-        "Head": {"rotation_degrees": [18.0, 0.0, 0.0]}
+        "Spine3": {"rotation_degrees": [0.6, 0.0, 0.0]},
+        "Neck": {"rotation_degrees": [3.0, 0.0, 0.0]},
+        "Head": {"rotation_degrees": [8.5, 0.0, 0.0]}
       }
     },
     {
-      "time_seconds": 5.25,
-      "label": "restrained peak hold",
+      "time_seconds": 1.36,
+      "label": "small rebound",
       "joints": {
-        "Spine3": {"rotation_degrees": [1.2, 0.0, 0.0]},
-        "Neck": {"rotation_degrees": [6.0, 0.0, 0.0]},
-        "Head": {"rotation_degrees": [16.0, 0.0, 0.0]}
+        "Spine3": {"rotation_degrees": [-0.15, 0.0, 0.0]},
+        "Neck": {"rotation_degrees": [-0.4, 0.0, 0.0]},
+        "Head": {"rotation_degrees": [-1.0, 0.0, 0.0]}
       }
     },
     {
-      "time_seconds": 6.53,
+      "time_seconds": 1.90,
       "label": "returned neutral",
       "joints": {
         "Spine3": {"rotation_degrees": [0.0, 0.0, 0.0]},
@@ -64,11 +64,11 @@
   ],
   "ambient_motion": {
     "enabled": true,
-    "breathing_cycles": 2.0,
-    "breathing_degrees": 0.5,
+    "breathing_cycles": 1.0,
+    "breathing_degrees": 0.35,
     "sway_cycles": 1.0,
-    "sway_degrees": 0.25,
-    "head_sway_degrees": 0.12
+    "sway_degrees": 0.12,
+    "head_sway_degrees": 0.04
   },
   "face_intent": {
     "gaze": "camera",

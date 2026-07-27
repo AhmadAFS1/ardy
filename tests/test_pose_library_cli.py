@@ -26,6 +26,10 @@ from ardy.pose_video.library import (
 )
 from ardy.pose_video.renderer import RenderingBackendError
 from ardy.pose_video.spec import BehaviorSpec, save_behavior_spec
+from ardy.pose_video.validation import (
+    VideoValidationExpectations,
+    validate_library,
+)
 
 
 def _spec(
@@ -117,9 +121,32 @@ class DiscoveryAndContractTests(unittest.TestCase):
 
     def test_shared_contract_rejects_output_changes_but_not_draft_resolution(self) -> None:
         first = _spec("alpha", render_resolution=(32, 48))
-        second = _spec("beta", render_resolution=(48, 64))
+        second = _spec(
+            "beta",
+            duration_seconds=1.4,
+            render_resolution=(48, 64),
+        )
         contract = validate_shared_contract((first, second))
         self.assertNotIn("render_resolution", contract["camera"])
+        self.assertNotIn("duration_seconds", contract)
+        self.assertNotIn("frames", contract)
+        self.assertEqual(
+            contract["behavior_timing"],
+            {
+                "alpha": {
+                    "duration_seconds": 1.0,
+                    "frames": 10,
+                    "opening_boundary_start_frame": 0,
+                    "closing_boundary_start_frame": 8,
+                },
+                "beta": {
+                    "duration_seconds": 1.4,
+                    "frames": 14,
+                    "opening_boundary_start_frame": 0,
+                    "closing_boundary_start_frame": 12,
+                },
+            },
+        )
         self.assertEqual(contract["encoder"]["crf"], 0)
         self.assertTrue(contract["encoder"]["all_intra"])
         self.assertEqual(contract["encoder"]["codec_name"], "h264")
@@ -219,6 +246,10 @@ class ComposeOnlyLibraryTests(unittest.TestCase):
             # Intentionally place idle in the middle; sequencing must not depend
             # on input order.
             paths = _write_specs(directory, "nod_agree", "neutral_resting", "look_away_reset")
+            save_behavior_spec(
+                _spec("look_away_reset", duration_seconds=1.4),
+                paths[-1],
+            )
             canonical = (object(), object())
             passing_video = {"passed": True, "checks": {}, "metrics": {}}
             passing_library = {"passed": True, "checks": {}, "assets": []}
@@ -256,8 +287,14 @@ class ComposeOnlyLibraryTests(unittest.TestCase):
                     "ardy.pose_video.library._render_motion",
                     side_effect=fake_render_motion,
                 ) as render_motion,
-                mock.patch("ardy.pose_video.library.validate_video", return_value=passing_video),
-                mock.patch("ardy.pose_video.library.validate_library", return_value=passing_library),
+                mock.patch(
+                    "ardy.pose_video.library.validate_video",
+                    return_value=passing_video,
+                ) as validate_video_mock,
+                mock.patch(
+                    "ardy.pose_video.library.validate_library",
+                    return_value=passing_library,
+                ) as validate_library_mock,
                 mock.patch(
                     "ardy.pose_video.library.create_switch_stress_test",
                     side_effect=fake_switch_test,
@@ -273,6 +310,27 @@ class ComposeOnlyLibraryTests(unittest.TestCase):
             for call in render_motion.call_args_list:
                 self.assertIs(call.kwargs["canonical_boundary_rgb_frames"], canonical)
                 self.assertIs(call.kwargs["renderer"], shared_renderer)
+            self.assertEqual(
+                [
+                    call.kwargs["expectations"].frame_count
+                    for call in validate_video_mock.call_args_list
+                ],
+                [10, 10, 14],
+            )
+            library_expectations = validate_library_mock.call_args.kwargs[
+                "expectations"
+            ]
+            self.assertEqual(
+                [expectation.frame_count for expectation in library_expectations],
+                [10, 10, 14],
+            )
+            self.assertEqual(
+                [
+                    expectation.duration_seconds
+                    for expectation in library_expectations
+                ],
+                [1.0, 1.0, 1.4],
+            )
             sequence = switch.call_args.args[0]
             by_id = {item.behavior_id: item.video_path for item in result.behaviors}
             self.assertEqual(
@@ -371,6 +429,63 @@ class VideoCliAndSwitchTests(unittest.TestCase):
             ],
             check=True,
         )
+
+    def test_library_accepts_variable_lengths_with_per_asset_expectations(self) -> None:
+        with tempfile.TemporaryDirectory() as directory_name:
+            directory = Path(directory_name)
+            short = directory / "short.mp4"
+            long = directory / "long.mp4"
+            self._make_video(short, "red", frames=10)
+            self._make_video(long, "red", frames=14)
+            common = {
+                "fps": 10,
+                "width": 32,
+                "height": 32,
+                "codec_name": "h264",
+                "pixel_format": "yuv420p",
+                "audio_stream_count": 0,
+                "all_intra": True,
+            }
+            report = validate_library(
+                [short, long],
+                boundary_frames=2,
+                expectations=[
+                    VideoValidationExpectations(
+                        **common,
+                        frame_count=10,
+                        duration_seconds=1.0,
+                    ),
+                    VideoValidationExpectations(
+                        **common,
+                        frame_count=14,
+                        duration_seconds=1.4,
+                    ),
+                ],
+            )
+
+            self.assertTrue(report["passed"])
+            self.assertTrue(report["checks"]["matching_video_formats"])
+            self.assertTrue(report["checks"]["shared_opening_block"])
+            self.assertTrue(report["checks"]["shared_ending_block"])
+            self.assertTrue(report["checks"]["all_ordered_pairs_switch_compatible"])
+            self.assertEqual(
+                [asset["metrics"]["frame_count"] for asset in report["assets"]],
+                [10, 14],
+            )
+            self.assertIsInstance(report["expectations"], list)
+            self.assertEqual(
+                [item["frame_count"] for item in report["expectations"]],
+                [10, 14],
+            )
+
+    def test_library_rejects_misaligned_per_asset_expectations(self) -> None:
+        expectation = VideoValidationExpectations(fps=10)
+        with self.assertRaisesRegex(ValueError, "same length"):
+            validate_library(
+                ["one.mp4", "two.mp4"],
+                boundary_frames=2,
+                expectations=[expectation],
+            )
 
     def test_analyze_and_video_validate_cli_write_json(self) -> None:
         with tempfile.TemporaryDirectory() as directory_name:

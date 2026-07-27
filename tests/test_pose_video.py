@@ -14,14 +14,38 @@ import unittest
 
 import numpy as np
 from scipy.spatial.transform import Rotation
+import torch
 
 from ardy.pose_video.composer import compose_behavior
 from ardy.pose_video.config import CameraConfig
 from ardy.pose_video.encoder import FFmpegH264Encoder, decoded_frame_hashes
 from ardy.pose_video.motion import CoreMotion, load_core_motion, resample_core_motion
-from ardy.pose_video.renderer import CoreMeshRenderer, RenderingBackendError
+from ardy.pose_video.renderer import (
+    BLINK_DURATION_SCALE,
+    BLINK_EVENTS,
+    BLINK_MINIMUM_SCALE,
+    NEUTRAL_RESTING_BLINK_MINIMUM_SCALE,
+    CoreMeshRenderer,
+    RenderingBackendError,
+    blink_minimum_scale_for_motion,
+    blink_scale_for_frame,
+    facial_cue_for_frame,
+)
 from ardy.pose_video.spec import BehaviorSpec
 from ardy.skeleton import CoreSkeleton27
+from ardy.viz.core_skin import (
+    CoreSkin,
+    MATERIAL_BODY,
+    MATERIAL_BROW,
+    MATERIAL_EYE_BACKING,
+    MATERIAL_IRIS,
+    MATERIAL_MOUTH,
+    MATERIAL_PUPIL,
+    MATERIAL_SCLERA,
+    MATERIAL_SKIN,
+    neutralize_core_eyelids,
+    neutralize_core_mouth,
+)
 
 
 JOINTS = 27
@@ -86,6 +110,79 @@ class MotionTests(unittest.TestCase):
         self.assertEqual(loaded.num_frames, frames)
         self.assertEqual(loaded.text, "test")
         np.testing.assert_allclose(loaded.posed_joints[:, 0], roots, atol=1e-6)
+
+
+class CoreSkinNeutralFaceTests(unittest.TestCase):
+    @staticmethod
+    def _raw_vertices() -> np.ndarray:
+        return np.asarray(
+            np.load(
+                Path(CoreSkeleton27().folder) / "skin_standard.npz",
+                allow_pickle=False,
+            )["bind_vertices"],
+            dtype=np.float32,
+        )
+
+    def test_eyelid_correction_is_symmetric_and_localized(self) -> None:
+        vertices = self._raw_vertices()
+        corrected = neutralize_core_eyelids(torch.tensor(vertices, dtype=torch.float32)).numpy()
+        delta = corrected - vertices
+
+        self.assertGreater(np.max(np.abs(delta[:, 0])), 0.0007)
+        self.assertLessEqual(np.max(np.abs(delta[:, 0])), 0.00101)
+        self.assertGreater(np.max(np.abs(delta[:, 1])), 0.003)
+        self.assertLessEqual(np.max(np.abs(delta[:, 1])), 0.00401)
+        np.testing.assert_array_equal(delta[:, 2], np.zeros_like(delta[:, 2]))
+
+        back_of_head = vertices[:, 2] < 0.0
+        self.assertLess(np.max(np.abs(delta[back_of_head, 0])), 1e-5)
+        self.assertLess(np.max(np.abs(delta[back_of_head, 1])), 1e-5)
+
+    def test_mouth_correction_lifts_only_forward_corner_region(self) -> None:
+        vertices = self._raw_vertices()
+        corrected = neutralize_core_mouth(torch.tensor(vertices, dtype=torch.float32)).numpy()
+        delta = corrected - vertices
+
+        self.assertGreater(np.max(delta[:, 1]), 0.002)
+        self.assertLessEqual(np.max(delta[:, 1]), 0.00301)
+        self.assertGreaterEqual(np.min(delta[:, 1]), 0.0)
+        np.testing.assert_array_equal(delta[:, 0], np.zeros_like(delta[:, 0]))
+        np.testing.assert_array_equal(delta[:, 2], np.zeros_like(delta[:, 2]))
+
+        back_of_head = vertices[:, 2] < 0.0
+        self.assertLess(np.max(np.abs(delta[back_of_head, 1])), 1e-5)
+
+    def test_colored_guidance_face_is_rigidly_bound_to_head(self) -> None:
+        raw_vertex_count = self._raw_vertices().shape[0]
+        skeleton = CoreSkeleton27()
+        skin = CoreSkin(skeleton)
+        material_ids = skin.vertex_material_ids.cpu().numpy()
+
+        self.assertGreater(skin.bind_vertices.shape[0], raw_vertex_count)
+        self.assertEqual(skin.bind_vertices.shape[0], skin.lbs_indices.shape[0])
+        self.assertEqual(skin.bind_vertices.shape[0], skin.lbs_weights.shape[0])
+        self.assertEqual(skin.bind_vertices.shape[0], material_ids.shape[0])
+        self.assertEqual(
+            set(np.unique(material_ids)),
+            {
+                MATERIAL_BODY,
+                MATERIAL_SKIN,
+                MATERIAL_SCLERA,
+                MATERIAL_IRIS,
+                MATERIAL_PUPIL,
+                MATERIAL_BROW,
+                MATERIAL_MOUTH,
+                MATERIAL_EYE_BACKING,
+            },
+        )
+
+        guidance = np.arange(skin.bind_vertices.shape[0]) >= raw_vertex_count
+        head_index = skeleton.bone_order_names.index("Head")
+        indices = skin.lbs_indices.cpu().numpy()[guidance]
+        weights = skin.lbs_weights.cpu().numpy()[guidance]
+        self.assertTrue(np.all(indices == head_index))
+        np.testing.assert_array_equal(weights[:, 0], np.ones(weights.shape[0], dtype=weights.dtype))
+        np.testing.assert_array_equal(weights[:, 1:], np.zeros_like(weights[:, 1:]))
 
 
 class EncodingTests(unittest.TestCase):
@@ -156,6 +253,113 @@ class EncodingTests(unittest.TestCase):
 
 
 class RenderingTests(unittest.TestCase):
+    def test_blink_animation_is_another_fifty_percent_slower(self) -> None:
+        self.assertEqual(BLINK_DURATION_SCALE, 2.25)
+        self.assertEqual(
+            tuple((close_frames, open_frames) for _, close_frames, open_frames in BLINK_EVENTS),
+            ((4.5, 6.75), (4.5, 9.0), (4.5, 6.75)),
+        )
+
+    def test_blinks_are_natural_and_excluded_from_shared_boundaries(self) -> None:
+        scales = np.asarray(
+            [blink_scale_for_frame(index, 300, 30.0) for index in range(300)]
+        )
+        np.testing.assert_array_equal(scales[:60], np.ones(60))
+        np.testing.assert_array_equal(scales[-60:], np.ones(60))
+
+        blink_peaks = np.flatnonzero(np.isclose(scales, BLINK_MINIMUM_SCALE))
+        self.assertEqual(blink_peaks.shape[0], 3)
+        for peak in blink_peaks:
+            self.assertGreater(scales[peak - 1], scales[peak])
+            self.assertGreater(scales[peak + 1], scales[peak])
+            self.assertLess(scales[peak + 1], scales[peak - 1])
+
+    def test_blink_count_scales_with_video_duration(self) -> None:
+        expected_counts = {
+            10.0: 3,
+            8.0: 2,
+            6.0: 1,
+            4.8: 0,
+            2.8: 0,
+        }
+        for duration, expected_count in expected_counts.items():
+            frame_count = int(round(duration * 30.0))
+            scales = np.asarray(
+                [blink_scale_for_frame(index, frame_count, 30.0) for index in range(frame_count)]
+            )
+            self.assertEqual(
+                np.count_nonzero(np.isclose(scales, BLINK_MINIMUM_SCALE)),
+                expected_count,
+                msg=f"duration={duration}",
+            )
+
+    def test_colored_eye_geometry_closes_and_reopens_in_head_space(self) -> None:
+        motion = _identity_motion(frames=300, fps=30.0)
+        renderer = CoreMeshRenderer()
+        scales = np.asarray(
+            [blink_scale_for_frame(index, motion.num_frames, motion.fps) for index in range(300)]
+        )
+        peak = int(np.argmin(scales))
+        frames = {}
+        for index, vertices in enumerate(renderer.skin_vertices(motion, chunk_size=300)):
+            if index in (0, peak, 299):
+                frames[index] = vertices
+
+        sclera = renderer.material_ids == MATERIAL_SCLERA
+        open_height = float(np.ptp(frames[0][sclera, 1]))
+        closed_height = float(np.ptp(frames[peak][sclera, 1]))
+        self.assertGreater(closed_height, open_height * 0.35)
+        self.assertLess(closed_height, open_height * 0.45)
+        np.testing.assert_array_equal(frames[0], frames[299])
+
+    def test_every_behavior_uses_approved_partial_blinks(self) -> None:
+        base = _identity_motion(frames=300, fps=30.0)
+        for behavior_id in ("neutral_resting", "active_listening", "speaking_direct"):
+            motion = CoreMotion(
+                base.global_rot_mats,
+                base.posed_joints,
+                base.fps,
+                source_path=Path(f"/candidate/{behavior_id}.motion.npz"),
+            )
+            minimum = blink_minimum_scale_for_motion(motion)
+            self.assertEqual(minimum, NEUTRAL_RESTING_BLINK_MINIMUM_SCALE)
+            self.assertEqual(minimum, 0.40)
+            scales = np.asarray(
+                [
+                    blink_scale_for_frame(index, motion.num_frames, motion.fps, minimum)
+                    for index in range(motion.num_frames)
+                ]
+            )
+            self.assertEqual(np.count_nonzero(np.isclose(scales, minimum)), 3)
+
+    def test_expression_cues_reset_at_boundaries_and_match_behavior_intent(self) -> None:
+        for behavior_id in (
+            "light_smile",
+            "amused_laugh",
+            "curious_eyebrow_or_nod",
+            "thinking_glance",
+        ):
+            self.assertTrue(
+                all(
+                    value == 0.0
+                    for value in facial_cue_for_frame(behavior_id, 0, 120, 30.0).values()
+                )
+            )
+            self.assertTrue(
+                all(
+                    value == 0.0
+                    for value in facial_cue_for_frame(behavior_id, 119, 120, 30.0).values()
+                )
+            )
+
+        smile = facial_cue_for_frame("light_smile", 60, 120, 30.0)
+        curious = facial_cue_for_frame("curious_eyebrow_or_nod", 60, 120, 30.0)
+        thinking = facial_cue_for_frame("thinking_glance", 60, 120, 30.0)
+        self.assertGreater(smile["smile"], 0.7)
+        self.assertGreater(curious["right_brow"], curious["left_brow"])
+        self.assertGreater(thinking["gaze_horizontal"], 0.8)
+        self.assertLess(thinking["gaze_vertical"], -0.6)
+
     def test_headless_core_skin_frame_has_fixed_pixels(self) -> None:
         motion = _identity_motion(frames=1)
         camera = CameraConfig.full_body_portrait(width=64, height=96)

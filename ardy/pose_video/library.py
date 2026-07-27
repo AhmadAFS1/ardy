@@ -4,9 +4,11 @@
 
 The important unit in this module is the *library*, not an isolated video.  A
 video-call switch can only be invisible when every behavior shares the same
-motion boundary, frame rate, duration, camera, render style, resolution, and
-encoder contract.  Building and certifying those files together prevents an
-individually plausible clip from silently breaking a later transition.
+motion boundary, frame rate, camera, render style, resolution, and encoder
+contract.  A behavior's duration may vary because switching happens only at
+the identical canonical boundary blocks.  Building and certifying those files
+together prevents an individually plausible clip from silently breaking a
+later transition.
 """
 
 from __future__ import annotations
@@ -167,10 +169,8 @@ def validate_shared_contract(specs: Sequence[BehaviorSpec]) -> dict:
     first = specs[0]
     expected = {
         "fps": first.fps,
-        "duration_seconds": first.duration_seconds,
         "boundary_seconds": first.boundary_seconds,
         "boundary_frames": first.boundary_frames,
-        "frames": first.num_frames,
         "camera": _camera_contract(first),
         "canonical_base_pose": _canonical_base_contract(first),
         "encoder": dict(_MASTER_ENCODER_CONTRACT),
@@ -179,10 +179,8 @@ def validate_shared_contract(specs: Sequence[BehaviorSpec]) -> dict:
     for spec in specs[1:]:
         actual = {
             "fps": spec.fps,
-            "duration_seconds": spec.duration_seconds,
             "boundary_seconds": spec.boundary_seconds,
             "boundary_frames": spec.boundary_frames,
-            "frames": spec.num_frames,
             "camera": _camera_contract(spec),
             "canonical_base_pose": _canonical_base_contract(spec),
             "encoder": dict(_MASTER_ENCODER_CONTRACT),
@@ -194,6 +192,15 @@ def validate_shared_contract(specs: Sequence[BehaviorSpec]) -> dict:
                 )
     if mismatches:
         raise ValueError("incompatible behavior library contract: " + "; ".join(mismatches))
+    expected["behavior_timing"] = {
+        spec.behavior_id: {
+            "duration_seconds": spec.duration_seconds,
+            "frames": spec.num_frames,
+            "opening_boundary_start_frame": 0,
+            "closing_boundary_start_frame": spec.num_frames - spec.boundary_frames,
+        }
+        for spec in specs
+    }
     return expected
 
 
@@ -461,13 +468,30 @@ def build_pose_library(
     specs = tuple(load_behavior_spec(path) for path in paths)
     spec_hashes = tuple(sha256_file(path) for path in paths)
     contract = validate_shared_contract(specs)
-    master_expectations = VideoValidationExpectations.master_reference(
-        specs[0].fps,
-        width=specs[0].camera.resolution[0],
-        height=specs[0].camera.resolution[1],
-        frame_count=specs[0].num_frames,
-        duration_seconds=specs[0].duration_seconds,
+    master_expectations = tuple(
+        VideoValidationExpectations.master_reference(
+            spec.fps,
+            width=spec.camera.resolution[0],
+            height=spec.camera.resolution[1],
+            frame_count=spec.num_frames,
+            duration_seconds=spec.duration_seconds,
+        )
+        for spec in specs
     )
+    library_expectations: (
+        VideoValidationExpectations
+        | tuple[VideoValidationExpectations, ...]
+    )
+    if len(
+        {
+            (expectation.frame_count, expectation.duration_seconds)
+            for expectation in master_expectations
+        }
+    ) == 1:
+        # Preserve the historical report shape for fixed-duration libraries.
+        library_expectations = master_expectations[0]
+    else:
+        library_expectations = master_expectations
     destination = Path(output_dir).resolve()
     if not overwrite:
         planned = _planned_output_paths(
@@ -546,7 +570,9 @@ def build_pose_library(
                 spec=shared_export,
                 renderer=shared_renderer,
             )
-            for behavior, spec in zip(built, specs):
+            for behavior, spec, expectations in zip(
+                built, specs, master_expectations
+            ):
                 assert behavior.video_path is not None
                 assert behavior.video_validation_path is not None
                 assert behavior.render_manifest_path is not None
@@ -565,7 +591,7 @@ def build_pose_library(
                 video_report = validate_video(
                     behavior.video_path,
                     spec.boundary_frames,
-                    expectations=master_expectations,
+                    expectations=expectations,
                 )
                 save_validation_report(video_report, behavior.video_validation_path)
                 if not video_report["passed"]:
@@ -583,7 +609,7 @@ def build_pose_library(
         library_report = validate_library(
             [path for path in video_paths if path is not None],
             specs[0].boundary_frames,
-            expectations=master_expectations,
+            expectations=library_expectations,
         )
         library_report_path = destination / "library.validation.json"
         save_validation_report(library_report, library_report_path)

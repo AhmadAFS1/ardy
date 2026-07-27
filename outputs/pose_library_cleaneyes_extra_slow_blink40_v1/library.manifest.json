@@ -1,0 +1,2478 @@
+{
+  "artifact_sha256": {
+    "library_validation": "d03107c6e23a594ce5d5997d377d1ec59b53aba9710b7176ba009d4ac686f41c",
+    "switch_test": "c1a27100be99909be5fde6a54f2834f4466d6857f9b0fa57fb661ab963fa3524"
+  },
+  "behaviors": [
+    {
+      "artifact_sha256": {
+        "motion": "ff1b67a0275f9faca03c68f00e8fd3ca64cabc7ab317f398923c00871ac49ebe",
+        "motion_validation": "7beb6c7e9922655d66efd35578a982f0a13fabea04bbcc2c8aca5dbb236ced9a",
+        "render_manifest": "6a55e775fd8d994b6a0a6292a6cca078d4e22a2802d21226322d4c7486dc29b1",
+        "spec": "9d21a65d2f1e78f15cdb29f6aedc44730f96df875b6aa84c03d4166da1a3beb6",
+        "video": "86718b95281103a424b4cc4bf5854da1072fb494978e62aa1dc1da6df3db966b",
+        "video_validation": "21a546835ceddc080145f201c98b8dc6e09c22a2df2686e43ab2a3bec94989cf"
+      },
+      "behavior_id": "active_listening",
+      "motion_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/active_listening/active_listening.motion.npz",
+      "motion_validation_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/active_listening/active_listening.motion.validation.json",
+      "render_manifest_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/active_listening/active_listening.render.json",
+      "spec_path": "/workspace/ardy/pose_specs/active_listening.json",
+      "spec_sha256": "9d21a65d2f1e78f15cdb29f6aedc44730f96df875b6aa84c03d4166da1a3beb6",
+      "spec_snapshot": {
+        "ambient_motion": {
+          "breathing_cycles": 2.2,
+          "breathing_degrees": 0.5,
+          "enabled": true,
+          "head_sway_degrees": 0.08,
+          "sway_cycles": 1.0,
+          "sway_degrees": 0.2
+        },
+        "base_pose": {
+          "frame": 0,
+          "mode": "authored_neutral",
+          "motion_path": null
+        },
+        "behavior_id": "active_listening",
+        "behavior_type": "loop",
+        "boundary_seconds": 0.5,
+        "camera": {
+          "background_rgb": [
+            238,
+            241,
+            246
+          ],
+          "body_rgb": [
+            76,
+            112,
+            176
+          ],
+          "look_at": [
+            0.0,
+            0.54,
+            0.0
+          ],
+          "position": [
+            0.0,
+            0.56,
+            2.3
+          ],
+          "render_resolution": [
+            540,
+            960
+          ],
+          "resolution": [
+            1080,
+            1920
+          ],
+          "up": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "vertical_fov_degrees": 25.0
+        },
+        "description": "Attentive listening loop with a slight forward set, two restrained micro-nods, and a controlled return.",
+        "duration_seconds": 8.0,
+        "face_intent": {
+          "blink": "natural_sparse_avoid_nod_peak_and_boundaries",
+          "expression": "soft_attentive_neutral",
+          "gaze": "steady_camera_attention_with_eyes_leading_micro_nod",
+          "intensity": 0.18
+        },
+        "fps": 30,
+        "keyframes": [
+          {
+            "joints": {
+              "Head": {
+                "rotation_degrees": [
+                  -0.7,
+                  0.0,
+                  0.0
+                ]
+              },
+              "Neck": {
+                "rotation_degrees": [
+                  -0.5,
+                  0.0,
+                  0.0
+                ]
+              },
+              "Spine1": {
+                "rotation_degrees": [
+                  0.6,
+                  0.0,
+                  0.0
+                ]
+              },
+              "Spine2": {
+                "rotation_degrees": [
+                  0.9,
+                  0.0,
+                  0.0
+                ]
+              },
+              "Spine3": {
+                "rotation_degrees": [
+                  0.6,
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            "label": "attentive posture settles forward",
+            "time_seconds": 1.25
+          },
+          {
+            "joints": {
+              "Head": {
+                "rotation_degrees": [
+                  2.6,
+                  0.0,
+                  0.0
+                ]
+              },
+              "Neck": {
+                "rotation_degrees": [
+                  0.8,
+                  0.0,
+                  0.0
+                ]
+              },
+              "Spine1": {
+                "rotation_degrees": [
+                  0.6,
+                  0.0,
+                  0.0
+                ]
+              },
+              "Spine2": {
+                "rotation_degrees": [
+                  0.9,
+                  0.0,
+                  0.0
+                ]
+              },
+              "Spine3": {
+                "rotation_degrees": [
+                  0.75,
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            "label": "tiny acknowledging micro-nod",
+            "time_seconds": 2.75
+          },
+          {
+            "joints": {
+              "Head": {
+                "rotation_degrees": [
+                  -0.7,
+                  0.0,
+                  0.0
+                ]
+              },
+              "Neck": {
+                "rotation_degrees": [
+                  -0.5,
+                  0.0,
+                  0.0
+                ]
+              },
+              "Spine1": {
+                "rotation_degrees": [
+                  0.6,
+                  0.0,
+                  0.0
+                ]
+              },
+              "Spine2": {
+                "rotation_degrees": [
+                  0.9,
+                  0.0,
+                  0.0
+                ]
+              },
+              "Spine3": {
+                "rotation_degrees": [
+                  0.6,
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            "label": "attentive baseline recovered",
+            "time_seconds": 3.15
+          },
+          {
+            "joints": {
+              "Head": {
+                "rotation_degrees": [
+                  2.2,
+                  0.0,
+                  0.0
+                ]
+              },
+              "Neck": {
+                "rotation_degrees": [
+                  0.6,
+                  0.0,
+                  0.0
+                ]
+              },
+              "Spine1": {
+                "rotation_degrees": [
+                  0.6,
+                  0.0,
+                  0.0
+                ]
+              },
+              "Spine2": {
+                "rotation_degrees": [
+                  0.9,
+                  0.0,
+                  0.0
+                ]
+              },
+              "Spine3": {
+                "rotation_degrees": [
+                  0.7,
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            "label": "second tiny acknowledgement",
+            "time_seconds": 5.25
+          },
+          {
+            "joints": {
+              "Head": {
+                "rotation_degrees": [
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              "Neck": {
+                "rotation_degrees": [
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              "Spine1": {
+                "rotation_degrees": [
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              "Spine2": {
+                "rotation_degrees": [
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              "Spine3": {
+                "rotation_degrees": [
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            "label": "canonical neutral recovered",
+            "time_seconds": 6.75
+          }
+        ],
+        "locks": [
+          "Hips",
+          "RightUpLeg",
+          "RightLeg",
+          "RightFoot",
+          "RightToeBase",
+          "LeftUpLeg",
+          "LeftLeg",
+          "LeftFoot",
+          "LeftToeBase",
+          "RightShoulder",
+          "LeftShoulder"
+        ],
+        "schema_version": 1,
+        "source_reference": null,
+        "speaking_mode": "listening"
+      },
+      "video_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/active_listening/active_listening.mp4",
+      "video_validation_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/active_listening/active_listening.video.validation.json"
+    },
+    {
+      "artifact_sha256": {
+        "motion": "4ac4d7eebdc1aa09c7223e89e3c18e9a639732af515520306aa1c08c85f23e87",
+        "motion_validation": "940264b56be9107eacc19c307e6cd957ce4b487aa443b7d7836203b3ef8f7609",
+        "render_manifest": "e3b5bbd607ab6df90baf92f88a621dc7a06ee8efc829f67aff450762c0116aff",
+        "spec": "7ccdf83308c25ce5cb1401dd9eb50917a523d6e3e7a2a5e8e545efbec9dd7d38",
+        "video": "ba164bf93cb47c2d9f6faf114ce29bfda80a34dfd615b9097e5e2bcf689eb302",
+        "video_validation": "b8cd76d676ad97a65f84aba846a47b12ec333bf1ce35f12c9ceb9e63c7323188"
+      },
+      "behavior_id": "amused_laugh",
+      "motion_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/amused_laugh/amused_laugh.motion.npz",
+      "motion_validation_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/amused_laugh/amused_laugh.motion.validation.json",
+      "render_manifest_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/amused_laugh/amused_laugh.render.json",
+      "spec_path": "/workspace/ardy/pose_specs/amused_laugh.json",
+      "spec_sha256": "7ccdf83308c25ce5cb1401dd9eb50917a523d6e3e7a2a5e8e545efbec9dd7d38",
+      "spec_snapshot": {
+        "ambient_motion": {
+          "breathing_cycles": 1.0,
+          "breathing_degrees": 0.45,
+          "enabled": true,
+          "head_sway_degrees": 0.05,
+          "sway_cycles": 1.0,
+          "sway_degrees": 0.18
+        },
+        "base_pose": {
+          "frame": 0,
+          "mode": "authored_neutral",
+          "motion_path": null
+        },
+        "behavior_id": "amused_laugh",
+        "behavior_type": "one_shot",
+        "boundary_seconds": 0.5,
+        "camera": {
+          "background_rgb": [
+            238,
+            241,
+            246
+          ],
+          "body_rgb": [
+            76,
+            112,
+            176
+          ],
+          "look_at": [
+            0.0,
+            0.54,
+            0.0
+          ],
+          "position": [
+            0.0,
+            0.56,
+            2.3
+          ],
+          "render_resolution": [
+            540,
+            960
+          ],
+          "resolution": [
+            1080,
+            1920
+          ],
+          "up": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "vertical_fov_degrees": 25.0
+        },
+        "description": "Restrained amused smile with two subtle head-and-upper-torso chuckle beats and a full reset.",
+        "duration_seconds": 4.2,
+        "face_intent": {
+          "blink": "optional_natural_blink_on_rebound_not_at_boundaries",
+          "expression": "restrained_closed_mouth_smile_or_quiet_chuckle_then_full_release",
+          "gaze": "camera_attention_softens_during_reaction_then_returns",
+          "intensity": 0.32
+        },
+        "fps": 30,
+        "keyframes": [
+          {
+            "joints": {
+              "Head": {
+                "rotation_degrees": [
+                  -0.4,
+                  0.0,
+                  0.0
+                ]
+              },
+              "Neck": {
+                "rotation_degrees": [
+                  0.2,
+                  0.0,
+                  0.0
+                ]
+              },
+              "Spine3": {
+                "rotation_degrees": [
+                  0.2,
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            "label": "amusement onset",
+            "time_seconds": 0.85
+          },
+          {
+            "joints": {
+              "Head": {
+                "rotation_degrees": [
+                  3.0,
+                  0.0,
+                  -0.5
+                ]
+              },
+              "Neck": {
+                "rotation_degrees": [
+                  0.9,
+                  0.0,
+                  -0.15
+                ]
+              },
+              "Spine2": {
+                "rotation_degrees": [
+                  0.5,
+                  0.0,
+                  0.0
+                ]
+              },
+              "Spine3": {
+                "rotation_degrees": [
+                  0.7,
+                  0.0,
+                  -0.2
+                ]
+              }
+            },
+            "label": "restrained chuckle compression",
+            "time_seconds": 1.3
+          },
+          {
+            "joints": {
+              "Head": {
+                "rotation_degrees": [
+                  -1.2,
+                  0.0,
+                  0.3
+                ]
+              },
+              "Neck": {
+                "rotation_degrees": [
+                  -0.5,
+                  0.0,
+                  0.1
+                ]
+              },
+              "Spine2": {
+                "rotation_degrees": [
+                  0.2,
+                  0.0,
+                  0.0
+                ]
+              },
+              "Spine3": {
+                "rotation_degrees": [
+                  -0.25,
+                  0.0,
+                  0.1
+                ]
+              }
+            },
+            "label": "small chuckle rebound",
+            "time_seconds": 1.6
+          },
+          {
+            "joints": {
+              "Head": {
+                "rotation_degrees": [
+                  1.9,
+                  0.0,
+                  -0.35
+                ]
+              },
+              "Neck": {
+                "rotation_degrees": [
+                  0.7,
+                  0.0,
+                  -0.1
+                ]
+              },
+              "Spine2": {
+                "rotation_degrees": [
+                  0.4,
+                  0.0,
+                  0.0
+                ]
+              },
+              "Spine3": {
+                "rotation_degrees": [
+                  0.55,
+                  0.0,
+                  -0.15
+                ]
+              }
+            },
+            "label": "tiny second chuckle beat",
+            "time_seconds": 1.95
+          },
+          {
+            "joints": {
+              "Head": {
+                "rotation_degrees": [
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              "Neck": {
+                "rotation_degrees": [
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              "Spine2": {
+                "rotation_degrees": [
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              "Spine3": {
+                "rotation_degrees": [
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            "label": "amusement released to neutral",
+            "time_seconds": 3.1
+          }
+        ],
+        "locks": [
+          "Hips",
+          "RightUpLeg",
+          "RightLeg",
+          "RightFoot",
+          "RightToeBase",
+          "LeftUpLeg",
+          "LeftLeg",
+          "LeftFoot",
+          "LeftToeBase",
+          "RightShoulder",
+          "LeftShoulder"
+        ],
+        "schema_version": 1,
+        "source_reference": null,
+        "speaking_mode": "either"
+      },
+      "video_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/amused_laugh/amused_laugh.mp4",
+      "video_validation_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/amused_laugh/amused_laugh.video.validation.json"
+    },
+    {
+      "artifact_sha256": {
+        "motion": "17fbc2f6687909e19fcb00bc02e3e1d9156a5a03440269e15035ccc5ff9c7550",
+        "motion_validation": "937bd748f1d34d28570f9537e2511f246e5df374b54221000afe3922fe4ff329",
+        "render_manifest": "303c7e9e506581a36cb8590bce7d7071337c3515fb39f1dbe25d3800eac05958",
+        "spec": "c51a1838cfaeb5b88e606bd7cc33dd372d205cc09e1ba248765dc36cbee1029e",
+        "video": "470ace3204981afb977a0d6a3fea90c19cd98c160358346c141ffd19cf2a5638",
+        "video_validation": "02382d89bf5d7fce8be7d2eba49f67a385738954d9b26febb9c5621137891061"
+      },
+      "behavior_id": "curious_eyebrow_or_nod",
+      "motion_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/curious_eyebrow_or_nod/curious_eyebrow_or_nod.motion.npz",
+      "motion_validation_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/curious_eyebrow_or_nod/curious_eyebrow_or_nod.motion.validation.json",
+      "render_manifest_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/curious_eyebrow_or_nod/curious_eyebrow_or_nod.render.json",
+      "spec_path": "/workspace/ardy/pose_specs/curious_eyebrow_or_nod.json",
+      "spec_sha256": "c51a1838cfaeb5b88e606bd7cc33dd372d205cc09e1ba248765dc36cbee1029e",
+      "spec_snapshot": {
+        "ambient_motion": {
+          "breathing_cycles": 0.9,
+          "breathing_degrees": 0.42,
+          "enabled": true,
+          "head_sway_degrees": 0.05,
+          "sway_cycles": 1.0,
+          "sway_degrees": 0.16
+        },
+        "base_pose": {
+          "frame": 0,
+          "mode": "authored_neutral",
+          "motion_path": null
+        },
+        "behavior_id": "curious_eyebrow_or_nod",
+        "behavior_type": "one_shot",
+        "boundary_seconds": 0.5,
+        "camera": {
+          "background_rgb": [
+            238,
+            241,
+            246
+          ],
+          "body_rgb": [
+            76,
+            112,
+            176
+          ],
+          "look_at": [
+            0.0,
+            0.54,
+            0.0
+          ],
+          "position": [
+            0.0,
+            0.56,
+            2.3
+          ],
+          "render_resolution": [
+            540,
+            960
+          ],
+          "resolution": [
+            1080,
+            1920
+          ],
+          "up": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "vertical_fov_degrees": 25.0
+        },
+        "description": "Questioning asymmetric brow cue paired with a tiny curious nod and tilt, then a full release.",
+        "duration_seconds": 3.6,
+        "face_intent": {
+          "blink": "natural_avoid_covering_brow_raise_peak_or_boundaries",
+          "expression": "subtle_brow_raise_hold_then_complete_release",
+          "gaze": "camera_with_brief_questioning_focus",
+          "intensity": 0.22
+        },
+        "fps": 30,
+        "keyframes": [
+          {
+            "joints": {
+              "Head": {
+                "rotation_degrees": [
+                  -0.4,
+                  0.0,
+                  -0.9
+                ]
+              },
+              "Neck": {
+                "rotation_degrees": [
+                  -0.2,
+                  0.0,
+                  -0.4
+                ]
+              }
+            },
+            "label": "curiosity cue begins",
+            "time_seconds": 0.85
+          },
+          {
+            "joints": {
+              "Head": {
+                "rotation_degrees": [
+                  2.2,
+                  0.0,
+                  -2.2
+                ]
+              },
+              "Neck": {
+                "rotation_degrees": [
+                  0.6,
+                  0.0,
+                  -0.8
+                ]
+              }
+            },
+            "label": "brow raise and tiny curious nod peak",
+            "time_seconds": 1.3
+          },
+          {
+            "joints": {
+              "Head": {
+                "rotation_degrees": [
+                  1.9,
+                  0.0,
+                  -2.0
+                ]
+              },
+              "Neck": {
+                "rotation_degrees": [
+                  0.5,
+                  0.0,
+                  -0.7
+                ]
+              }
+            },
+            "label": "brief curious hold",
+            "time_seconds": 1.85
+          },
+          {
+            "joints": {
+              "Head": {
+                "rotation_degrees": [
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              "Neck": {
+                "rotation_degrees": [
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            "label": "brow and tilt released",
+            "time_seconds": 2.75
+          }
+        ],
+        "locks": [
+          "Hips",
+          "RightUpLeg",
+          "RightLeg",
+          "RightFoot",
+          "RightToeBase",
+          "LeftUpLeg",
+          "LeftLeg",
+          "LeftFoot",
+          "LeftToeBase",
+          "RightShoulder",
+          "LeftShoulder"
+        ],
+        "schema_version": 1,
+        "source_reference": null,
+        "speaking_mode": "listening"
+      },
+      "video_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/curious_eyebrow_or_nod/curious_eyebrow_or_nod.mp4",
+      "video_validation_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/curious_eyebrow_or_nod/curious_eyebrow_or_nod.video.validation.json"
+    },
+    {
+      "artifact_sha256": {
+        "motion": "8e5951db76e3ed99b079fc11f56642faaca43071f0aaab73160a925701d67ff9",
+        "motion_validation": "7dfe20535887b5065a29d94ce575866579b3f82f22ef17640d0754623e4e1dc6",
+        "render_manifest": "31d01f4bd341287ba0f233617121983c98aaaa3c73a61744d9d0cbf04c1c9ab9",
+        "spec": "4e74d4ec2f2805aec9b47b663d4fe9b3412be85847ce7559543b3e2191c75c40",
+        "video": "aff96e17d7f1246bcc182096963092e7e0ba2779479d30448196ada71bdf2f98",
+        "video_validation": "2ee60b841cc1ed2e3a2b2ec2b20e7fdf4018e439f4ab9affc1b8958c832de10f"
+      },
+      "behavior_id": "empathetic_head_tilt",
+      "motion_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/empathetic_head_tilt/empathetic_head_tilt.motion.npz",
+      "motion_validation_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/empathetic_head_tilt/empathetic_head_tilt.motion.validation.json",
+      "render_manifest_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/empathetic_head_tilt/empathetic_head_tilt.render.json",
+      "spec_path": "/workspace/ardy/pose_specs/empathetic_head_tilt.json",
+      "spec_sha256": "4e74d4ec2f2805aec9b47b663d4fe9b3412be85847ce7559543b3e2191c75c40",
+      "spec_snapshot": {
+        "ambient_motion": {
+          "breathing_cycles": 1.1,
+          "breathing_degrees": 0.42,
+          "enabled": true,
+          "head_sway_degrees": 0.05,
+          "sway_cycles": 1.0,
+          "sway_degrees": 0.16
+        },
+        "base_pose": {
+          "frame": 0,
+          "mode": "authored_neutral",
+          "motion_path": null
+        },
+        "behavior_id": "empathetic_head_tilt",
+        "behavior_type": "one_shot",
+        "boundary_seconds": 0.5,
+        "camera": {
+          "background_rgb": [
+            238,
+            241,
+            246
+          ],
+          "body_rgb": [
+            76,
+            112,
+            176
+          ],
+          "look_at": [
+            0.0,
+            0.54,
+            0.0
+          ],
+          "position": [
+            0.0,
+            0.56,
+            2.3
+          ],
+          "render_resolution": [
+            540,
+            960
+          ],
+          "resolution": [
+            1080,
+            1920
+          ],
+          "up": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "vertical_fov_degrees": 25.0
+        },
+        "description": "Supportive gentle head tilt with restrained neck and upper-torso follow, then a complete neutral return.",
+        "duration_seconds": 4.8,
+        "face_intent": {
+          "blink": "optional_slow_blink_during_hold_not_at_boundaries",
+          "expression": "softened_empathetic_attention_then_neutral",
+          "gaze": "soft_direct_camera_attention",
+          "intensity": 0.25
+        },
+        "fps": 30,
+        "keyframes": [
+          {
+            "joints": {
+              "Head": {
+                "rotation_degrees": [
+                  0.0,
+                  0.0,
+                  2.0
+                ]
+              },
+              "Neck": {
+                "rotation_degrees": [
+                  0.0,
+                  0.0,
+                  1.0
+                ]
+              },
+              "Spine3": {
+                "rotation_degrees": [
+                  0.0,
+                  0.0,
+                  0.25
+                ]
+              }
+            },
+            "label": "empathetic tilt begins",
+            "time_seconds": 0.95
+          },
+          {
+            "joints": {
+              "Head": {
+                "rotation_degrees": [
+                  0.2,
+                  0.0,
+                  5.3
+                ]
+              },
+              "Neck": {
+                "rotation_degrees": [
+                  0.0,
+                  0.0,
+                  2.0
+                ]
+              },
+              "Spine3": {
+                "rotation_degrees": [
+                  0.0,
+                  0.0,
+                  0.55
+                ]
+              }
+            },
+            "label": "soft attention peak",
+            "time_seconds": 1.65
+          },
+          {
+            "joints": {
+              "Head": {
+                "rotation_degrees": [
+                  0.2,
+                  0.0,
+                  5.0
+                ]
+              },
+              "Neck": {
+                "rotation_degrees": [
+                  0.0,
+                  0.0,
+                  1.9
+                ]
+              },
+              "Spine3": {
+                "rotation_degrees": [
+                  0.0,
+                  0.0,
+                  0.5
+                ]
+              }
+            },
+            "label": "brief empathetic hold",
+            "time_seconds": 2.8
+          },
+          {
+            "joints": {
+              "Head": {
+                "rotation_degrees": [
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              "Neck": {
+                "rotation_degrees": [
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              "Spine3": {
+                "rotation_degrees": [
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            "label": "neutral attention restored",
+            "time_seconds": 3.8
+          }
+        ],
+        "locks": [
+          "Hips",
+          "RightUpLeg",
+          "RightLeg",
+          "RightFoot",
+          "RightToeBase",
+          "LeftUpLeg",
+          "LeftLeg",
+          "LeftFoot",
+          "LeftToeBase",
+          "RightShoulder",
+          "LeftShoulder"
+        ],
+        "schema_version": 1,
+        "source_reference": null,
+        "speaking_mode": "listening"
+      },
+      "video_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/empathetic_head_tilt/empathetic_head_tilt.mp4",
+      "video_validation_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/empathetic_head_tilt/empathetic_head_tilt.video.validation.json"
+    },
+    {
+      "artifact_sha256": {
+        "motion": "d834829a8785bfa809093410e67ab3988275a3f38673169b42faeb5e6ffd2871",
+        "motion_validation": "b3853401a699ef8ab85fc1e7128f7c13e6b1888c0431630017738a50fc8dde32",
+        "render_manifest": "62790d7aa833f963b3bc6561297953ff8e8fa7f2a02c2d9d682439676b95eb21",
+        "spec": "a8a54d16bb17922e19dba9d939dbe491eb6181a2f734dfe79fd49bbc19f38df6",
+        "video": "ffa22da2754321e6bfb684dd655116208f3067c3058dfbc2535eab8993ab6c82",
+        "video_validation": "ae814a8c5ff729a84a9c3e7f1240706fb18de7dd1bdadb5490bbf8498f68939b"
+      },
+      "behavior_id": "light_smile",
+      "motion_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/light_smile/light_smile.motion.npz",
+      "motion_validation_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/light_smile/light_smile.motion.validation.json",
+      "render_manifest_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/light_smile/light_smile.render.json",
+      "spec_path": "/workspace/ardy/pose_specs/light_smile.json",
+      "spec_sha256": "a8a54d16bb17922e19dba9d939dbe491eb6181a2f734dfe79fd49bbc19f38df6",
+      "spec_snapshot": {
+        "ambient_motion": {
+          "breathing_cycles": 1.0,
+          "breathing_degrees": 0.45,
+          "enabled": true,
+          "head_sway_degrees": 0.06,
+          "sway_cycles": 1.0,
+          "sway_degrees": 0.18
+        },
+        "base_pose": {
+          "frame": 0,
+          "mode": "authored_neutral",
+          "motion_path": null
+        },
+        "behavior_id": "light_smile",
+        "behavior_type": "one_shot",
+        "boundary_seconds": 0.5,
+        "camera": {
+          "background_rgb": [
+            238,
+            241,
+            246
+          ],
+          "body_rgb": [
+            76,
+            112,
+            176
+          ],
+          "look_at": [
+            0.0,
+            0.54,
+            0.0
+          ],
+          "position": [
+            0.0,
+            0.56,
+            2.3
+          ],
+          "render_resolution": [
+            540,
+            960
+          ],
+          "resolution": [
+            1080,
+            1920
+          ],
+          "up": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "vertical_fov_degrees": 25.0
+        },
+        "description": "Friendly light closed-mouth smile with a tiny chin lift, brief hold, and full release.",
+        "duration_seconds": 4.0,
+        "face_intent": {
+          "blink": "natural_no_forced_blink_at_transition_boundaries",
+          "expression": "mild_closed_mouth_smile_rise_hold_then_full_release",
+          "gaze": "warm_camera_attention",
+          "intensity": 0.24
+        },
+        "fps": 30,
+        "keyframes": [
+          {
+            "joints": {
+              "Head": {
+                "rotation_degrees": [
+                  -0.4,
+                  0.0,
+                  0.0
+                ]
+              },
+              "Neck": {
+                "rotation_degrees": [
+                  -0.2,
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            "label": "smile onset proxy",
+            "time_seconds": 0.95
+          },
+          {
+            "joints": {
+              "Head": {
+                "rotation_degrees": [
+                  -1.1,
+                  0.0,
+                  0.0
+                ]
+              },
+              "Neck": {
+                "rotation_degrees": [
+                  -0.45,
+                  0.0,
+                  0.0
+                ]
+              },
+              "Spine3": {
+                "rotation_degrees": [
+                  -0.2,
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            "label": "mild smile peak proxy",
+            "time_seconds": 1.45
+          },
+          {
+            "joints": {
+              "Head": {
+                "rotation_degrees": [
+                  -1.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              "Neck": {
+                "rotation_degrees": [
+                  -0.4,
+                  0.0,
+                  0.0
+                ]
+              },
+              "Spine3": {
+                "rotation_degrees": [
+                  -0.15,
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            "label": "mild smile hold proxy",
+            "time_seconds": 2.35
+          },
+          {
+            "joints": {
+              "Head": {
+                "rotation_degrees": [
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              "Neck": {
+                "rotation_degrees": [
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              "Spine3": {
+                "rotation_degrees": [
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            "label": "expression released to neutral",
+            "time_seconds": 3.15
+          }
+        ],
+        "locks": [
+          "Hips",
+          "RightUpLeg",
+          "RightLeg",
+          "RightFoot",
+          "RightToeBase",
+          "LeftUpLeg",
+          "LeftLeg",
+          "LeftFoot",
+          "LeftToeBase",
+          "RightShoulder",
+          "LeftShoulder"
+        ],
+        "schema_version": 1,
+        "source_reference": null,
+        "speaking_mode": "either"
+      },
+      "video_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/light_smile/light_smile.mp4",
+      "video_validation_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/light_smile/light_smile.video.validation.json"
+    },
+    {
+      "artifact_sha256": {
+        "motion": "a05b9e8085ff26dc079f4a62ebb497bafbbabf8371c776f06007fe31578eedd9",
+        "motion_validation": "a45c51d365281ca7c55db6e9966409c3d31111f69177907bdbdbe7269eb4ffe1",
+        "render_manifest": "dba069cba494196ba5418fa158a2084a8394092b2d4708c14a50c10e99eae052",
+        "spec": "480658a7b88ce45028e3314e331f15e3b00e0d4efa006b6cc0c28597618fd99c",
+        "video": "403eecc8b0526ef34a13011f341ff3b08d05022c56ab2b57d73376955b505612",
+        "video_validation": "ca204f0caa54fe54a7da7a432cec8211c980d3b433297a57094c09038023aa35"
+      },
+      "behavior_id": "look_away_reset",
+      "motion_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/look_away_reset/look_away_reset.motion.npz",
+      "motion_validation_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/look_away_reset/look_away_reset.motion.validation.json",
+      "render_manifest_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/look_away_reset/look_away_reset.render.json",
+      "spec_path": "/workspace/ardy/pose_specs/look_away_reset.json",
+      "spec_sha256": "480658a7b88ce45028e3314e331f15e3b00e0d4efa006b6cc0c28597618fd99c",
+      "spec_snapshot": {
+        "ambient_motion": {
+          "breathing_cycles": 1.2,
+          "breathing_degrees": 0.45,
+          "enabled": true,
+          "head_sway_degrees": 0.08,
+          "sway_cycles": 1.0,
+          "sway_degrees": 0.2
+        },
+        "base_pose": {
+          "frame": 0,
+          "mode": "authored_neutral",
+          "motion_path": null
+        },
+        "behavior_id": "look_away_reset",
+        "behavior_type": "one_shot",
+        "boundary_seconds": 0.5,
+        "camera": {
+          "background_rgb": [
+            238,
+            241,
+            246
+          ],
+          "body_rgb": [
+            76,
+            112,
+            176
+          ],
+          "look_at": [
+            0.0,
+            0.54,
+            0.0
+          ],
+          "position": [
+            0.0,
+            0.56,
+            2.3
+          ],
+          "render_resolution": [
+            540,
+            960
+          ],
+          "resolution": [
+            1080,
+            1920
+          ],
+          "up": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "vertical_fov_degrees": 25.0
+        },
+        "description": "Light approximately 40-degree look away with a restrained torso follow, then an exact return.",
+        "duration_seconds": 4.8,
+        "face_intent": {
+          "blink": "natural",
+          "expression": "neutral_reset",
+          "gaze": "away_left_then_camera",
+          "intensity": 0.35
+        },
+        "fps": 30,
+        "keyframes": [
+          {
+            "joints": {
+              "Head": {
+                "rotation_degrees": [
+                  -0.5,
+                  -5.0,
+                  0.0
+                ]
+              },
+              "Neck": {
+                "rotation_degrees": [
+                  0.0,
+                  -2.0,
+                  0.0
+                ]
+              },
+              "Spine3": {
+                "rotation_degrees": [
+                  0.0,
+                  -0.5,
+                  0.0
+                ]
+              }
+            },
+            "label": "turn begins",
+            "time_seconds": 0.95
+          },
+          {
+            "joints": {
+              "Head": {
+                "rotation_degrees": [
+                  -1.0,
+                  -25.0,
+                  0.8
+                ]
+              },
+              "Neck": {
+                "rotation_degrees": [
+                  -0.5,
+                  -8.0,
+                  0.4
+                ]
+              },
+              "Spine2": {
+                "rotation_degrees": [
+                  0.0,
+                  -1.0,
+                  0.0
+                ]
+              },
+              "Spine3": {
+                "rotation_degrees": [
+                  0.0,
+                  -2.5,
+                  0.0
+                ]
+              }
+            },
+            "label": "look-away peak",
+            "time_seconds": 1.75
+          },
+          {
+            "joints": {
+              "Head": {
+                "rotation_degrees": [
+                  -1.0,
+                  -24.0,
+                  0.8
+                ]
+              },
+              "Neck": {
+                "rotation_degrees": [
+                  -0.5,
+                  -7.5,
+                  0.4
+                ]
+              },
+              "Spine2": {
+                "rotation_degrees": [
+                  0.0,
+                  -0.9,
+                  0.0
+                ]
+              },
+              "Spine3": {
+                "rotation_degrees": [
+                  0.0,
+                  -2.3,
+                  0.0
+                ]
+              }
+            },
+            "label": "look-away hold",
+            "time_seconds": 2.8
+          },
+          {
+            "joints": {
+              "Head": {
+                "rotation_degrees": [
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              "Neck": {
+                "rotation_degrees": [
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              "Spine2": {
+                "rotation_degrees": [
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              "Spine3": {
+                "rotation_degrees": [
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            "label": "returned neutral",
+            "time_seconds": 3.85
+          }
+        ],
+        "locks": [
+          "Hips",
+          "RightUpLeg",
+          "RightLeg",
+          "RightFoot",
+          "RightToeBase",
+          "LeftUpLeg",
+          "LeftLeg",
+          "LeftFoot",
+          "LeftToeBase",
+          "RightShoulder",
+          "LeftShoulder"
+        ],
+        "schema_version": 1,
+        "source_reference": "/workspace/ardy/some_videos/look_away_with_idle_boundaries.mp4",
+        "speaking_mode": "either"
+      },
+      "video_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/look_away_reset/look_away_reset.mp4",
+      "video_validation_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/look_away_reset/look_away_reset.video.validation.json"
+    },
+    {
+      "artifact_sha256": {
+        "motion": "5601ea4f9d2bb2e0833a306a293d4101a1b74fa1507a77850e56abce715fc1c4",
+        "motion_validation": "10508071452c75da16e4e4012ba1dba9e565d2085cd2a8e3d0d6f54e172fc190",
+        "render_manifest": "5c8fe53a3f6603ac5b2e4a664906d7335f9b788f0725a765f0007a7c87a77e2c",
+        "spec": "d8a7c0e093fb6f36a8305761c5fe0fa0887fc414706939c04f199e1cea54766f",
+        "video": "683ee24ac5f10ef6ee4174a8befc300aa4effb1fb876551551f1cfe9cc5d7424",
+        "video_validation": "a87605aac646f55e59bd515b24f12b1e155bbb5635273f4b6a53a425850c8447"
+      },
+      "behavior_id": "neutral_resting",
+      "motion_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/neutral_resting/neutral_resting.motion.npz",
+      "motion_validation_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/neutral_resting/neutral_resting.motion.validation.json",
+      "render_manifest_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/neutral_resting/neutral_resting.render.json",
+      "spec_path": "/workspace/ardy/pose_specs/neutral_resting.json",
+      "spec_sha256": "d8a7c0e093fb6f36a8305761c5fe0fa0887fc414706939c04f199e1cea54766f",
+      "spec_snapshot": {
+        "ambient_motion": {
+          "breathing_cycles": 2.5,
+          "breathing_degrees": 0.75,
+          "enabled": true,
+          "head_sway_degrees": 0.3,
+          "sway_cycles": 1.0,
+          "sway_degrees": 0.55
+        },
+        "base_pose": {
+          "frame": 0,
+          "mode": "authored_neutral",
+          "motion_path": null
+        },
+        "behavior_id": "neutral_resting",
+        "behavior_type": "loop",
+        "boundary_seconds": 0.5,
+        "camera": {
+          "background_rgb": [
+            238,
+            241,
+            246
+          ],
+          "body_rgb": [
+            76,
+            112,
+            176
+          ],
+          "look_at": [
+            0.0,
+            0.54,
+            0.0
+          ],
+          "position": [
+            0.0,
+            0.56,
+            2.3
+          ],
+          "render_resolution": [
+            540,
+            960
+          ],
+          "resolution": [
+            1080,
+            1920
+          ],
+          "up": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "vertical_fov_degrees": 25.0
+        },
+        "description": "Canonical video-call idle with restrained breathing and posture sway.",
+        "duration_seconds": 10.0,
+        "face_intent": {
+          "blink": "natural",
+          "expression": "neutral",
+          "gaze": "camera",
+          "intensity": 0.1
+        },
+        "fps": 30,
+        "keyframes": [],
+        "locks": [
+          "Hips",
+          "RightUpLeg",
+          "RightLeg",
+          "RightFoot",
+          "RightToeBase",
+          "LeftUpLeg",
+          "LeftLeg",
+          "LeftFoot",
+          "LeftToeBase"
+        ],
+        "schema_version": 1,
+        "source_reference": "/workspace/ardy/some_videos/default_idle_master.mp4",
+        "speaking_mode": "either"
+      },
+      "video_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/neutral_resting/neutral_resting.mp4",
+      "video_validation_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/neutral_resting/neutral_resting.video.validation.json"
+    },
+    {
+      "artifact_sha256": {
+        "motion": "4880825a739b338c7f71c67480e000a298d702f4a0c5dec45a5cb88d847c30ca",
+        "motion_validation": "98c866f29269c16dd5288294c25faac32442f94e4661fa05eceb48356b36a983",
+        "render_manifest": "21319f0e89f5eade84b3d60b18a1fa481687545c6212f29b7f5efeee8e43c410",
+        "spec": "cf112de137fab568a6f99ce579ddf265f4135d72d5ef75ab4a102b8eadbafde1",
+        "video": "7943cd19a33e168639abca3750f77150a6f56223d65d7c4fead7748fde3a4fd9",
+        "video_validation": "79192725e5a8e18a84ff6b0d5006c0743f000a918573d1f71d114d5eb7735291"
+      },
+      "behavior_id": "nod_agree",
+      "motion_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/nod_agree/nod_agree.motion.npz",
+      "motion_validation_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/nod_agree/nod_agree.motion.validation.json",
+      "render_manifest_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/nod_agree/nod_agree.render.json",
+      "spec_path": "/workspace/ardy/pose_specs/nod_agree.json",
+      "spec_sha256": "cf112de137fab568a6f99ce579ddf265f4135d72d5ef75ab4a102b8eadbafde1",
+      "spec_snapshot": {
+        "ambient_motion": {
+          "breathing_cycles": 1.0,
+          "breathing_degrees": 0.35,
+          "enabled": true,
+          "head_sway_degrees": 0.04,
+          "sway_cycles": 1.0,
+          "sway_degrees": 0.12
+        },
+        "base_pose": {
+          "frame": 0,
+          "mode": "authored_neutral",
+          "motion_path": null
+        },
+        "behavior_id": "nod_agree",
+        "behavior_type": "one_shot",
+        "boundary_seconds": 0.5,
+        "camera": {
+          "background_rgb": [
+            238,
+            241,
+            246
+          ],
+          "body_rgb": [
+            76,
+            112,
+            176
+          ],
+          "look_at": [
+            0.0,
+            0.54,
+            0.0
+          ],
+          "position": [
+            0.0,
+            0.56,
+            2.3
+          ],
+          "render_resolution": [
+            540,
+            960
+          ],
+          "resolution": [
+            1080,
+            1920
+          ],
+          "up": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "vertical_fov_degrees": 25.0
+        },
+        "description": "One restrained natural nod returning to the exact canonical neutral boundary.",
+        "duration_seconds": 2.8,
+        "face_intent": {
+          "blink": "natural",
+          "expression": "agreeable_neutral",
+          "gaze": "camera",
+          "intensity": 0.25
+        },
+        "fps": 30,
+        "keyframes": [
+          {
+            "joints": {
+              "Head": {
+                "rotation_degrees": [
+                  -1.5,
+                  0.0,
+                  0.0
+                ]
+              },
+              "Neck": {
+                "rotation_degrees": [
+                  -0.8,
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            "label": "small anticipation",
+            "time_seconds": 0.75
+          },
+          {
+            "joints": {
+              "Head": {
+                "rotation_degrees": [
+                  8.5,
+                  0.0,
+                  0.0
+                ]
+              },
+              "Neck": {
+                "rotation_degrees": [
+                  3.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              "Spine3": {
+                "rotation_degrees": [
+                  0.6,
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            "label": "nod peak",
+            "time_seconds": 1.08
+          },
+          {
+            "joints": {
+              "Head": {
+                "rotation_degrees": [
+                  -1.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              "Neck": {
+                "rotation_degrees": [
+                  -0.4,
+                  0.0,
+                  0.0
+                ]
+              },
+              "Spine3": {
+                "rotation_degrees": [
+                  -0.15,
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            "label": "small rebound",
+            "time_seconds": 1.36
+          },
+          {
+            "joints": {
+              "Head": {
+                "rotation_degrees": [
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              "Neck": {
+                "rotation_degrees": [
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              "Spine3": {
+                "rotation_degrees": [
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            "label": "returned neutral",
+            "time_seconds": 1.9
+          }
+        ],
+        "locks": [
+          "Hips",
+          "RightUpLeg",
+          "RightLeg",
+          "RightFoot",
+          "RightToeBase",
+          "LeftUpLeg",
+          "LeftLeg",
+          "LeftFoot",
+          "LeftToeBase",
+          "RightShoulder",
+          "LeftShoulder"
+        ],
+        "schema_version": 1,
+        "source_reference": "/workspace/ardy/some_videos/nod_with_idle_boundaries.mp4",
+        "speaking_mode": "either"
+      },
+      "video_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/nod_agree/nod_agree.mp4",
+      "video_validation_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/nod_agree/nod_agree.video.validation.json"
+    },
+    {
+      "artifact_sha256": {
+        "motion": "b48ab53ab2f71a37438013e21b4626e949b4dba89c489c5858e161914c3c137b",
+        "motion_validation": "d6e6ba872d365186b8aacc60e35b33e121fa9930496a3ccdddd40e3046af2648",
+        "render_manifest": "0c70d1b2f033c4bd78223abe99c63a08a6be60aef495f2efcd242524b250d271",
+        "spec": "d7839249a41eec09d803b743897f7396f02deee7b4979448550ffd81c67400e2",
+        "video": "f645cc196b595908398a6cf0e1f7f0e453216f8ea7e7853facd20f721f9b1e19",
+        "video_validation": "a7d5c94df61d80fc766b412b8b53cf50275cbf55ab2c52b7e4011d1153df4090"
+      },
+      "behavior_id": "speaking_direct",
+      "motion_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/speaking_direct/speaking_direct.motion.npz",
+      "motion_validation_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/speaking_direct/speaking_direct.motion.validation.json",
+      "render_manifest_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/speaking_direct/speaking_direct.render.json",
+      "spec_path": "/workspace/ardy/pose_specs/speaking_direct.json",
+      "spec_sha256": "d7839249a41eec09d803b743897f7396f02deee7b4979448550ffd81c67400e2",
+      "spec_snapshot": {
+        "ambient_motion": {
+          "breathing_cycles": 2.4,
+          "breathing_degrees": 0.55,
+          "enabled": true,
+          "head_sway_degrees": 0.35,
+          "sway_cycles": 1.25,
+          "sway_degrees": 0.25
+        },
+        "base_pose": {
+          "frame": 0,
+          "mode": "authored_neutral",
+          "motion_path": null
+        },
+        "behavior_id": "speaking_direct",
+        "behavior_type": "loop",
+        "boundary_seconds": 0.5,
+        "camera": {
+          "background_rgb": [
+            238,
+            241,
+            246
+          ],
+          "body_rgb": [
+            76,
+            112,
+            176
+          ],
+          "look_at": [
+            0.0,
+            0.54,
+            0.0
+          ],
+          "position": [
+            0.0,
+            0.56,
+            2.3
+          ],
+          "render_resolution": [
+            540,
+            960
+          ],
+          "resolution": [
+            1080,
+            1920
+          ],
+          "up": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "vertical_fov_degrees": 25.0
+        },
+        "description": "Front-facing speaking loop with continuous natural conversational head motion, restrained emphasis beats, and a neutral mouth reserved for MuseTalk lip-sync.",
+        "duration_seconds": 10.0,
+        "face_intent": {
+          "blink": "natural_sparse_avoid_boundary_frames",
+          "expression": "neutral_speaking_mouth_reserved_for_downstream_lip_sync",
+          "gaze": "camera_with_natural_eye_micro_motion",
+          "intensity": 0.1
+        },
+        "fps": 30,
+        "keyframes": [
+          {
+            "joints": {
+              "Head": {
+                "rotation_degrees": [
+                  1.45,
+                  -0.65,
+                  0.2
+                ]
+              },
+              "Neck": {
+                "rotation_degrees": [
+                  0.45,
+                  -0.35,
+                  0.1
+                ]
+              },
+              "Spine2": {
+                "rotation_degrees": [
+                  0.25,
+                  0.0,
+                  0.08
+                ]
+              },
+              "Spine3": {
+                "rotation_degrees": [
+                  0.35,
+                  0.0,
+                  0.1
+                ]
+              }
+            },
+            "label": "small opening emphasis",
+            "time_seconds": 1.15
+          },
+          {
+            "joints": {
+              "Head": {
+                "rotation_degrees": [
+                  -0.8,
+                  0.9,
+                  -0.15
+                ]
+              },
+              "Neck": {
+                "rotation_degrees": [
+                  -0.3,
+                  0.45,
+                  -0.08
+                ]
+              },
+              "Spine2": {
+                "rotation_degrees": [
+                  -0.1,
+                  0.0,
+                  -0.05
+                ]
+              },
+              "Spine3": {
+                "rotation_degrees": [
+                  -0.15,
+                  0.0,
+                  -0.08
+                ]
+              }
+            },
+            "label": "conversational release",
+            "time_seconds": 2.05
+          },
+          {
+            "joints": {
+              "Head": {
+                "rotation_degrees": [
+                  1.85,
+                  0.35,
+                  0.08
+                ]
+              },
+              "Neck": {
+                "rotation_degrees": [
+                  0.55,
+                  0.2,
+                  0.04
+                ]
+              },
+              "Spine2": {
+                "rotation_degrees": [
+                  0.3,
+                  0.0,
+                  0.04
+                ]
+              },
+              "Spine3": {
+                "rotation_degrees": [
+                  0.42,
+                  0.0,
+                  0.06
+                ]
+              }
+            },
+            "label": "affirming micro nod",
+            "time_seconds": 3.05
+          },
+          {
+            "joints": {
+              "Head": {
+                "rotation_degrees": [
+                  -0.45,
+                  -1.35,
+                  -0.35
+                ]
+              },
+              "Neck": {
+                "rotation_degrees": [
+                  -0.15,
+                  -0.7,
+                  -0.15
+                ]
+              },
+              "Spine2": {
+                "rotation_degrees": [
+                  0.05,
+                  0.0,
+                  -0.1
+                ]
+              },
+              "Spine3": {
+                "rotation_degrees": [
+                  0.1,
+                  0.0,
+                  -0.15
+                ]
+              }
+            },
+            "label": "light left-side thought beat",
+            "time_seconds": 4.1
+          },
+          {
+            "joints": {
+              "Head": {
+                "rotation_degrees": [
+                  2.1,
+                  0.15,
+                  0.0
+                ]
+              },
+              "Neck": {
+                "rotation_degrees": [
+                  0.6,
+                  0.1,
+                  0.0
+                ]
+              },
+              "Spine2": {
+                "rotation_degrees": [
+                  0.35,
+                  0.0,
+                  0.0
+                ]
+              },
+              "Spine3": {
+                "rotation_degrees": [
+                  0.48,
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            "label": "centered phrase emphasis",
+            "time_seconds": 5.15
+          },
+          {
+            "joints": {
+              "Head": {
+                "rotation_degrees": [
+                  -0.65,
+                  1.45,
+                  0.32
+                ]
+              },
+              "Neck": {
+                "rotation_degrees": [
+                  -0.25,
+                  0.75,
+                  0.14
+                ]
+              },
+              "Spine2": {
+                "rotation_degrees": [
+                  -0.08,
+                  0.0,
+                  0.1
+                ]
+              },
+              "Spine3": {
+                "rotation_degrees": [
+                  -0.12,
+                  0.0,
+                  0.14
+                ]
+              }
+            },
+            "label": "right-side conversational variation",
+            "time_seconds": 6.2
+          },
+          {
+            "joints": {
+              "Head": {
+                "rotation_degrees": [
+                  1.7,
+                  -0.45,
+                  -0.1
+                ]
+              },
+              "Neck": {
+                "rotation_degrees": [
+                  0.5,
+                  -0.25,
+                  -0.04
+                ]
+              },
+              "Spine2": {
+                "rotation_degrees": [
+                  0.28,
+                  0.0,
+                  -0.04
+                ]
+              },
+              "Spine3": {
+                "rotation_degrees": [
+                  0.4,
+                  0.0,
+                  -0.06
+                ]
+              }
+            },
+            "label": "second affirming beat",
+            "time_seconds": 7.25
+          },
+          {
+            "joints": {
+              "Head": {
+                "rotation_degrees": [
+                  -0.9,
+                  0.7,
+                  0.14
+                ]
+              },
+              "Neck": {
+                "rotation_degrees": [
+                  -0.35,
+                  0.35,
+                  0.06
+                ]
+              },
+              "Spine2": {
+                "rotation_degrees": [
+                  -0.12,
+                  0.0,
+                  0.04
+                ]
+              },
+              "Spine3": {
+                "rotation_degrees": [
+                  -0.18,
+                  0.0,
+                  0.06
+                ]
+              }
+            },
+            "label": "soft phrase release",
+            "time_seconds": 8.2
+          },
+          {
+            "joints": {
+              "Head": {
+                "rotation_degrees": [
+                  0.65,
+                  -0.2,
+                  0.0
+                ]
+              },
+              "Neck": {
+                "rotation_degrees": [
+                  0.2,
+                  -0.1,
+                  0.0
+                ]
+              },
+              "Spine2": {
+                "rotation_degrees": [
+                  0.12,
+                  0.0,
+                  0.0
+                ]
+              },
+              "Spine3": {
+                "rotation_degrees": [
+                  0.18,
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            "label": "natural return toward speaking baseline",
+            "time_seconds": 9.15
+          }
+        ],
+        "locks": [
+          "Hips",
+          "RightUpLeg",
+          "RightLeg",
+          "RightFoot",
+          "RightToeBase",
+          "LeftUpLeg",
+          "LeftLeg",
+          "LeftFoot",
+          "LeftToeBase",
+          "RightShoulder",
+          "LeftShoulder"
+        ],
+        "schema_version": 1,
+        "source_reference": null,
+        "speaking_mode": "speaking"
+      },
+      "video_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/speaking_direct/speaking_direct.mp4",
+      "video_validation_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/speaking_direct/speaking_direct.video.validation.json"
+    },
+    {
+      "artifact_sha256": {
+        "motion": "9ab044ea9c08a5032e87525bf3b432bcded40388ea4c30f3199b3ac792656bad",
+        "motion_validation": "c942c57a508ed7e6d40eebe11f6c63fbdc896d8a76f18ef04d5c149c859260a4",
+        "render_manifest": "100163785139dfce6fe1c3da003389e911aa35e2c87e99e952e51fdaf74fac4d",
+        "spec": "32cf01791fedc24f1deb9ec8724cbe99a3f3a3703f1e2b4d79a60609fdc66ce5",
+        "video": "e1c806ae3eca0dd2527aecd5bb548e3b0933797d3714ef03a7c36b842e1a9b09",
+        "video_validation": "e10aa229ff1e14d3f74f117347f7ea84495fe56bc6ba51bc5ef806f14104a50b"
+      },
+      "behavior_id": "thinking_glance",
+      "motion_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/thinking_glance/thinking_glance.motion.npz",
+      "motion_validation_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/thinking_glance/thinking_glance.motion.validation.json",
+      "render_manifest_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/thinking_glance/thinking_glance.render.json",
+      "spec_path": "/workspace/ardy/pose_specs/thinking_glance.json",
+      "spec_sha256": "32cf01791fedc24f1deb9ec8724cbe99a3f3a3703f1e2b4d79a60609fdc66ce5",
+      "spec_snapshot": {
+        "ambient_motion": {
+          "breathing_cycles": 1.0,
+          "breathing_degrees": 0.45,
+          "enabled": true,
+          "head_sway_degrees": 0.06,
+          "sway_cycles": 1.0,
+          "sway_degrees": 0.18
+        },
+        "base_pose": {
+          "frame": 0,
+          "mode": "authored_neutral",
+          "motion_path": null
+        },
+        "behavior_id": "thinking_glance",
+        "behavior_type": "one_shot",
+        "boundary_seconds": 0.5,
+        "camera": {
+          "background_rgb": [
+            238,
+            241,
+            246
+          ],
+          "body_rgb": [
+            76,
+            112,
+            176
+          ],
+          "look_at": [
+            0.0,
+            0.54,
+            0.0
+          ],
+          "position": [
+            0.0,
+            0.56,
+            2.3
+          ],
+          "render_resolution": [
+            540,
+            960
+          ],
+          "resolution": [
+            1080,
+            1920
+          ],
+          "up": [
+            0.0,
+            1.0,
+            0.0
+          ],
+          "vertical_fov_degrees": 25.0
+        },
+        "description": "Brief eyes-led down-side glance with a restrained head and torso follow while processing.",
+        "duration_seconds": 4.2,
+        "face_intent": {
+          "blink": "optional_single_blink_during_return_not_at_boundaries",
+          "expression": "quiet_concentration_then_release",
+          "gaze": "eyes_lead_down_and_to_side_then_return_to_camera",
+          "intensity": 0.28
+        },
+        "fps": 30,
+        "keyframes": [
+          {
+            "joints": {
+              "Head": {
+                "rotation_degrees": [
+                  1.6,
+                  3.0,
+                  0.4
+                ]
+              },
+              "Neck": {
+                "rotation_degrees": [
+                  0.5,
+                  1.2,
+                  0.0
+                ]
+              },
+              "Spine3": {
+                "rotation_degrees": [
+                  0.0,
+                  0.25,
+                  0.0
+                ]
+              }
+            },
+            "label": "eyes lead and head begins to follow",
+            "time_seconds": 0.9
+          },
+          {
+            "joints": {
+              "Head": {
+                "rotation_degrees": [
+                  5.5,
+                  8.0,
+                  1.1
+                ]
+              },
+              "Neck": {
+                "rotation_degrees": [
+                  1.5,
+                  3.0,
+                  0.4
+                ]
+              },
+              "Spine3": {
+                "rotation_degrees": [
+                  0.0,
+                  0.8,
+                  0.0
+                ]
+              }
+            },
+            "label": "down-side thinking glance peak",
+            "time_seconds": 1.5
+          },
+          {
+            "joints": {
+              "Head": {
+                "rotation_degrees": [
+                  5.1,
+                  7.5,
+                  1.0
+                ]
+              },
+              "Neck": {
+                "rotation_degrees": [
+                  1.4,
+                  2.8,
+                  0.4
+                ]
+              },
+              "Spine3": {
+                "rotation_degrees": [
+                  0.0,
+                  0.7,
+                  0.0
+                ]
+              }
+            },
+            "label": "brief reflective hold",
+            "time_seconds": 2.35
+          },
+          {
+            "joints": {
+              "Head": {
+                "rotation_degrees": [
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              "Neck": {
+                "rotation_degrees": [
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              "Spine3": {
+                "rotation_degrees": [
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            "label": "camera attention restored",
+            "time_seconds": 3.3
+          }
+        ],
+        "locks": [
+          "Hips",
+          "RightUpLeg",
+          "RightLeg",
+          "RightFoot",
+          "RightToeBase",
+          "LeftUpLeg",
+          "LeftLeg",
+          "LeftFoot",
+          "LeftToeBase",
+          "RightShoulder",
+          "LeftShoulder"
+        ],
+        "schema_version": 1,
+        "source_reference": null,
+        "speaking_mode": "listening"
+      },
+      "video_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/thinking_glance/thinking_glance.mp4",
+      "video_validation_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/thinking_glance/thinking_glance.video.validation.json"
+    }
+  ],
+  "contract": {
+    "behavior_timing": {
+      "active_listening": {
+        "closing_boundary_start_frame": 225,
+        "duration_seconds": 8.0,
+        "frames": 240,
+        "opening_boundary_start_frame": 0
+      },
+      "amused_laugh": {
+        "closing_boundary_start_frame": 111,
+        "duration_seconds": 4.2,
+        "frames": 126,
+        "opening_boundary_start_frame": 0
+      },
+      "curious_eyebrow_or_nod": {
+        "closing_boundary_start_frame": 93,
+        "duration_seconds": 3.6,
+        "frames": 108,
+        "opening_boundary_start_frame": 0
+      },
+      "empathetic_head_tilt": {
+        "closing_boundary_start_frame": 129,
+        "duration_seconds": 4.8,
+        "frames": 144,
+        "opening_boundary_start_frame": 0
+      },
+      "light_smile": {
+        "closing_boundary_start_frame": 105,
+        "duration_seconds": 4.0,
+        "frames": 120,
+        "opening_boundary_start_frame": 0
+      },
+      "look_away_reset": {
+        "closing_boundary_start_frame": 129,
+        "duration_seconds": 4.8,
+        "frames": 144,
+        "opening_boundary_start_frame": 0
+      },
+      "neutral_resting": {
+        "closing_boundary_start_frame": 285,
+        "duration_seconds": 10.0,
+        "frames": 300,
+        "opening_boundary_start_frame": 0
+      },
+      "nod_agree": {
+        "closing_boundary_start_frame": 69,
+        "duration_seconds": 2.8,
+        "frames": 84,
+        "opening_boundary_start_frame": 0
+      },
+      "speaking_direct": {
+        "closing_boundary_start_frame": 285,
+        "duration_seconds": 10.0,
+        "frames": 300,
+        "opening_boundary_start_frame": 0
+      },
+      "thinking_glance": {
+        "closing_boundary_start_frame": 111,
+        "duration_seconds": 4.2,
+        "frames": 126,
+        "opening_boundary_start_frame": 0
+      }
+    },
+    "boundary_frames": 15,
+    "boundary_seconds": 0.5,
+    "camera": {
+      "background_rgb": [
+        238,
+        241,
+        246
+      ],
+      "body_rgb": [
+        76,
+        112,
+        176
+      ],
+      "look_at": [
+        0.0,
+        0.54,
+        0.0
+      ],
+      "position": [
+        0.0,
+        0.56,
+        2.3
+      ],
+      "resolution": [
+        1080,
+        1920
+      ],
+      "up": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "vertical_fov_degrees": 25.0
+    },
+    "canonical_base_pose": {
+      "mode": "authored_neutral"
+    },
+    "encoder": {
+      "all_intra": true,
+      "audio_stream_count": 0,
+      "codec": "H.264/libx264",
+      "codec_name": "h264",
+      "color_primaries": "bt709",
+      "color_space": "bt709",
+      "color_transfer": "bt709",
+      "crf": 0,
+      "pixel_format": "yuv420p",
+      "preset": "medium",
+      "profile_policy": "recorded_not_constrained_reference_master"
+    },
+    "fps": 30
+  },
+  "created_at_utc": "2026-07-27T00:11:50.895603+00:00",
+  "kind": "ardy_pose_video_library",
+  "library_validation_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/library.validation.json",
+  "observed_media": {
+    "all_intra_values": [
+      true
+    ],
+    "audio_stream_counts": [
+      0
+    ],
+    "codec_names": [
+      "h264"
+    ],
+    "color_primaries": [
+      "bt709"
+    ],
+    "color_ranges": [
+      "tv"
+    ],
+    "color_spaces": [
+      "bt709"
+    ],
+    "color_transfers": [
+      "bt709"
+    ],
+    "levels": [
+      40
+    ],
+    "picture_type_sets": [
+      {
+        "I": 84
+      },
+      {
+        "I": 108
+      },
+      {
+        "I": 120
+      },
+      {
+        "I": 126
+      },
+      {
+        "I": 144
+      },
+      {
+        "I": 240
+      },
+      {
+        "I": 300
+      }
+    ],
+    "pixel_formats": [
+      "yuv420p"
+    ],
+    "profiles": [
+      "High 4:4:4 Intra"
+    ]
+  },
+  "passed": true,
+  "runtime_switch_protocol": {
+    "do_not": "jump between arbitrary interior frames",
+    "safe_switch_window_frames": 15,
+    "transition_in": "start the next asset at frame zero",
+    "transition_out": "play the current asset through its final canonical block"
+  },
+  "schema_version": 1,
+  "switch_test_path": "/workspace/ardy/outputs/pose_library_cleaneyes_extra_slow_blink40_v1/switch_stress_test.mp4"
+}
