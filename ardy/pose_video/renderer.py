@@ -196,12 +196,43 @@ def facial_cue_for_frame(
     elif behavior_id == "active_listening":
         cue["left_brow"] = 0.08 * envelope
         cue["right_brow"] = 0.08 * envelope
+    elif behavior_id == "active_listening_empathetic_v1":
+        cue["left_brow"] = 0.12 * envelope
+        cue["right_brow"] = 0.12 * envelope
+        glance = envelope * float(np.exp(-0.5 * ((phase - 0.48) / 0.10) ** 2))
+        cue["gaze_horizontal"] = -0.12 * glance
+        cue["gaze_vertical"] = -0.04 * glance
 
     if behavior_id == "thinking_glance":
         cue["gaze_horizontal"] = 0.85 * envelope
         cue["gaze_vertical"] = -0.70 * envelope
     elif behavior_id == "look_away_reset":
         cue["gaze_horizontal"] = -0.35 * envelope
+    elif behavior_id == "speaking_direct_v2":
+        # A speaker does not keep the upper face perfectly frozen.  These are
+        # brief, low-amplitude eye-led checks and brow impulses aligned to
+        # phrase stresses; the mouth remains completely available to MuseTalk.
+        early_glance = float(np.exp(-0.5 * ((phase - 0.17) / 0.055) ** 2))
+        center_glance = float(np.exp(-0.5 * ((phase - 0.64) / 0.070) ** 2))
+        late_glance = float(np.exp(-0.5 * ((phase - 0.82) / 0.050) ** 2))
+        cue["gaze_horizontal"] = envelope * (
+            -0.08 * early_glance + 0.18 * center_glance - 0.10 * late_glance
+        )
+        cue["gaze_vertical"] = envelope * (
+            0.015 * early_glance - 0.055 * center_glance - 0.025 * late_glance
+        )
+
+        emphasis = sum(
+            amplitude * float(np.exp(-0.5 * ((phase - center) / width) ** 2))
+            for center, width, amplitude in (
+                (0.08, 0.035, 0.11),
+                (0.30, 0.040, 0.18),
+                (0.57, 0.045, 0.15),
+                (0.84, 0.040, 0.13),
+            )
+        )
+        cue["left_brow"] = envelope * 0.72 * emphasis
+        cue["right_brow"] = envelope * emphasis
     return cue
 
 

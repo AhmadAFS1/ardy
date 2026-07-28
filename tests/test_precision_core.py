@@ -36,6 +36,9 @@ from ardy.skeleton.registry import build_skeleton
 REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
 SPEC_PATHS = tuple(sorted((REPOSITORY_ROOT / "pose_specs").glob("*.json")))
 ALL_SPEC_PATHS = tuple(sorted((REPOSITORY_ROOT / "pose_specs").rglob("*.json")))
+CANDIDATE_SPEC_PATHS = tuple(
+    sorted((REPOSITORY_ROOT / "pose_candidate_specs" / "speaking_listening_v2").glob("*.json"))
+)
 
 
 def _minimal_spec(**updates: object) -> BehaviorSpec:
@@ -186,6 +189,60 @@ class DeterministicCompositionTests(unittest.TestCase):
                 self.assertTrue(np.array_equal(actual.root_positions, expected.root_positions))
                 self.assertTrue(np.array_equal(actual.posed_joints, expected.posed_joints))
                 self.assertEqual(actual.metadata, expected.metadata)
+
+    def test_speaking_and_listening_v2_candidates_share_the_release_boundary(self) -> None:
+        self.assertEqual(len(CANDIDATE_SPEC_PATHS), 2)
+        candidates = [compose_behavior(load_behavior_spec(path)) for path in CANDIDATE_SPEC_PATHS]
+        reference = self.motions[0]
+        boundary = reference.boundary_frames
+        self.assertEqual(
+            {motion.behavior_id for motion in candidates},
+            {"speaking_direct_v2", "active_listening_empathetic_v1"},
+        )
+        for motion in candidates:
+            with self.subTest(behavior_id=motion.behavior_id):
+                self.assertEqual(motion.fps, 30)
+                self.assertEqual(motion.boundary_frames, 15)
+                self.assertTrue(
+                    np.array_equal(reference.local_rot_mats[:boundary], motion.local_rot_mats[:boundary])
+                )
+                self.assertTrue(
+                    np.array_equal(reference.local_rot_mats[:boundary], motion.local_rot_mats[-boundary:])
+                )
+                self.assertTrue(
+                    np.array_equal(reference.posed_joints[:boundary], motion.posed_joints[:boundary])
+                )
+                self.assertTrue(
+                    np.array_equal(reference.posed_joints[:boundary], motion.posed_joints[-boundary:])
+                )
+
+    def test_speaking_v2_uses_irregular_diagonal_targets_and_shoulder_countermotion(self) -> None:
+        path = next(path for path in CANDIDATE_SPEC_PATHS if path.stem == "speaking_direct_v2")
+        spec = load_behavior_spec(path)
+        intervals = np.diff([keyframe.time_seconds for keyframe in spec.keyframes])
+        self.assertGreater(float(np.ptp(intervals)), 0.5)
+        self.assertGreater(len(spec.keyframes), 36)
+        self.assertNotIn("RightShoulder", spec.locks)
+        self.assertNotIn("LeftShoulder", spec.locks)
+        self.assertNotIn("RightArm", spec.locks)
+        self.assertNotIn("LeftArm", spec.locks)
+        head_targets = np.asarray(
+            [
+                keyframe.joints["Head"].rotation_degrees
+                for keyframe in spec.keyframes
+                if "Head" in keyframe.joints
+            ]
+        )
+        self.assertTrue(np.any(np.abs(head_targets[:, 0]) > 0.5))
+        self.assertTrue(np.any(np.abs(head_targets[:, 1]) > 0.5))
+        self.assertTrue(np.any(np.abs(head_targets[:, 2]) > 0.2))
+        self.assertGreater(float(np.max(np.abs(head_targets[:, 0]))), 3.5)
+        self.assertTrue(
+            any(
+                "RightArm" in keyframe.joints or "LeftArm" in keyframe.joints
+                for keyframe in spec.keyframes
+            )
+        )
 
     def test_all_assets_share_exact_opening_and_ending_motion_blocks(self) -> None:
         reference = self.motions[0]

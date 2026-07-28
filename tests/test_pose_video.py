@@ -358,6 +358,13 @@ class RenderingTests(unittest.TestCase):
         smile_release = facial_cue_for_frame("light_smile", 105, 120, 30.0)
         curious = facial_cue_for_frame("curious_eyebrow_or_nod", 60, 120, 30.0)
         thinking = facial_cue_for_frame("thinking_glance", 60, 120, 30.0)
+        merged_listening = facial_cue_for_frame(
+            "active_listening_empathetic_v1",
+            60,
+            240,
+            30.0,
+        )
+        speaking_v2 = facial_cue_for_frame("speaking_direct_v2", 192, 300, 30.0)
         self.assertEqual(smile["smile"], 1.0)
         self.assertLess(smile_onset["smile"], smile["smile"])
         self.assertEqual(smile_hold["smile"], 1.0)
@@ -365,6 +372,16 @@ class RenderingTests(unittest.TestCase):
         self.assertGreater(curious["right_brow"], curious["left_brow"])
         self.assertGreater(thinking["gaze_horizontal"], 0.8)
         self.assertLess(thinking["gaze_vertical"], -0.6)
+        self.assertGreater(merged_listening["left_brow"], 0.0)
+        self.assertEqual(
+            merged_listening["left_brow"],
+            merged_listening["right_brow"],
+        )
+        self.assertLess(merged_listening["gaze_horizontal"], 0.0)
+        self.assertGreater(speaking_v2["gaze_horizontal"], 0.0)
+        self.assertLess(speaking_v2["gaze_vertical"], 0.0)
+        self.assertGreater(speaking_v2["right_brow"], speaking_v2["left_brow"])
+        self.assertGreater(speaking_v2["left_brow"], 0.0)
 
     def test_headless_core_skin_frame_has_fixed_pixels(self) -> None:
         motion = _identity_motion(frames=1)

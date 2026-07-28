@@ -1,0 +1,162 @@
+{
+  "schema_version": 1,
+  "behavior_id": "active_listening_empathetic_v1",
+  "description": "Merged attentive-listening and empathetic response loop with a restrained diagonal lean, one tiny acknowledgment nod, warm upper-face attention, and a gentle neutral return.",
+  "behavior_type": "loop",
+  "speaking_mode": "listening",
+  "fps": 30,
+  "duration_seconds": 8.0,
+  "boundary_seconds": 0.5,
+  "base_pose": {
+    "mode": "authored_neutral",
+    "motion_path": null,
+    "frame": 0
+  },
+  "locks": [
+    "Hips",
+    "RightUpLeg",
+    "RightLeg",
+    "RightFoot",
+    "RightToeBase",
+    "LeftUpLeg",
+    "LeftLeg",
+    "LeftFoot",
+    "LeftToeBase"
+  ],
+  "keyframes": [
+    {
+      "time_seconds": 0.85,
+      "label": "attention settles slightly forward",
+      "joints": {
+        "Spine1": {"rotation_degrees": [0.18, 0.0, -0.03]},
+        "Spine2": {"rotation_degrees": [0.32, 0.0, -0.05]},
+        "Spine3": {"rotation_degrees": [0.26, 0.0, -0.06]},
+        "Neck": {"rotation_degrees": [-0.15, -0.08, 0.18]},
+        "Head": {"rotation_degrees": [-0.25, -0.18, 0.45]}
+      }
+    },
+    {
+      "time_seconds": 1.65,
+      "label": "gentle empathetic diagonal begins",
+      "joints": {
+        "Spine1": {"rotation_degrees": [0.24, 0.04, -0.10]},
+        "Spine2": {"rotation_degrees": [0.42, 0.08, -0.16]},
+        "Spine3": {"rotation_degrees": [0.34, 0.12, 0.20]},
+        "RightShoulder": {"rotation_degrees": [0.03, 0.05, 0.10]},
+        "LeftShoulder": {"rotation_degrees": [-0.02, -0.04, -0.07]},
+        "Neck": {"rotation_degrees": [0.10, -0.35, 0.72]},
+        "Head": {"rotation_degrees": [0.25, -0.75, 1.85]}
+      }
+    },
+    {
+      "time_seconds": 2.45,
+      "label": "warm attention peak without a static hold",
+      "joints": {
+        "Spine1": {"rotation_degrees": [0.30, 0.06, -0.14]},
+        "Spine2": {"rotation_degrees": [0.52, 0.10, -0.22]},
+        "Spine3": {"rotation_degrees": [0.42, 0.16, 0.32]},
+        "RightShoulder": {"rotation_degrees": [0.06, 0.08, 0.14]},
+        "LeftShoulder": {"rotation_degrees": [-0.03, -0.05, -0.09]},
+        "Neck": {"rotation_degrees": [0.32, -0.52, 1.18]},
+        "Head": {"rotation_degrees": [0.75, -1.15, 3.15]}
+      }
+    },
+    {
+      "time_seconds": 3.35,
+      "label": "small attentive micro-adjustment",
+      "joints": {
+        "Spine1": {"rotation_degrees": [0.28, 0.04, -0.12]},
+        "Spine2": {"rotation_degrees": [0.48, 0.07, -0.19]},
+        "Spine3": {"rotation_degrees": [0.38, 0.12, 0.29]},
+        "Neck": {"rotation_degrees": [0.18, -0.42, 1.05]},
+        "Head": {"rotation_degrees": [0.40, -0.95, 2.85]}
+      }
+    },
+    {
+      "time_seconds": 3.90,
+      "label": "single tiny acknowledgment nod within the tilt",
+      "joints": {
+        "Spine1": {"rotation_degrees": [0.34, 0.03, -0.11]},
+        "Spine2": {"rotation_degrees": [0.58, 0.05, -0.17]},
+        "Spine3": {"rotation_degrees": [0.48, 0.09, 0.28]},
+        "RightShoulder": {"rotation_degrees": [0.04, 0.05, 0.09]},
+        "LeftShoulder": {"rotation_degrees": [-0.02, -0.03, -0.06]},
+        "Neck": {"rotation_degrees": [0.86, -0.34, 0.94]},
+        "Head": {"rotation_degrees": [2.20, -0.78, 2.55]}
+      }
+    },
+    {
+      "time_seconds": 4.35,
+      "label": "soft nod release retaining warm attention",
+      "joints": {
+        "Spine1": {"rotation_degrees": [0.26, 0.02, -0.10]},
+        "Spine2": {"rotation_degrees": [0.44, 0.04, -0.16]},
+        "Spine3": {"rotation_degrees": [0.35, 0.07, 0.25]},
+        "Neck": {"rotation_degrees": [0.12, -0.38, 1.00]},
+        "Head": {"rotation_degrees": [0.32, -0.88, 2.70]}
+      }
+    },
+    {
+      "time_seconds": 5.75,
+      "label": "diagonal listening posture softens",
+      "joints": {
+        "Spine1": {"rotation_degrees": [0.20, -0.02, -0.07]},
+        "Spine2": {"rotation_degrees": [0.34, -0.04, -0.11]},
+        "Spine3": {"rotation_degrees": [0.27, -0.06, 0.18]},
+        "RightShoulder": {"rotation_degrees": [0.02, 0.03, 0.05]},
+        "LeftShoulder": {"rotation_degrees": [-0.01, -0.02, -0.03]},
+        "Neck": {"rotation_degrees": [0.08, -0.18, 0.68]},
+        "Head": {"rotation_degrees": [0.22, -0.42, 1.80]}
+      }
+    },
+    {
+      "time_seconds": 6.65,
+      "label": "warm camera attention returns toward center",
+      "joints": {
+        "Spine1": {"rotation_degrees": [0.10, -0.01, -0.03]},
+        "Spine2": {"rotation_degrees": [0.18, -0.02, -0.05]},
+        "Spine3": {"rotation_degrees": [0.14, -0.03, 0.08]},
+        "Neck": {"rotation_degrees": [0.02, -0.08, 0.28]},
+        "Head": {"rotation_degrees": [0.08, -0.18, 0.70]}
+      }
+    },
+    {
+      "time_seconds": 7.25,
+      "label": "near-neutral switch handoff",
+      "joints": {
+        "Spine1": {"rotation_degrees": [0.02, 0.0, 0.0]},
+        "Spine2": {"rotation_degrees": [0.04, 0.0, -0.01]},
+        "Spine3": {"rotation_degrees": [0.03, 0.0, 0.01]},
+        "RightShoulder": {"rotation_degrees": [0.0, 0.0, 0.0]},
+        "LeftShoulder": {"rotation_degrees": [0.0, 0.0, 0.0]},
+        "Neck": {"rotation_degrees": [0.0, -0.02, 0.05]},
+        "Head": {"rotation_degrees": [0.02, -0.04, 0.12]}
+      }
+    }
+  ],
+  "ambient_motion": {
+    "enabled": true,
+    "breathing_cycles": 1.85,
+    "breathing_degrees": 0.38,
+    "sway_cycles": 0.92,
+    "sway_degrees": 0.13,
+    "head_sway_degrees": 0.09
+  },
+  "face_intent": {
+    "gaze": "warm_camera_attention_with_one_subtle_eye_led_micro_glance",
+    "expression": "soft_empathetic_attention_without_a_fixed_smile",
+    "blink": "natural_sparse_40_percent_open_avoid_nod_and_boundaries",
+    "intensity": 0.20
+  },
+  "camera": {
+    "resolution": [1080, 1920],
+    "render_resolution": [540, 960],
+    "position": [0.0, 0.56, 2.3],
+    "look_at": [0.0, 0.54, 0.0],
+    "up": [0.0, 1.0, 0.0],
+    "vertical_fov_degrees": 25.0,
+    "background_rgb": [238, 241, 246],
+    "body_rgb": [76, 112, 176]
+  },
+  "source_reference": null
+}
