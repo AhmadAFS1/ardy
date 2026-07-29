@@ -161,6 +161,28 @@ class DeliveryProxyIntegrationTests(unittest.TestCase):
             self.assertEqual(manifest["contract"]["profile"], "High")
             self.assertEqual(manifest["contract"]["level"], "4.0")
             self.assertEqual(len(manifest["assets"]), 2)
+            self.assertEqual(
+                manifest["certification"]["ordered_nonself_transition_count"],
+                2,
+            )
+            self.assertTrue(
+                manifest["certification"]["all_ordered_pairs_switch_compatible"]
+            )
+            self.assertEqual(
+                manifest["certification"]["shared_decoded_handle_sha256"],
+                manifest["assets"][0]["decoded_video"]["opening_handle_sha256"],
+            )
+            for asset in manifest["assets"]:
+                decoded = asset["decoded_video"]
+                self.assertEqual(decoded["frame_count"], 8)
+                self.assertEqual(
+                    decoded["first_frame_sha256"],
+                    decoded["last_frame_sha256"],
+                )
+                self.assertEqual(
+                    decoded["opening_handle_sha256"],
+                    decoded["ending_handle_sha256"],
+                )
             self.assertFalse(list((directory / "delivery").glob("*.partial.mp4")))
 
     def test_manifest_aligns_variable_timing_to_each_input_and_proxy(self) -> None:

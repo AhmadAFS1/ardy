@@ -506,7 +506,7 @@
   "face_intent": {
     "gaze": "camera_with_brief_eye_led_conversational_micro_glances",
     "expression": "subtle_asymmetric_brow_emphasis_with_mouth_reserved_for_musetalk",
-    "blink": "natural_sparse_40_percent_open_avoid_boundaries",
+    "blink": "zero_blinks_moving_pose",
     "intensity": 0.20
   },
   "camera": {

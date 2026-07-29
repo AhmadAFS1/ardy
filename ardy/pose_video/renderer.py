@@ -44,9 +44,10 @@ BLINK_EVENTS = tuple(
     (phase, close_frames * BLINK_DURATION_SCALE, open_frames * BLINK_DURATION_SCALE)
     for phase, close_frames, open_frames in _BASE_BLINK_EVENTS
 )
-BLINK_MINIMUM_SCALE = 0.40
-# Kept as a compatibility alias for callers that previously selected the
-# approved partial-blink profile only for neutral_resting.
+MIDDLE_BLINK_EVENT = ((0.52, BLINK_EVENTS[0][1], BLINK_EVENTS[0][2]),)
+BLINK_MINIMUM_SCALE = 0.70
+# Kept as a compatibility alias for callers that explicitly inspect the
+# neutral-resting light-blink profile.
 NEUTRAL_RESTING_BLINK_MINIMUM_SCALE = BLINK_MINIMUM_SCALE
 FACIAL_EXPRESSION_BOUNDARY_SECONDS = 0.5
 SMILE_CORNER_LIFT_METERS = 0.006
@@ -81,8 +82,16 @@ def blink_scale_for_frame(
     frame_count: int,
     fps: float,
     minimum_scale: float = BLINK_MINIMUM_SCALE,
+    *,
+    behavior_id: str | None = None,
 ) -> float:
-    """Return deterministic local eye height for one natural blink schedule."""
+    """Return deterministic local eye height for one natural blink schedule.
+
+    The optional behavior identifier applies the certified MVP policy: three
+    light 30%-closure blinks for the neutral idle and no baked blinks for any
+    moving pose. Calls without a behavior identifier retain the duration-based
+    compatibility schedule for low-level animation tests and legacy callers.
+    """
 
     if frame_count <= 0 or fps <= 0.0 or frame_index < 0 or frame_index >= frame_count:
         raise ValueError("invalid blink frame coordinates")
@@ -102,18 +111,24 @@ def blink_scale_for_frame(
         return 1.0
     action_span = action_end - action_start
 
-    duration_seconds = frame_count / fps
-    if duration_seconds >= 9.0:
+    normalized_behavior_id = (behavior_id or "").lower()
+    if normalized_behavior_id == "neutral_resting":
         events = BLINK_EVENTS
-    elif duration_seconds >= 7.0:
-        events = (
-            (0.28, BLINK_EVENTS[0][1], BLINK_EVENTS[0][2]),
-            (0.72, BLINK_EVENTS[1][1], BLINK_EVENTS[1][2]),
-        )
-    elif duration_seconds >= 5.5:
-        events = ((0.52, BLINK_EVENTS[0][1], BLINK_EVENTS[0][2]),)
-    else:
+    elif normalized_behavior_id:
         events = ()
+    else:
+        duration_seconds = frame_count / fps
+        if duration_seconds >= 9.0:
+            events = BLINK_EVENTS
+        elif duration_seconds >= 7.0:
+            events = (
+                (0.28, BLINK_EVENTS[0][1], BLINK_EVENTS[0][2]),
+                (0.72, BLINK_EVENTS[1][1], BLINK_EVENTS[1][2]),
+            )
+        elif duration_seconds >= 5.5:
+            events = MIDDLE_BLINK_EVENT
+        else:
+            events = ()
 
     scale = 1.0
     for phase, close_frames, open_frames in events:
@@ -133,7 +148,7 @@ def blink_scale_for_frame(
 
 
 def blink_minimum_scale_for_motion(motion: CoreMotion) -> float:
-    """Use the approved partial-blink depth throughout a compatible library."""
+    """Return the approved light-blink depth when a behavior schedules blinks."""
 
     return BLINK_MINIMUM_SCALE
 
@@ -397,6 +412,7 @@ class CoreMeshRenderer:
                             motion.num_frames,
                             motion.fps,
                             minimum_scale=minimum_blink_scale,
+                            behavior_id=behavior_id,
                         )
                         for index in range(start, end)
                     ],

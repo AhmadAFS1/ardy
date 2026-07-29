@@ -145,7 +145,7 @@
   "face_intent": {
     "gaze": "warm_camera_attention_with_one_subtle_eye_led_micro_glance",
     "expression": "soft_empathetic_attention_without_a_fixed_smile",
-    "blink": "natural_sparse_40_percent_open_avoid_nod_and_boundaries",
+    "blink": "zero_blinks_moving_pose",
     "intensity": 0.20
   },
   "camera": {

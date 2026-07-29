@@ -35,7 +35,7 @@
   "face_intent": {
     "gaze": "camera",
     "expression": "neutral",
-    "blink": "natural",
+    "blink": "three_light_blinks_30_percent_closure_70_percent_open_interior_only",
     "intensity": 0.1
   },
   "camera": {

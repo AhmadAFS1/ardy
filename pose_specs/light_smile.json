@@ -73,7 +73,7 @@
   "face_intent": {
     "gaze": "warm_camera_attention",
     "expression": "mild_closed_mouth_smile_rise_hold_then_full_release",
-    "blink": "natural_no_forced_blink_at_transition_boundaries",
+    "blink": "zero_blinks",
     "intensity": 0.24
   },
   "camera": {

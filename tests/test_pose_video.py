@@ -308,13 +308,19 @@ class RenderingTests(unittest.TestCase):
         sclera = renderer.material_ids == MATERIAL_SCLERA
         open_height = float(np.ptp(frames[0][sclera, 1]))
         closed_height = float(np.ptp(frames[peak][sclera, 1]))
-        self.assertGreater(closed_height, open_height * 0.35)
-        self.assertLess(closed_height, open_height * 0.45)
+        self.assertGreater(closed_height, open_height * 0.65)
+        self.assertLess(closed_height, open_height * 0.75)
         np.testing.assert_array_equal(frames[0], frames[299])
 
-    def test_every_behavior_uses_approved_partial_blinks(self) -> None:
+    def test_mvp_behaviors_use_the_approved_blink_counts_and_depth(self) -> None:
         base = _identity_motion(frames=300, fps=30.0)
-        for behavior_id in ("neutral_resting", "active_listening", "speaking_direct"):
+        expected_counts = {
+            "neutral_resting": 3,
+            "speaking_direct_v2": 0,
+            "active_listening_empathetic_v1": 0,
+            "light_smile": 0,
+        }
+        for behavior_id, expected_count in expected_counts.items():
             motion = CoreMotion(
                 base.global_rot_mats,
                 base.posed_joints,
@@ -323,14 +329,26 @@ class RenderingTests(unittest.TestCase):
             )
             minimum = blink_minimum_scale_for_motion(motion)
             self.assertEqual(minimum, NEUTRAL_RESTING_BLINK_MINIMUM_SCALE)
-            self.assertEqual(minimum, 0.40)
+            self.assertEqual(minimum, 0.70)
             scales = np.asarray(
                 [
-                    blink_scale_for_frame(index, motion.num_frames, motion.fps, minimum)
+                    blink_scale_for_frame(
+                        index,
+                        motion.num_frames,
+                        motion.fps,
+                        minimum,
+                        behavior_id=behavior_id,
+                    )
                     for index in range(motion.num_frames)
                 ]
             )
-            self.assertEqual(np.count_nonzero(np.isclose(scales, minimum)), 3)
+            np.testing.assert_array_equal(scales[:60], np.ones(60))
+            np.testing.assert_array_equal(scales[-60:], np.ones(60))
+            self.assertEqual(
+                np.count_nonzero(np.isclose(scales, minimum)),
+                expected_count,
+                msg=behavior_id,
+            )
 
     def test_expression_cues_reset_at_boundaries_and_match_behavior_intent(self) -> None:
         for behavior_id in (

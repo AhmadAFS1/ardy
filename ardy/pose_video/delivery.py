@@ -920,6 +920,23 @@ def build_delivery_proxy_library(
             artifact_hashes["source_manifest"] = _sha256_file(resolved_source_manifest)
 
         manifest_assets = [asset.to_dict() for asset in assets]
+        for asset_payload, asset_report in zip(
+            manifest_assets,
+            delivery_report["assets"],
+            strict=True,
+        ):
+            metrics = asset_report["metrics"]
+            asset_payload["decoded_video"] = {
+                "frame_count": metrics["frame_count"],
+                "duration_seconds": metrics["duration_seconds"],
+                "fps": metrics["fps"],
+                "width": metrics["width"],
+                "height": metrics["height"],
+                "first_frame_sha256": metrics["first_frame_sha256"],
+                "last_frame_sha256": metrics["last_frame_sha256"],
+                "opening_handle_sha256": metrics["first_block_sha256"],
+                "ending_handle_sha256": metrics["last_block_sha256"],
+            }
         if manifest_timings is not None:
             for asset_payload, timing in zip(
                 manifest_assets,
@@ -945,6 +962,22 @@ def build_delivery_proxy_library(
             "delivery_validation_path": str(delivery_validation_path),
             "artifact_sha256": artifact_hashes,
             "assets": manifest_assets,
+            "certification": {
+                "boundary_frames": contract.boundary_frames,
+                "ordered_nonself_transition_count": len(assets) * (len(assets) - 1),
+                "all_assets_pass_individually": delivery_report["checks"][
+                    "all_assets_pass_individually"
+                ],
+                "all_ordered_pairs_switch_compatible": delivery_report["checks"][
+                    "all_ordered_pairs_switch_compatible"
+                ],
+                "opening_equals_ending": delivery_report["checks"][
+                    "opening_equals_ending"
+                ],
+                "shared_decoded_handle_sha256": delivery_report["assets"][0][
+                    "metrics"
+                ]["first_block_sha256"],
+            },
             "usage": {
                 "archive": "retain the lossless source masters and their original certification",
                 "upload_or_browser": "use these High Profile delivery proxies",
