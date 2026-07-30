@@ -280,6 +280,17 @@ tmr_out
 !/outputs/pose_delivery_cleaneyes_extra_slow_blink40_v1/nod_agree.mp4
 !/outputs/pose_delivery_cleaneyes_extra_slow_blink40_v1/speaking_direct.mp4
 !/outputs/pose_delivery_cleaneyes_extra_slow_blink40_v1/thinking_glance.mp4
+
+# MVP four-pose v4 release with shared 30-frame switch boundaries. Preserve
+# the certified delivery MP4s and their validation/manifest records.
+!/outputs/pose_delivery_mvp_four_v4_30frame_boundaries/
+!/outputs/pose_delivery_mvp_four_v4_30frame_boundaries/active_listening_empathetic_v1.mp4
+!/outputs/pose_delivery_mvp_four_v4_30frame_boundaries/light_smile.mp4
+!/outputs/pose_delivery_mvp_four_v4_30frame_boundaries/neutral_resting.mp4
+!/outputs/pose_delivery_mvp_four_v4_30frame_boundaries/speaking_direct_v2.mp4
+!/outputs/pose_delivery_mvp_four_v4_30frame_boundaries/delivery.library.validation.json
+!/outputs/pose_delivery_mvp_four_v4_30frame_boundaries/delivery.manifest.json
+!/outputs/pose_delivery_mvp_four_v4_30frame_boundaries/source.library.validation.json
 /debug
 /batch*.sh
 checkpoints

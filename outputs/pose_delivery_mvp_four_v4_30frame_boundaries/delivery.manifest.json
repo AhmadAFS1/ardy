@@ -1,0 +1,186 @@
+{
+  "artifact_sha256": {
+    "contract": "a0677d72398043e689f4d768a6f6ce85c6f0e78c716ce6e1fb0c2d5d7dac856b",
+    "delivery_validation": "5b0d428921112b0530b7953e684d7725ca22d455493df47e1755d2bdd021f9a4",
+    "ordered_sources": "c09679360f5c9a44d61169a8d5e24ee4fb1f99726eced28f680ff7d2042eb9e5",
+    "source_manifest": "04c4b2deaf177cc4cda7cb1472d20394df033e6fe6a314685d5b9bb5b9c640a4",
+    "source_validation": "6edc7ff25a8f1cf2dc3fab3619222b31c7b0e3358a42dfe605ee9c9d99c91c2a"
+  },
+  "assets": [
+    {
+      "decoded_video": {
+        "duration_seconds": 10.0,
+        "ending_handle_sha256": "a5396c0f38dd36c5593839edfb1a020c6b57445f540ff1b1b8051b5a15569a2b",
+        "first_frame_sha256": "998238f7e3e0adc8b10f83feb249ea99ba3c15bbb1cbae481a3a9f8643e30eca",
+        "fps": 30.0,
+        "frame_count": 300,
+        "height": 1920,
+        "last_frame_sha256": "998238f7e3e0adc8b10f83feb249ea99ba3c15bbb1cbae481a3a9f8643e30eca",
+        "opening_handle_sha256": "a5396c0f38dd36c5593839edfb1a020c6b57445f540ff1b1b8051b5a15569a2b",
+        "width": 1080
+      },
+      "output_bytes": 20681530,
+      "output_path": "/workspace/ardy/outputs/pose_delivery_mvp_four_v4_30frame_boundaries/active_listening_empathetic_v1.mp4",
+      "output_sha256": "6f30505dfc4c37df3d0494725d2edfdaabbe8046d03fe7349401e6c552979179",
+      "source_bytes": 31920805,
+      "source_path": "/workspace/ardy/outputs/pose_library_mvp_four_v4_30frame_boundaries/active_listening_empathetic_v1/active_listening_empathetic_v1.mp4",
+      "source_sha256": "e3589ffd3207646fd06caaa90b13273405f310156293f070963c8f0b1bce7682",
+      "source_timing": {
+        "behavior_id": "active_listening_empathetic_v1",
+        "duration_seconds": 10.0,
+        "frame_count": 300,
+        "source_path": "/workspace/ardy/outputs/pose_library_mvp_four_v4_30frame_boundaries/active_listening_empathetic_v1/active_listening_empathetic_v1.mp4"
+      }
+    },
+    {
+      "decoded_video": {
+        "duration_seconds": 6.0,
+        "ending_handle_sha256": "a5396c0f38dd36c5593839edfb1a020c6b57445f540ff1b1b8051b5a15569a2b",
+        "first_frame_sha256": "998238f7e3e0adc8b10f83feb249ea99ba3c15bbb1cbae481a3a9f8643e30eca",
+        "fps": 30.0,
+        "frame_count": 180,
+        "height": 1920,
+        "last_frame_sha256": "998238f7e3e0adc8b10f83feb249ea99ba3c15bbb1cbae481a3a9f8643e30eca",
+        "opening_handle_sha256": "a5396c0f38dd36c5593839edfb1a020c6b57445f540ff1b1b8051b5a15569a2b",
+        "width": 1080
+      },
+      "output_bytes": 12368472,
+      "output_path": "/workspace/ardy/outputs/pose_delivery_mvp_four_v4_30frame_boundaries/light_smile.mp4",
+      "output_sha256": "1c83b20a9d06bbec43ad073118cc0028510821af9a767e181be93365c37293fd",
+      "source_bytes": 19105383,
+      "source_path": "/workspace/ardy/outputs/pose_library_mvp_four_v4_30frame_boundaries/light_smile/light_smile.mp4",
+      "source_sha256": "4435f2b96f7ff531665a5a2e8aaff0e90b24ba4eaaa716c33ab8bea2a6c4d3a4",
+      "source_timing": {
+        "behavior_id": "light_smile",
+        "duration_seconds": 6.0,
+        "frame_count": 180,
+        "source_path": "/workspace/ardy/outputs/pose_library_mvp_four_v4_30frame_boundaries/light_smile/light_smile.mp4"
+      }
+    },
+    {
+      "decoded_video": {
+        "duration_seconds": 11.0,
+        "ending_handle_sha256": "a5396c0f38dd36c5593839edfb1a020c6b57445f540ff1b1b8051b5a15569a2b",
+        "first_frame_sha256": "998238f7e3e0adc8b10f83feb249ea99ba3c15bbb1cbae481a3a9f8643e30eca",
+        "fps": 30.0,
+        "frame_count": 330,
+        "height": 1920,
+        "last_frame_sha256": "998238f7e3e0adc8b10f83feb249ea99ba3c15bbb1cbae481a3a9f8643e30eca",
+        "opening_handle_sha256": "a5396c0f38dd36c5593839edfb1a020c6b57445f540ff1b1b8051b5a15569a2b",
+        "width": 1080
+      },
+      "output_bytes": 22648002,
+      "output_path": "/workspace/ardy/outputs/pose_delivery_mvp_four_v4_30frame_boundaries/neutral_resting.mp4",
+      "output_sha256": "b5afaaac5623a1a3cf94747d479b597f30439184d955a08dae3d16c2c13fdc0a",
+      "source_bytes": 34986575,
+      "source_path": "/workspace/ardy/outputs/pose_library_mvp_four_v4_30frame_boundaries/neutral_resting/neutral_resting.mp4",
+      "source_sha256": "c30c58cd7b7b7eefbf884054cf1e9476e3be515189d6f7321d7ce584011b1189",
+      "source_timing": {
+        "behavior_id": "neutral_resting",
+        "duration_seconds": 11.0,
+        "frame_count": 330,
+        "source_path": "/workspace/ardy/outputs/pose_library_mvp_four_v4_30frame_boundaries/neutral_resting/neutral_resting.mp4"
+      }
+    },
+    {
+      "decoded_video": {
+        "duration_seconds": 12.0,
+        "ending_handle_sha256": "a5396c0f38dd36c5593839edfb1a020c6b57445f540ff1b1b8051b5a15569a2b",
+        "first_frame_sha256": "998238f7e3e0adc8b10f83feb249ea99ba3c15bbb1cbae481a3a9f8643e30eca",
+        "fps": 30.0,
+        "frame_count": 360,
+        "height": 1920,
+        "last_frame_sha256": "998238f7e3e0adc8b10f83feb249ea99ba3c15bbb1cbae481a3a9f8643e30eca",
+        "opening_handle_sha256": "a5396c0f38dd36c5593839edfb1a020c6b57445f540ff1b1b8051b5a15569a2b",
+        "width": 1080
+      },
+      "output_bytes": 24733990,
+      "output_path": "/workspace/ardy/outputs/pose_delivery_mvp_four_v4_30frame_boundaries/speaking_direct_v2.mp4",
+      "output_sha256": "389a9fe097fdabade1e692d357a135eebce92ed57ff2613e500374b5567e8a8a",
+      "source_bytes": 38174746,
+      "source_path": "/workspace/ardy/outputs/pose_library_mvp_four_v4_30frame_boundaries/speaking_direct_v2/speaking_direct_v2.mp4",
+      "source_sha256": "2ae6b5d98630f5b292394811ded3ad20e1db3d0619cf1dfb1be4794299d370ec",
+      "source_timing": {
+        "behavior_id": "speaking_direct_v2",
+        "duration_seconds": 12.0,
+        "frame_count": 360,
+        "source_path": "/workspace/ardy/outputs/pose_library_mvp_four_v4_30frame_boundaries/speaking_direct_v2/speaking_direct_v2.mp4"
+      }
+    }
+  ],
+  "certification": {
+    "all_assets_pass_individually": true,
+    "all_ordered_pairs_switch_compatible": true,
+    "boundary_frames": 30,
+    "opening_equals_ending": true,
+    "ordered_nonself_transition_count": 12,
+    "shared_decoded_handle_sha256": "a5396c0f38dd36c5593839edfb1a020c6b57445f540ff1b1b8051b5a15569a2b"
+  },
+  "contract": {
+    "all_intra": true,
+    "audio_streams": 0,
+    "b_frames": 0,
+    "boundary_frames": 30,
+    "codec": "H.264/libx264",
+    "codec_tag": "avc1",
+    "color_primaries": "bt709",
+    "color_range": "tv",
+    "color_space": "bt709",
+    "color_transfer": "bt709",
+    "container": "MP4",
+    "frame_rate_policy": "passthrough_from_certified_source",
+    "level": "4.0",
+    "pixel_format": "yuv420p",
+    "preset": "medium",
+    "profile": "High",
+    "qp": 12,
+    "rate_control": "constant_qp",
+    "source_contract": {
+      "fps": 30.0,
+      "height": 1920,
+      "per_asset_timing": [
+        {
+          "behavior_id": "active_listening_empathetic_v1",
+          "duration_seconds": 10.0,
+          "frame_count": 300,
+          "source_path": "/workspace/ardy/outputs/pose_library_mvp_four_v4_30frame_boundaries/active_listening_empathetic_v1/active_listening_empathetic_v1.mp4"
+        },
+        {
+          "behavior_id": "light_smile",
+          "duration_seconds": 6.0,
+          "frame_count": 180,
+          "source_path": "/workspace/ardy/outputs/pose_library_mvp_four_v4_30frame_boundaries/light_smile/light_smile.mp4"
+        },
+        {
+          "behavior_id": "neutral_resting",
+          "duration_seconds": 11.0,
+          "frame_count": 330,
+          "source_path": "/workspace/ardy/outputs/pose_library_mvp_four_v4_30frame_boundaries/neutral_resting/neutral_resting.mp4"
+        },
+        {
+          "behavior_id": "speaking_direct_v2",
+          "duration_seconds": 12.0,
+          "frame_count": 360,
+          "source_path": "/workspace/ardy/outputs/pose_library_mvp_four_v4_30frame_boundaries/speaking_direct_v2/speaking_direct_v2.mp4"
+        }
+      ],
+      "timing_policy": "per_asset_from_source_manifest",
+      "width": 1080
+    },
+    "video_track_timescale": 30000
+  },
+  "created_at_utc": "2026-07-30T20:11:37.867046+00:00",
+  "delivery_validation_path": "/workspace/ardy/outputs/pose_delivery_mvp_four_v4_30frame_boundaries/delivery.library.validation.json",
+  "ffmpeg_binary": "/workspace/ardy/.render_tools/bin/ffmpeg",
+  "kind": "ardy_pose_video_delivery_library",
+  "passed": true,
+  "schema_version": 1,
+  "source_manifest_kind": "ardy_pose_video_library",
+  "source_manifest_path": "/workspace/ardy/outputs/pose_library_mvp_four_v4_30frame_boundaries/library.manifest.json",
+  "source_validation_path": "/workspace/ardy/outputs/pose_delivery_mvp_four_v4_30frame_boundaries/source.library.validation.json",
+  "usage": {
+    "archive": "retain the lossless source masters and their original certification",
+    "upload_or_browser": "use these High Profile delivery proxies",
+    "webrtc": "decode to frames, then let the persistent WebRTC track negotiate its RTP codec"
+  }
+}
