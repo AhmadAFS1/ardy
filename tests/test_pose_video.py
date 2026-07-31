@@ -88,7 +88,7 @@ class MotionTests(unittest.TestCase):
         positions[1, :, 0] += 1.0
         rotations = motion.global_rot_mats.copy()
         rotations[1] = Rotation.from_euler("y", 90.0, degrees=True).as_matrix()
-        motion = CoreMotion(rotations, positions, fps=2.0)
+        motion = CoreMotion(rotations, positions, fps=2.0, boundary_seconds=1.0)
 
         output = resample_core_motion(motion, target_fps=3.0)
         self.assertEqual(output.num_frames, 3)
@@ -97,6 +97,7 @@ class MotionTests(unittest.TestCase):
         np.testing.assert_allclose(output.posed_joints[1, :, 0], positions[0, :, 0] + 0.5, atol=1e-6)
         midpoint = Rotation.from_matrix(output.global_rot_mats[1, 0]).as_euler("xyz", degrees=True)
         self.assertAlmostEqual(midpoint[1], 45.0, places=4)
+        self.assertEqual(output.boundary_seconds, 1.0)
 
     def test_loader_reconstructs_global_data_from_local_transforms(self) -> None:
         frames = 2
@@ -109,7 +110,22 @@ class MotionTests(unittest.TestCase):
             loaded = load_core_motion(path)
         self.assertEqual(loaded.num_frames, frames)
         self.assertEqual(loaded.text, "test")
+        self.assertEqual(loaded.boundary_seconds, 0.5)
         np.testing.assert_allclose(loaded.posed_joints[:, 0], roots, atol=1e-6)
+
+    def test_loader_reads_motion_specific_boundary_seconds(self) -> None:
+        motion = _identity_motion(frames=90, fps=30.0)
+        with tempfile.TemporaryDirectory() as temp_dir:
+            path = Path(temp_dir) / "motion.npz"
+            np.savez(
+                path,
+                global_rot_mats=motion.global_rot_mats,
+                posed_joints=motion.posed_joints,
+                fps=np.array(30),
+                boundary_frames=np.array(30),
+            )
+            loaded = load_core_motion(path)
+        self.assertEqual(loaded.boundary_seconds, 1.0)
 
 
 class CoreSkinNeutralFaceTests(unittest.TestCase):
@@ -400,6 +416,38 @@ class RenderingTests(unittest.TestCase):
         self.assertLess(speaking_v2["gaze_vertical"], 0.0)
         self.assertGreater(speaking_v2["right_brow"], speaking_v2["left_brow"])
         self.assertGreater(speaking_v2["left_brow"], 0.0)
+
+    def test_expression_cues_follow_the_motion_boundary_contract(self) -> None:
+        behavior_ids = (
+            "light_smile",
+            "curious_eyebrow_or_nod",
+            "active_listening_empathetic_v1",
+            "speaking_direct_v2",
+        )
+        for behavior_id in behavior_ids:
+            for frame_index in tuple(range(31)) + tuple(range(269, 300)):
+                cue = facial_cue_for_frame(
+                    behavior_id,
+                    frame_index,
+                    300,
+                    30.0,
+                    boundary_seconds=1.0,
+                )
+                self.assertTrue(
+                    all(value == 0.0 for value in cue.values()),
+                    msg=f"{behavior_id} frame {frame_index}",
+                )
+
+        entering = facial_cue_for_frame(
+            "curious_eyebrow_or_nod",
+            31, 300, 30.0, boundary_seconds=1.0,
+        )
+        leaving = facial_cue_for_frame(
+            "curious_eyebrow_or_nod",
+            268, 300, 30.0, boundary_seconds=1.0,
+        )
+        self.assertGreater(entering["right_brow"], 0.0)
+        self.assertGreater(leaving["right_brow"], 0.0)
 
     def test_headless_core_skin_frame_has_fixed_pixels(self) -> None:
         motion = _identity_motion(frames=1)

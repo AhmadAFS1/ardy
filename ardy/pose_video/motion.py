@@ -29,6 +29,7 @@ class CoreMotion:
     fps: float
     text: str = ""
     source_path: Path | None = None
+    boundary_seconds: float = 0.5
 
     def __post_init__(self) -> None:
         rotations = np.asarray(self.global_rot_mats, dtype=np.float32)
@@ -50,6 +51,11 @@ class CoreMotion:
             raise ValueError("motion arrays contain NaN or infinite values")
         if not math.isfinite(float(self.fps)) or float(self.fps) <= 0.0:
             raise ValueError("motion fps must be a finite positive number")
+        if (
+            not math.isfinite(float(self.boundary_seconds))
+            or float(self.boundary_seconds) <= 0.0
+        ):
+            raise ValueError("motion boundary_seconds must be a finite positive number")
 
         # Reject corrupted transforms while allowing the small numerical drift
         # found in generated float32 archives.
@@ -63,6 +69,7 @@ class CoreMotion:
         object.__setattr__(self, "posed_joints", np.ascontiguousarray(positions))
         object.__setattr__(self, "fps", float(self.fps))
         object.__setattr__(self, "text", str(self.text))
+        object.__setattr__(self, "boundary_seconds", float(self.boundary_seconds))
         if self.source_path is not None:
             object.__setattr__(self, "source_path", Path(self.source_path))
 
@@ -126,6 +133,21 @@ def load_core_motion(path: str | Path) -> CoreMotion:
 
         fps = _read_scalar_fps(data, source)
         text = str(np.asarray(data["text"]).reshape(())) if "text" in data else ""
+        boundary_seconds = 0.5
+        if "boundary_frames" in data:
+            boundary_array = np.asarray(data["boundary_frames"])
+            if boundary_array.size != 1:
+                raise ValueError(f"{source}: boundary_frames must be a scalar")
+            boundary_frames = float(boundary_array.reshape(()))
+            if (
+                not math.isfinite(boundary_frames)
+                or boundary_frames <= 0.0
+                or not boundary_frames.is_integer()
+            ):
+                raise ValueError(
+                    f"{source}: boundary_frames must be a positive integer"
+                )
+            boundary_seconds = boundary_frames / fps
 
     return CoreMotion(
         global_rot_mats=global_rot_mats,
@@ -133,6 +155,7 @@ def load_core_motion(path: str | Path) -> CoreMotion:
         fps=fps,
         text=text,
         source_path=source.resolve(),
+        boundary_seconds=boundary_seconds,
     )
 
 
@@ -196,4 +219,5 @@ def resample_core_motion(motion: CoreMotion, target_fps: float) -> CoreMotion:
         fps=target_fps,
         text=motion.text,
         source_path=motion.source_path,
+        boundary_seconds=motion.boundary_seconds,
     )

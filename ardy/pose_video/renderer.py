@@ -168,12 +168,16 @@ def facial_cue_for_frame(
     frame_index: int,
     frame_count: int,
     fps: float,
+    *,
+    boundary_seconds: float = FACIAL_EXPRESSION_BOUNDARY_SECONDS,
 ) -> dict[str, float]:
     """Return reset-safe procedural face cues for one behavior frame."""
 
     if frame_count <= 0 or fps <= 0.0 or frame_index < 0 or frame_index >= frame_count:
         raise ValueError("invalid facial-cue frame coordinates")
-    boundary_frames = int(round(FACIAL_EXPRESSION_BOUNDARY_SECONDS * fps))
+    if not np.isfinite(boundary_seconds) or boundary_seconds <= 0.0:
+        raise ValueError("boundary_seconds must be a finite positive number")
+    boundary_frames = int(round(boundary_seconds * fps))
     interior_start = boundary_frames
     interior_end = frame_count - boundary_frames - 1
     if frame_index <= interior_start or frame_index >= interior_end or interior_end <= interior_start:
@@ -441,6 +445,7 @@ class CoreMeshRenderer:
                         index,
                         motion.num_frames,
                         motion.fps,
+                        boundary_seconds=motion.boundary_seconds,
                     )
                     for index in range(start, end)
                 ]

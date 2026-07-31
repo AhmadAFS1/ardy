@@ -18,6 +18,10 @@ __pycache__/
 # C extensions
 *.so
 
+# Local rendering toolchain
+/.render_deps/
+/.render_tools/
+
 datasets
 
 # Distribution / packaging

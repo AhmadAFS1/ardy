@@ -216,7 +216,7 @@ class DeterministicCompositionTests(unittest.TestCase):
                     np.array_equal(reference.posed_joints[:boundary], motion.posed_joints[-boundary:])
                 )
 
-    def test_speaking_v2_uses_irregular_diagonal_targets_and_shoulder_countermotion(self) -> None:
+    def test_speaking_v2_uses_restrained_diagonal_targets_and_shoulder_countermotion(self) -> None:
         path = next(path for path in CANDIDATE_SPEC_PATHS if path.stem == "speaking_direct_v2")
         spec = load_behavior_spec(path)
         intervals = np.diff([keyframe.time_seconds for keyframe in spec.keyframes])
@@ -226,17 +226,22 @@ class DeterministicCompositionTests(unittest.TestCase):
         self.assertNotIn("LeftShoulder", spec.locks)
         self.assertNotIn("RightArm", spec.locks)
         self.assertNotIn("LeftArm", spec.locks)
+        head_keyframes = [keyframe for keyframe in spec.keyframes if "Head" in keyframe.joints]
+        self.assertGreaterEqual(head_keyframes[0].time_seconds, 0.9)
         head_targets = np.asarray(
-            [
-                keyframe.joints["Head"].rotation_degrees
-                for keyframe in spec.keyframes
-                if "Head" in keyframe.joints
-            ]
+            [keyframe.joints["Head"].rotation_degrees for keyframe in head_keyframes]
         )
         self.assertTrue(np.any(np.abs(head_targets[:, 0]) > 0.5))
-        self.assertTrue(np.any(np.abs(head_targets[:, 1]) > 0.5))
-        self.assertTrue(np.any(np.abs(head_targets[:, 2]) > 0.2))
-        self.assertGreater(float(np.max(np.abs(head_targets[:, 0]))), 3.5)
+        self.assertTrue(np.any(np.abs(head_targets[:, 1]) > 0.3))
+        self.assertTrue(np.any(np.abs(head_targets[:, 2]) > 0.1))
+        self.assertGreater(float(np.max(np.abs(head_targets[:, 0]))), 0.7)
+        motion = compose_behavior(spec)
+        head_index = build_skeleton(27).bone_index["Head"]
+        head_global = motion.global_rot_mats[:, head_index]
+        frame_deltas = np.swapaxes(head_global[:-1], -1, -2) @ head_global[1:]
+        head_steps = np.degrees(Rotation.from_matrix(frame_deltas).magnitude())
+        self.assertGreater(float(np.max(head_steps)), 0.4)
+        self.assertLessEqual(float(np.max(head_steps)), 0.5)
         self.assertTrue(
             any(
                 "RightArm" in keyframe.joints or "LeftArm" in keyframe.joints
